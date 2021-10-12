@@ -4,14 +4,19 @@
 
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'tablet_home_page.dart';
+import 'phone_home_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+// TODO: Come up with App name
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  final bool tablet = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +33,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(title: 'Capstone Project'),
+      home: tablet
+          ? const TabletHomePage()
+          : const PhoneHomePage(),
+    );
+  }
+
+  ThemeData _buildTheme(){
+    return ThemeData(
+      // TODO: Implement this function
     );
   }
 }
-
-// TODO: Add separate class/function for app theme
