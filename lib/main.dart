@@ -19,10 +19,18 @@ class MyApp extends StatelessWidget {
       title: 'Capstone Project',
       theme: ThemeData(
         primarySwatch: Colors.red,
+        textTheme: const TextTheme(
+          bodyText2: TextStyle( // Staff Info text
+            fontSize: 25.0,
+          ),
+          headline6: TextStyle( // Staff Info header
+            fontSize: 30.0,
+          ),
+        ),
       ),
       home: const HomePage(title: 'Capstone Project'),
     );
   }
 }
 
-
+// TODO: Add separate class/function for app theme

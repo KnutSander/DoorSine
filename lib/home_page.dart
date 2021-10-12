@@ -13,22 +13,23 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
 // TODO: Make app more adaptive, no set sizes
 
 class _HomePageState extends State<HomePage> {
-
   bool busy = false;
   bool inOffice = false;
 
   // Misc properties for the labels
-  MaterialStateProperty<Color> disabled = MaterialStateProperty.all<Color>(Colors.grey);
-  MaterialStateProperty<Size> minLabelSize = MaterialStateProperty.all<Size>(const Size(450.0, 100.0));
+  MaterialStateProperty<Color> disabled =
+      MaterialStateProperty.all<Color>(Colors.grey);
+  MaterialStateProperty<Size> minLabelSize =
+      MaterialStateProperty.all<Size>(const Size(450.0, 100.0));
   TextStyle labelText = const TextStyle(fontSize: 69.0, color: Colors.white);
 
   // Misc properties of the intractable buttons
   TextStyle buttonText = const TextStyle(fontSize: 42.0);
-  MaterialStateProperty<Size> minButtonSize = MaterialStateProperty.all<Size>(const Size(370.0, 70.0));
+  MaterialStateProperty<Size> minButtonSize =
+      MaterialStateProperty.all<Size>(const Size(370.0, 70.0));
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,8 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Image(
-              image: NetworkImage('https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'),
+              image: NetworkImage(
+                  'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'),
               height: 200.0,
               width: 200.0,
             ),
@@ -46,15 +48,18 @@ class _HomePageState extends State<HomePage> {
               'Staff Name',
               style: TextStyle(fontSize: 80.0),
             ),
-            Row( // This row will contain busy/available and in/out of office
+            Row(
+              // This row will contain busy/available and in/out of office
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column( // Busy/Available
+                Column(
+                  // Busy/Available
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton( // Available
-                        onPressed:  null,
+                      child: ElevatedButton(
+                        // Available
+                        onPressed: null,
                         child: Text(
                           'Available',
                           style: labelText,
@@ -69,7 +74,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton( // Busy
+                      child: ElevatedButton(
+                        // Busy
                         onPressed: null,
                         child: Text(
                           'Busy',
@@ -85,11 +91,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                Column( // In/Out of Office
+                Column(
+                  // In/Out of Office
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton( // In Office
+                      child: ElevatedButton(
+                        // In Office
                         onPressed: null,
                         child: Text(
                           'In Office',
@@ -105,7 +113,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton( // Out of Office
+                      child: ElevatedButton(
+                        // Out of Office
                         onPressed: null,
                         child: Text(
                           'Out of Office',
@@ -123,7 +132,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Column( // This column will contain the options presented
+            Column(
+              // This column will contain the options presented
               //TODO: Add functionality to the buttons
               //TODO: Make buttons visible based on availability and location
               children: <Widget>[
@@ -159,7 +169,8 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       showDialog(
                           context: context,
-                          builder: (BuildContext context) => _showStaffInfo(context));
+                          builder: (BuildContext context) =>
+                              _showStaffInfo(context));
                     },
                     child: Text(
                       'Staff Info',
@@ -180,33 +191,49 @@ class _HomePageState extends State<HomePage> {
 
   // TODO: Create QR code that opens email when scanned
 
-  Widget _showStaffInfo(BuildContext context){
+  Widget _showStaffInfo(BuildContext context) {
     return SimpleDialog(
       title: const Center(child: Text('Staff Info')),
       children: <Widget>[
-        Center(
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
               // TODO: Add other info?
-              Row( // Email
-                children: const <Widget>[
-                  Text('Email:'),
-                  Text('email address')
-                ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row( // Email
+                  children: const <Widget>[
+                    Expanded(child: Text('Email:', textAlign: TextAlign.right,)),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'kb19109@essex.ac.uk',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Row( // Office hours
-                children: const <Widget>[
-                  Text('Office Hours:'),
-                  Text('12-16'),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row( // Office hours
+                  children: const <Widget>[
+                    Expanded(child: Text('Office Hours:', textAlign: TextAlign.right,)),
+                    SizedBox(width: 10),
+                    Expanded(child: Text('10-14 & 16-18')),
+                  ],
+                ),
+              ),
+              const Image(
+                image: NetworkImage(
+                    'https://i.pinimg.com/originals/60/c1/4a/60c14a43fb4745795b3b358868517e79.png'),
+                height: 150.0,
+                width: 150.0,
               ),
               Text('Scan QR code for email'),
-              const Image(
-                image: NetworkImage('https://i.pinimg.com/originals/60/c1/4a/60c14a43fb4745795b3b358868517e79.png'),
-                height: 100.0,
-                width: 100.0,
-              ),
-
             ],
           ),
         ),
