@@ -4,19 +4,19 @@
 
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+class TabletHomePage extends StatefulWidget {
+  const TabletHomePage({Key? key}) : super(key: key);
 
-  final String title;
+
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TabletHomePage> createState() => _TabletHomePageState();
 }
 
 // TODO: Make app more adaptive, no set sizes
 
-class _HomePageState extends State<HomePage> {
-  bool busy = false;
+class _TabletHomePageState extends State<TabletHomePage> {
+  bool busy = true;
   bool inOffice = false;
 
   // Misc properties for the labels
@@ -233,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                 height: 150.0,
                 width: 150.0,
               ),
-              Text('Scan QR code for email'),
+              const Text('Scan QR code for email'),
             ],
           ),
         ),
