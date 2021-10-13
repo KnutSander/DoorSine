@@ -4,11 +4,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 
-class DBProvider{
-  DBProvider._();
-  static final DBProvider db = DBProvider._();
-}
-
 void main() async {
 
   // Avoid errors caused by flutter upgrade
@@ -49,8 +44,8 @@ void main() async {
     id: 0,
     title: 'Dr.',
     name: 'Jameel, Shoaib',
-    busy: false,
-    inOffice: true,
+    busy: 0,
+    inOffice: 1,
   );
 
   await insertLecturer(shoaib);
@@ -79,11 +74,12 @@ void main() async {
 
 //  Create a class to represent the lecturers
 class Lecturer{
+  // Need to store busy and inOffice as ints because sqlite has no bool type
   final int id;
   final String title;
   final String name;
-  final bool busy;
-  final bool inOffice;
+  final int busy;
+  final int inOffice;
 
   Lecturer({
     required this.id,

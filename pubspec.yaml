@@ -43,7 +43,6 @@ dependencies:
   # The path package provides common operations for manipulating paths:
   # joining, splitting, normalizing, etc.
   path:
-  path_provider:
 
 dev_dependencies:
   flutter_test:
