@@ -12,6 +12,7 @@ void main() {
 }
 
 // TODO: Come up with App name
+// TODO: Create ThemeData variable
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -36,12 +37,6 @@ class MyApp extends StatelessWidget {
       home: tablet
           ? const TabletHomePage()
           : const PhoneHomePage(),
-    );
-  }
-
-  ThemeData _buildTheme(){
-    return ThemeData(
-      // TODO: Implement this function
     );
   }
 }

@@ -14,7 +14,7 @@ class PhoneHomePage extends StatefulWidget{
 
 class _PhoneHomePageState extends State<PhoneHomePage>{
 
-  bool _available = false;
+  bool _busy = false;
   bool _inOffice = false;
 
   @override
@@ -31,18 +31,21 @@ class _PhoneHomePageState extends State<PhoneHomePage>{
       ),
       drawer: Drawer(
         child: ListView(
-          children: const <Widget>[
+          children: <Widget>[
             ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Messages'),
+              leading: const Icon(Icons.message),
+              title: const Text('Messages'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text('Calendar'),
+              leading: const Icon(Icons.calendar_today),
+              title: const Text('Calendar'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {},
             ),
           ],
         ),
@@ -50,29 +53,55 @@ class _PhoneHomePageState extends State<PhoneHomePage>{
       body:  Center(
         child: Column(
           children: <Widget>[
-            SwitchListTile(
-                title: Text(_available
-                          ? 'Available'
-                          : 'Busy'
+            Row(
+              children: <Widget>[
+                const Expanded(
+                    child: Text(
+                        'Available',
+                        textAlign: TextAlign.right,
+                    ),
                 ),
-                value: _available,
-                onChanged: (bool value) {
-                  setState((){
-                    _available = value;
-                  });
-                },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: Switch(
+                        value: _busy,
+                        onChanged: (bool value) {
+                          setState((){
+                            _busy = value;
+                          });
+                        },
+                    ),
+                  ),
+                ),
+                const Expanded(child: Text('Busy'))
+              ],
             ),
-            SwitchListTile(
-              title: Text(_inOffice
-                          ? 'In Office'
-                          : 'Out of Office'
-              ),
-              value: _inOffice,
-              onChanged: (bool value) {
-                setState((){
-                  _inOffice = value;
-                });
-              },
+            Row(
+              children: <Widget>[
+                const Expanded(
+                    child: Text(
+                        'In Office',
+                        textAlign: TextAlign.right,
+                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: Switch(
+                      value: _inOffice,
+                      onChanged: (bool value) {
+                        setState((){
+                          _inOffice = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                const Expanded(child: Text('Out of Office'))
+              ],
             ),
           ],
         ),
