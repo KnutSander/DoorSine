@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 class TabletHomePage extends StatefulWidget {
   const TabletHomePage({Key? key}) : super(key: key);
 
-
-
   @override
   State<TabletHomePage> createState() => _TabletHomePageState();
 }

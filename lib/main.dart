@@ -4,23 +4,27 @@
 
 import 'package:flutter/material.dart';
 
-import 'tablet_home_page.dart';
-import 'phone_home_page.dart';
+import 'db/lecturer_db_reformat.dart';
+import 'pages/tablet_home_page.dart';
+import 'pages/phone_home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 // TODO: Come up with App name
 // TODO: Create ThemeData variable
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
-  final bool tablet = false;
+  final bool tablet = true;
+
+  final LecturerDB _lecturerDB = LecturerDB();
 
   @override
   Widget build(BuildContext context) {
+    _lecturerDB.init();
     return MaterialApp(
       title: 'Capstone Project',
       theme: ThemeData(
