@@ -1,3 +1,7 @@
+/// Created by Knut Sander Lien Blakkestad
+/// Essex Capstone Project 2021/2022
+/// Last updated: 14/10/2021
+
 import 'dart:async';
 
 import 'package:path/path.dart';
@@ -56,7 +60,7 @@ void main() async {
 
   await insertLecturer(shoaib);
 
-  Future<List<Lecturer>> lecturers() async{
+  Future<List<Lecturer>> getLecturers() async{
     // Database reference
     final db = await database;
 
@@ -77,8 +81,7 @@ void main() async {
     });
   }
 
-  List<Lecturer> lecs = await lecturers();
-  print(lecs);
+  print(await getLecturers());
 }
 
 //  Create a class to represent the lecturers

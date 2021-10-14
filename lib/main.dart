@@ -20,11 +20,8 @@ class MyApp extends StatelessWidget {
 
   final bool tablet = true;
 
-  final LecturerDB _lecturerDB = LecturerDB();
-
   @override
   Widget build(BuildContext context) {
-    _lecturerDB.init();
     return MaterialApp(
       title: 'Capstone Project',
       theme: ThemeData(

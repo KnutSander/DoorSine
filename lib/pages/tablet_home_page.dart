@@ -2,6 +2,7 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 12/10/2021
 
+import 'package:capstone_project/db/database.dart';
 import 'package:flutter/material.dart';
 
 class TabletHomePage extends StatefulWidget {
