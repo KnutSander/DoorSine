@@ -1,4 +1,8 @@
-import 'package:capstone_project/db/lecturer_db_original.dart';
+/// Created by Knut Sander Lien Blakkestad
+/// Essex Capstone Project 2021/2022
+/// Last updated: 14/10/2021
+
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
