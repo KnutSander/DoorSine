@@ -8,14 +8,21 @@ class Lecturer {
   int id;
   String title;
   String name;
+  String email;
+  String pictureLink;
+  String officeHours;
   bool busy;
   bool inOffice;
+
 
   // Constructor
   Lecturer({
     required this.id,
     required this.title,
     required this.name,
+    required this.email,
+    required this.pictureLink,
+    required this.officeHours,
     required this.busy,
     required this.inOffice,
   });
@@ -47,4 +54,52 @@ class Lecturer {
   String toString() {
     return '$id, $title $name, busy: $busy, inOffice: $inOffice';
   }
+}
+
+List<Lecturer> getLecturers(){
+  var shoaib = Lecturer(
+    id: 0,
+    title: 'Dr.',
+    name: 'Jameel, Shoaib',
+    email: 'shoaib.jameel@essex.ac.uk',
+    pictureLink: 'http://www1.essex.ac.uk/people-images/JAMEE22406.jpg',
+    officeHours: '12:00-13:00, Tuesdays',
+    busy: false,
+    inOffice: true,
+  );
+
+  var vishu = Lecturer(
+    id: 1,
+    title: 'Dr.',
+    name: 'Mohan, Vishwanathan',
+    email: 'vm16090@essex.ac.uk',
+    pictureLink: 'http://www1.essex.ac.uk/people-images/MOHAN05903.jpg',
+    officeHours: '10-13, Monday-Friday',
+    busy: true,
+    inOffice: true,
+  );
+
+  var anthony = Lecturer(
+    id: 2,
+    title: 'Prof.',
+    name: 'Vickers, Anthony',
+    email: 'vicka@essex.ac.uk',
+    pictureLink: 'http://www1.essex.ac.uk/people-images/VICKE53909.jpg',
+    officeHours: '14:00-15:00, Thursdays',
+    busy: false,
+    inOffice: false,
+  );
+
+  var john = Lecturer(
+    id: 3,
+    title: 'Prof.',
+    name: 'Gan, John',
+    email: 'jqgan@essex.ac.uk',
+    pictureLink: 'http://www1.essex.ac.uk/people-images/GANJO00207.jpg',
+    officeHours: '11:00-12:00, Thursdays',
+    busy: true,
+    inOffice: false,
+  );
+
+  return [shoaib, vishu, anthony, john];
 }

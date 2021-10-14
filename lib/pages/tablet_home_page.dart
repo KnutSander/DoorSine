@@ -2,11 +2,13 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 12/10/2021
 
-import 'package:capstone_project/db/database.dart';
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:flutter/material.dart';
 
 class TabletHomePage extends StatefulWidget {
-  const TabletHomePage({Key? key}) : super(key: key);
+  TabletHomePage({Key? key, required this.lecturer}) : super(key: key);
+
+  final Lecturer lecturer;
 
   @override
   State<TabletHomePage> createState() => _TabletHomePageState();
@@ -15,9 +17,6 @@ class TabletHomePage extends StatefulWidget {
 // TODO: Make app more adaptive, no set sizes
 
 class _TabletHomePageState extends State<TabletHomePage> {
-  bool busy = true;
-  bool inOffice = false;
-
   // Misc properties for the labels
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
@@ -37,14 +36,13 @@ class _TabletHomePageState extends State<TabletHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Image(
-              image: NetworkImage(
-                  'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'),
+            Image(
+              image: NetworkImage(widget.lecturer.pictureLink),
               height: 200.0,
               width: 200.0,
             ),
-            const Text(
-              'Staff Name',
+            Text(
+              widget.lecturer.title + ' ' + widget.lecturer.name,
               style: TextStyle(fontSize: 80.0),
             ),
             Row(
@@ -64,7 +62,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           style: labelText,
                         ),
                         style: ButtonStyle(
-                          backgroundColor: busy
+                          backgroundColor: widget.lecturer.busy
                               ? disabled
                               : MaterialStateProperty.all<Color>(Colors.green),
                           minimumSize: minLabelSize,
@@ -81,7 +79,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           style: labelText,
                         ),
                         style: ButtonStyle(
-                          backgroundColor: busy
+                          backgroundColor: widget.lecturer.busy
                               ? MaterialStateProperty.all<Color>(Colors.red)
                               : disabled,
                           minimumSize: minLabelSize,
@@ -103,7 +101,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           style: labelText,
                         ),
                         style: ButtonStyle(
-                          backgroundColor: inOffice
+                          backgroundColor: widget.lecturer.inOffice
                               ? MaterialStateProperty.all<Color>(Colors.blue)
                               : disabled,
                           minimumSize: minLabelSize,
@@ -120,7 +118,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           style: labelText,
                         ),
                         style: ButtonStyle(
-                          backgroundColor: inOffice
+                          backgroundColor: widget.lecturer.inOffice
                               ? disabled
                               : MaterialStateProperty.all<Color>(Colors.orange),
                           minimumSize: minLabelSize,
@@ -201,13 +199,18 @@ class _TabletHomePageState extends State<TabletHomePage> {
               // TODO: Add other info?
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Row( // Email
-                  children: const <Widget>[
-                    Expanded(child: Text('Email:', textAlign: TextAlign.right,)),
+                child: Row(
+                  // Email
+                  children: <Widget>[
+                    Expanded(
+                        child: Text(
+                      'Email:',
+                      textAlign: TextAlign.right,
+                    )),
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'kb19109@essex.ac.uk',
+                        widget.lecturer.email,
                         style: TextStyle(
                           color: Colors.blue,
                         ),
@@ -218,11 +221,16 @@ class _TabletHomePageState extends State<TabletHomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Row( // Office hours
-                  children: const <Widget>[
-                    Expanded(child: Text('Office Hours:', textAlign: TextAlign.right,)),
+                child: Row(
+                  // Office hours
+                  children: <Widget>[
+                    Expanded(
+                        child: Text(
+                      'Office Hours:',
+                      textAlign: TextAlign.right,
+                    )),
                     SizedBox(width: 10),
-                    Expanded(child: Text('10-14 & 16-18')),
+                    Expanded(child: Text(widget.lecturer.officeHours)),
                   ],
                 ),
               ),

@@ -2,11 +2,15 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 12/10/2021
 
+import 'dart:math';
+
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:flutter/material.dart';
 
-import 'db/lecturer_db_reformat.dart';
 import 'pages/tablet_home_page.dart';
 import 'pages/phone_home_page.dart';
+
+
 
 void main() {
   runApp(MyApp());
@@ -18,10 +22,14 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final bool tablet = true;
+  final _tablet = true;
+  final _random = Random();
+  final lecList = getLecturers();
+
 
   @override
   Widget build(BuildContext context) {
+    Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
     return MaterialApp(
       title: 'Capstone Project',
       theme: ThemeData(
@@ -35,8 +43,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: tablet
-          ? const TabletHomePage()
+      home: _tablet
+          ? TabletHomePage(lecturer: lecturer)
           : const PhoneHomePage(),
     );
   }
