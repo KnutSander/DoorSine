@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 13/10/2021
+/// Last updated: 20/10/2021
 
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,6 @@ class PhoneHomePage extends StatefulWidget{
 
   @override
   State<PhoneHomePage> createState() => _PhoneHomePageState();
-
 }
 
 class _PhoneHomePageState extends State<PhoneHomePage>{
@@ -20,38 +19,7 @@ class _PhoneHomePageState extends State<PhoneHomePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Staff Name'),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.room_service),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        )
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.message),
-              title: const Text('Messages'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.calendar_today),
-              title: const Text('Calendar'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-      body:  Center(
-        child: Column(
+      body: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -105,8 +73,7 @@ class _PhoneHomePageState extends State<PhoneHomePage>{
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
 }

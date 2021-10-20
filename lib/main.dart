@@ -1,14 +1,15 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 12/10/2021
+/// Last updated: 20/10/2021
 
 import 'dart:math';
 
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/pages/phone_main.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/tablet_home_page.dart';
-import 'pages/phone_home_page.dart';
+import 'pages/phone_main.dart';
 
 
 
@@ -22,10 +23,9 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final _tablet = true;
+  final _tablet = false;
   final _random = Random();
   final lecList = getLecturers();
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       ),
       home: _tablet
           ? TabletHomePage(lecturer: lecturer)
-          : const PhoneHomePage(),
+          : const PhoneMain(),
     );
   }
 }
