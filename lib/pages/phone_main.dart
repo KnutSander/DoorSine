@@ -21,6 +21,7 @@ class _PhoneMainState extends State<PhoneMain>{
   int _curPage = 0;
   late Widget _body;
 
+  // Changes BottomNavigationBar selection
   void _changeView(int index){
     setState(() {
       _curPage = index;
@@ -28,6 +29,7 @@ class _PhoneMainState extends State<PhoneMain>{
     });
   }
 
+  // Swaps body based on BottomNavigationBar selection
   Widget _changeBody(){
     if(_curPage == 0) {
       return const PhoneHomePage();
@@ -53,22 +55,22 @@ class _PhoneMainState extends State<PhoneMain>{
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
             label: "Home",
             backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
+            icon: const Icon(Icons.message),
             label: "Messages",
             backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
+            icon: const Icon(Icons.calendar_today),
             label: "Calendar",
             backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             label: "Settings",
             backgroundColor: Theme.of(context).primaryColor,
           ),
