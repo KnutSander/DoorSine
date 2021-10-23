@@ -4,9 +4,11 @@
 
 import 'dart:math';
 
+import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/phone_main.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/tablet_home_page.dart';
 import 'pages/phone_main.dart';
@@ -14,7 +16,12 @@ import 'pages/phone_main.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (context) => FirebaseConnector(),
+        builder: (context, _) => MyApp(),
+      ));
+  //runApp(MyApp());
 }
 
 // TODO: Come up with App name
@@ -45,7 +52,7 @@ class MyApp extends StatelessWidget {
       ),
       home: _tablet
           ? TabletHomePage(lecturer: lecturer)
-          : const PhoneMain(),
+          : PhoneMain(lecturer: lecturer),
     );
   }
 }

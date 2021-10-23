@@ -57,6 +57,8 @@ dependencies:
   # application with multiple Firebase projects.
   firebase_core: ^1.7.0
 
+  provider:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

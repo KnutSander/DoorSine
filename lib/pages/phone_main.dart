@@ -2,40 +2,47 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 20/10/2021
 
+import 'dart:async';
+
+import 'package:capstone_project/firebase_connector.dart';
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_messages_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class PhoneMain extends StatefulWidget{
-  const PhoneMain({Key? key}) : super(key: key);
+class PhoneMain extends StatefulWidget {
+  PhoneMain({Key? key, required this.lecturer}) : super(key: key);
+
+  Lecturer lecturer;
 
   @override
   State<PhoneMain> createState() => _PhoneMainState();
-
 }
 
-class _PhoneMainState extends State<PhoneMain>{
-
+class _PhoneMainState extends State<PhoneMain> {
   int _curPage = 0;
   late Widget _body;
 
   // Changes BottomNavigationBar selection
-  void _changeView(int index){
+  void _changeView(int index) {
     setState(() {
       _curPage = index;
-      _body = _changeBody();
     });
   }
 
   // Swaps body based on BottomNavigationBar selection
-  Widget _changeBody(){
-    if(_curPage == 0) {
-      return const PhoneHomePage();
-    } else if(_curPage == 1) {
+  Widget _changeBody(FutureOr<void> Function(Lecturer lecturer) futureOr) {
+    if (_curPage == 0) {
+      return PhoneHomePage(
+        lecturer: widget.lecturer,
+        uploadData: futureOr,
+      );
+    } else if (_curPage == 1) {
       return const PhoneMessagePage();
-    } else if(_curPage == 2) {
+    } else if (_curPage == 2) {
       return const PhoneCalendarPage();
     } else {
       return const PhoneSettingsPage();
@@ -47,10 +54,14 @@ class _PhoneMainState extends State<PhoneMain>{
     _changeView(_curPage);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Staff Name'),
+        title: Text(
+          widget.lecturer.title + ' ' + widget.lecturer.name,
+        ),
       ),
-      body: Center(
-        child: _body,
+      body: Consumer<FirebaseConnector>(
+        builder: (context, appState, _) => Center(
+          child: _changeBody(appState.uploadData),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -80,5 +91,4 @@ class _PhoneMainState extends State<PhoneMain>{
       ),
     );
   }
-
 }
