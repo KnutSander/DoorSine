@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 20/10/2021
+/// Last updated: 25/10/2021
 
 import 'dart:async';
 
@@ -34,11 +34,11 @@ class _PhoneMainState extends State<PhoneMain> {
   }
 
   // Swaps body based on BottomNavigationBar selection
-  Widget _changeBody(FutureOr<void> Function(Lecturer lecturer) futureOr) {
+  Widget _changeBody(FirebaseConnector connector) {
     if (_curPage == 0) {
       return PhoneHomePage(
         lecturer: widget.lecturer,
-        uploadData: futureOr,
+        uploadData: connector.uploadData,
       );
     } else if (_curPage == 1) {
       return const PhoneMessagePage();
@@ -60,9 +60,10 @@ class _PhoneMainState extends State<PhoneMain> {
       ),
       body: Consumer<FirebaseConnector>(
         builder: (context, appState, _) => Center(
-          child: _changeBody(appState.uploadData),
-        ),
-      ),
+          child: _changeBody(appState),
+               //Text(appState.getData().toString()),
+            ),
+          ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

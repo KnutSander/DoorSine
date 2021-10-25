@@ -7,6 +7,8 @@ import 'dart:math';
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/phone_main.dart';
+import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
+import 'package:capstone_project/pages/testing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,13 +32,12 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final _tablet = false;
+  final _page = 2; // 0 = tablet, 1 = phone, 2 = testing
   final _random = Random();
   final lecList = getLecturers();
 
   @override
   Widget build(BuildContext context) {
-    Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
     return MaterialApp(
       title: 'Capstone Project',
       theme: ThemeData(
@@ -50,9 +51,18 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: _tablet
-          ? TabletHomePage(lecturer: lecturer)
-          : PhoneMain(lecturer: lecturer),
+      home: openPage(),
     );
+  }
+
+  Widget openPage() {
+    Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
+    if(_page == 0) {
+      return TabletHomePage(lecturer: lecturer);
+    } else if(_page == 1) {
+      return PhoneMain(lecturer: lecturer);
+    } else {
+      return TestingPage(lecturer: lecturer);
+    }
   }
 }
