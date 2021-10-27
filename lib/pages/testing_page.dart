@@ -1,13 +1,11 @@
+/// Created by Knut Sander Lien Blakkestad
+/// Essex Capstone Project 2021/2022
+/// Last updated: 27/10/2021
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-/// Created by Knut Sander Lien Blakkestad
-/// Essex Capstone Project 2021/2022
-/// Last updated: 25/10/2021
-
 
 class TestingPage extends StatefulWidget {
   const TestingPage({Key? key, required this.lecturer}) : super(key: key);
@@ -37,7 +35,9 @@ class _TestingPageState extends State<TestingPage> {
           return Text('Loading');
         }
 
-        return Text(snapshot.data!.docs.first.data().toString());
+        DocumentSnapshot documentSnapshot = snapshot.data!.docs.first;
+
+        return Text(documentSnapshot.get('id').toString());
       },
     );
   }
