@@ -6,18 +6,18 @@ import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class TabletHomePage extends StatefulWidget {
-  const TabletHomePage({Key? key, required this.lecturer}) : super(key: key);
+class TabletHomePageOld extends StatefulWidget {
+  const TabletHomePageOld({Key? key, required this.lecturer}) : super(key: key);
 
   final Lecturer lecturer;
 
   @override
-  State<TabletHomePage> createState() => _TabletHomePageState();
+  State<TabletHomePageOld> createState() => _TabletHomePageStateOld();
 }
 
 // TODO: Make app more adaptive, no set sizes
 
-class _TabletHomePageState extends State<TabletHomePage> {
+class _TabletHomePageStateOld extends State<TabletHomePageOld> {
   // Misc properties for the labels
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
@@ -32,11 +32,11 @@ class _TabletHomePageState extends State<TabletHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer = FirebaseFirestore.instance.collection('lecturer').doc(widget.lecturer.email).snapshots();
+    CollectionReference lecturers = FirebaseFirestore.instance.collection('lecturer');
 
-    return StreamBuilder<DocumentSnapshot>(
-        stream: _lecturer,
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    return FutureBuilder(
+        future: lecturers.where('email', isEqualTo: widget.lecturer.email).get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('There seems to be a problem!');
           }
@@ -45,7 +45,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
             return const Text('Loading');
           }
 
-          DocumentSnapshot<Object?>? lecturerData = snapshot.data;
+          DocumentSnapshot lecturerData = snapshot.data!.docs.first;
 
           return Scaffold(
             body: Center(
@@ -58,7 +58,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                     width: 200.0,
                   ),
                   Text(
-                    lecturerData!.get('title') + ' ' + lecturerData.get('name'),
+                    lecturerData.get('title') + ' ' + lecturerData.get('name'),
                     style: const TextStyle(fontSize: 80.0),
                   ),
                   Row(
