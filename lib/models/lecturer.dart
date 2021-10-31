@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 14/10/2021
+/// Last updated: 31/10/2021
 
 //  Create a class to represent the lecturers
 class Lecturer {
@@ -101,5 +101,16 @@ List<Lecturer> getLecturers(){
     inOffice: false,
   );
 
-  return [shoaib, vishu, anthony, john];
+  var knut = Lecturer(
+      id: 4,
+      title: 'Dr.',
+      name: 'Blakkestad, Knut Sander',
+      email: 'kb19109@essex.ac.uk',
+      pictureLink: 'https://i2-prod.mirror.co.uk/incoming/article13841727.ece/ALTERNATES/s1200b/0_Downs-Syndrome-white-tiger-bred-through-incest-in-cruel-bid-to-make-money.jpg',
+      officeHours: '13:00-15:00, Monday & Thursday',
+      busy: false,
+      inOffice: false,
+  );
+
+  return [shoaib, vishu, anthony, john, knut];
 }
