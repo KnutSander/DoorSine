@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 20/10/2021
+/// Last updated: 31/10/2021
 
 import 'dart:async';
 
@@ -62,10 +62,10 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                 child: Transform.scale(
                   scale: 1.5,
                   child: Switch(
-                    value: widget.lecturer.inOffice,
+                    value: widget.lecturer.outOfOffice,
                     onChanged: (bool value) {
                       setState(() {
-                        widget.lecturer.inOffice = value;
+                        widget.lecturer.outOfOffice = value;
                       });
                     },
                   ),

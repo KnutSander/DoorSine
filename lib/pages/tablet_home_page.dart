@@ -32,11 +32,10 @@ class _TabletHomePageState extends State<TabletHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference lecturers = FirebaseFirestore.instance.collection(
-        'lecturer');
+    CollectionReference lecturers = FirebaseFirestore.instance.collection('lecturer');
 
     return FutureBuilder(
-        future: lecturers.where('id', isEqualTo: widget.lecturer.email).get(),
+        future: lecturers.where('email', isEqualTo: widget.lecturer.email).get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('There seems to be a problem!');
@@ -120,7 +119,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                                 style: labelText,
                               ),
                               style: ButtonStyle(
-                                backgroundColor: lecturerData.get('in office')
+                                backgroundColor: lecturerData.get('out of office')
                                     ? MaterialStateProperty.all<Color>(
                                     Colors.blue)
                                     : disabled,
@@ -138,7 +137,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                                 style: labelText,
                               ),
                               style: ButtonStyle(
-                                backgroundColor: lecturerData.get('in office')
+                                backgroundColor: lecturerData.get('out of office')
                                     ? disabled
                                     : MaterialStateProperty.all<Color>(
                                     Colors.orange),

@@ -1,8 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 25/10/2021
-
-import 'dart:async';
+/// Last updated: 31/10/2021
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
@@ -24,7 +22,6 @@ class PhoneMain extends StatefulWidget {
 
 class _PhoneMainState extends State<PhoneMain> {
   int _curPage = 0;
-  late Widget _body;
 
   // Changes BottomNavigationBar selection
   void _changeView(int index) {

@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 25/10/2021
+/// Last updated: 31/10/2021
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,7 +25,7 @@ class FirebaseConnector extends ChangeNotifier {
       'email': lecturer.email,
       'office hours': lecturer.officeHours,
       'busy': lecturer.busy,
-      'in office': lecturer.inOffice,
+      'out of office': lecturer.outOfOffice,
     });
   }
 

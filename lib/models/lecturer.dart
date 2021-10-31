@@ -12,7 +12,7 @@ class Lecturer {
   String pictureLink;
   String officeHours;
   bool busy;
-  bool inOffice;
+  bool outOfOffice;
 
 
   // Constructor
@@ -24,19 +24,19 @@ class Lecturer {
     required this.pictureLink,
     required this.officeHours,
     required this.busy,
-    required this.inOffice,
+    required this.outOfOffice,
   });
 
   // Function that converts the info about the lecturer into a Map
   // The keys must match the name of the columns in the database
-  // Covert busy and inOffice to int because SQLite doesn't store bools
+  // Covert busy and inOffice to int because SQLite doesn't store booleans
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,
       'name': name,
       'busy': busy ? 0 : 1,
-      'inOffice': inOffice ? 0 : 1,
+      'inOffice': outOfOffice ? 0 : 1,
     };
   }
 
@@ -46,13 +46,13 @@ class Lecturer {
     title = map['title'];
     name = map['name'];
     busy = (map['busy'] == 0) ? false : true;
-    inOffice = (map['inOffice'] == 0) ? false : true;
+    outOfOffice = (map['inOffice'] == 0) ? false : true;
   }
 
   // toString method to visualize the information about the lecturer nicely
   @override
   String toString() {
-    return '$id, $title $name, busy: $busy, inOffice: $inOffice';
+    return '$id, $title $name, busy: $busy, inOffice: $outOfOffice';
   }
 }
 
@@ -65,7 +65,7 @@ List<Lecturer> getLecturers(){
     pictureLink: 'http://www1.essex.ac.uk/people-images/JAMEE22406.jpg',
     officeHours: '12:00-13:00, Tuesdays',
     busy: false,
-    inOffice: true,
+    outOfOffice: true,
   );
 
   var vishu = Lecturer(
@@ -76,7 +76,7 @@ List<Lecturer> getLecturers(){
     pictureLink: 'http://www1.essex.ac.uk/people-images/MOHAN05903.jpg',
     officeHours: '10-13, Monday-Friday',
     busy: true,
-    inOffice: true,
+    outOfOffice: true,
   );
 
   var anthony = Lecturer(
@@ -87,7 +87,7 @@ List<Lecturer> getLecturers(){
     pictureLink: 'http://www1.essex.ac.uk/people-images/VICKE53909.jpg',
     officeHours: '14:00-15:00, Thursdays',
     busy: false,
-    inOffice: false,
+    outOfOffice: false,
   );
 
   var john = Lecturer(
@@ -98,7 +98,7 @@ List<Lecturer> getLecturers(){
     pictureLink: 'http://www1.essex.ac.uk/people-images/GANJO00207.jpg',
     officeHours: '11:00-12:00, Thursdays',
     busy: true,
-    inOffice: false,
+    outOfOffice: false,
   );
 
   var knut = Lecturer(
@@ -109,7 +109,7 @@ List<Lecturer> getLecturers(){
       pictureLink: 'https://i2-prod.mirror.co.uk/incoming/article13841727.ece/ALTERNATES/s1200b/0_Downs-Syndrome-white-tiger-bred-through-incest-in-cruel-bid-to-make-money.jpg',
       officeHours: '13:00-15:00, Monday & Thursday',
       busy: false,
-      inOffice: false,
+      outOfOffice: false,
   );
 
   return [shoaib, vishu, anthony, john, knut];
