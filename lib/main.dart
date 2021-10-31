@@ -40,21 +40,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _init,
-      builder: (context, snapshot) => MaterialApp(
-        title: 'Capstone Project',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-          textTheme: const TextTheme(
-            bodyText2: TextStyle( // Staff Info text
-              fontSize: 25.0,
+      builder: (context, snapshot) {
+
+        if(snapshot.hasError){
+          return Text('Something is wrong!');
+        }
+
+        if(snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            title: 'Capstone Project',
+            theme: ThemeData(
+              primarySwatch: Colors.red,
+              textTheme: const TextTheme(
+                bodyText2: TextStyle( // Staff Info text
+                  fontSize: 25.0,
+                ),
+                headline6: TextStyle( // Staff Info header
+                  fontSize: 30.0,
+                ),
+              ),
             ),
-            headline6: TextStyle( // Staff Info header
-              fontSize: 30.0,
-            ),
-          ),
-        ),
-        home: openPage(),
-      ),
+            home: openPage(),
+          );
+        }
+
+        return Text('Loading');
+      },
     );
   }
 
