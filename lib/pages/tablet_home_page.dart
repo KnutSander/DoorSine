@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/10/2021
+/// Last updated: 31/10/2021
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,7 +36,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
         'lecturer');
 
     return FutureBuilder(
-        future: lecturers.where('id', isEqualTo: widget.lecturer.id).get(),
+        future: lecturers.where('id', isEqualTo: widget.lecturer.email).get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('There seems to be a problem!');

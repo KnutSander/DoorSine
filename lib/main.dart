@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/10/2021
+/// Last updated: 31/10/2021
 
 import 'dart:math';
 
@@ -13,8 +13,6 @@ import 'package:provider/provider.dart';
 
 import 'pages/tablet_home_page.dart';
 import 'pages/phone_main.dart';
-
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +29,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final _page = 0; // 0 = tablet, 1 = phone, 2 = testing
+  final _page = 1; // 0 = tablet, 1 = phone, 2 = testing
   final _random = Random();
   final lecList = getLecturers();
 
@@ -56,6 +54,7 @@ class MyApp extends StatelessWidget {
 
   Widget openPage() {
     Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
+    //Lecturer lecturer = lecList[4];
     if(_page == 0) {
       return TabletHomePage(lecturer: lecturer);
     } else if(_page == 1) {
