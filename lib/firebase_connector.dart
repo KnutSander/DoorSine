@@ -17,8 +17,8 @@ class FirebaseConnector extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DocumentReference> uploadData(Lecturer lecturer){
-    return FirebaseFirestore.instance.collection('lecturer').add(<String, dynamic>{
+  void uploadData(Lecturer lecturer){
+    FirebaseFirestore.instance.collection('lecturer').doc(lecturer.email).set(<String, dynamic>{
       'id': lecturer.id,
       'title': lecturer.title,
       'name': lecturer.name,
