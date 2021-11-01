@@ -120,9 +120,9 @@ class _TabletHomePageState extends State<TabletHomePage> {
                               ),
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('out of office')
-                                    ? MaterialStateProperty.all<Color>(
-                                    Colors.blue)
-                                    : disabled,
+                                    ? disabled
+                                    : MaterialStateProperty.all<Color>(
+                                    Colors.blue),
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -138,9 +138,9 @@ class _TabletHomePageState extends State<TabletHomePage> {
                               ),
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('out of office')
-                                    ? disabled
-                                    : MaterialStateProperty.all<Color>(
-                                    Colors.orange),
+                                    ? MaterialStateProperty.all<Color>(
+                                    Colors.orange)
+                                    : disabled,
                                 minimumSize: minLabelSize,
                               ),
                             ),

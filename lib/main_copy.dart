@@ -17,10 +17,11 @@ import 'pages/phone_main.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
-  runApp(ChangeNotifierProvider(
-    create: (context) => FirebaseConnector(),
-    builder: (context, _) => MyApp(),
-  ));
+  runApp(
+      ChangeNotifierProvider(
+        create: (context) => FirebaseConnector(),
+        builder: (context, _) => MyApp(),
+      ));
 }
 
 // TODO: Come up with App name
@@ -29,7 +30,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final _page = 1; // 0 = tablet, 1 = phone, 2 = testing
+  final _page = 0; // 0 = tablet, 1 = phone, 2 = testing
   final _random = Random();
   final lecList = getLecturers();
 
@@ -77,9 +78,9 @@ class MyApp extends StatelessWidget {
   Widget openPage() {
     //Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
     Lecturer lecturer = lecList[4];
-    if (_page == 0) {
+    if(_page == 0) {
       return TabletHomePage(lecturer: lecturer);
-    } else if (_page == 1) {
+    } else if(_page == 1) {
       return PhoneMain(lecturer: lecturer);
     } else {
       return TestingPage(lecturer: lecturer);
