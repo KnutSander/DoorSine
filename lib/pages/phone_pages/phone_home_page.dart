@@ -38,10 +38,11 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   scale: 1.5,
                   child: Switch(
                     value: widget.lecturer.busy,
-                    onChanged: (bool value) {
+                    onChanged: (bool value) async {
                       setState(() {
                         widget.lecturer.busy = value;
                       });
+                      await widget.uploadData(widget.lecturer);
                     },
                   ),
                 ),
@@ -63,10 +64,11 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   scale: 1.5,
                   child: Switch(
                     value: widget.lecturer.outOfOffice,
-                    onChanged: (bool value) {
+                    onChanged: (bool value) async {
                       setState(() {
                         widget.lecturer.outOfOffice = value;
                       });
+                      await widget.uploadData(widget.lecturer);
                     },
                   ),
                 ),
@@ -74,16 +76,6 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
               const Expanded(child: Text('Out of Office'))
             ],
           ),
-          Row(
-            children: <Widget>[
-              ElevatedButton(
-                child: const Text("Upload changes"),
-                onPressed: () async {
-                  await widget.uploadData(widget.lecturer);
-                },
-              )
-            ],
-          )
         ],
       ),
     );
