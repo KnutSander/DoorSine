@@ -4,12 +4,13 @@
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TabletHomePage extends StatefulWidget {
-  const TabletHomePage({Key? key, required this.lecturer}) : super(key: key);
+  TabletHomePage({Key? key, required this.userdata}) : super(key: key);
 
-  final Lecturer lecturer;
+  final User? userdata;
 
   @override
   State<TabletHomePage> createState() => _TabletHomePageState();
@@ -32,7 +33,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer = FirebaseFirestore.instance.collection('lecturer').doc(widget.lecturer.email).snapshots();
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).snapshots();
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _lecturer,
@@ -53,12 +54,12 @@ class _TabletHomePageState extends State<TabletHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image(
-                    image: NetworkImage(widget.lecturer.pictureLink),
+                    image: NetworkImage(lecturerData!.get('picture link')),
                     height: 200.0,
                     width: 200.0,
                   ),
                   Text(
-                    lecturerData!.get('title') + ' ' + lecturerData.get('name'),
+                    lecturerData.get('title') + ' ' + lecturerData.get('name'),
                     style: const TextStyle(fontSize: 80.0),
                   ),
                   Row(

@@ -8,13 +8,15 @@ import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_messages_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_settings_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PhoneMain extends StatefulWidget {
-  PhoneMain({Key? key, required this.lecturer}) : super(key: key);
+  const PhoneMain({Key? key, required this.userdata}) : super(key: key);
 
-  Lecturer lecturer;
+  final User? userdata;
 
   @override
   State<PhoneMain> createState() => _PhoneMainState();
@@ -22,6 +24,12 @@ class PhoneMain extends StatefulWidget {
 
 class _PhoneMainState extends State<PhoneMain> {
   int _curPage = 0;
+  Lecturer lecturer = Lecturer.empty();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // Changes BottomNavigationBar selection
   void _changeView(int index) {
@@ -33,10 +41,7 @@ class _PhoneMainState extends State<PhoneMain> {
   // Swaps body based on BottomNavigationBar selection
   Widget _changeBody(FirebaseConnector connector) {
     if (_curPage == 0) {
-      return PhoneHomePage(
-        lecturer: widget.lecturer,
-        uploadData: connector.uploadData,
-      );
+      return PhoneHomePage(lecturer: lecturer);
     } else if (_curPage == 1) {
       return const PhoneMessagePage();
     } else if (_curPage == 2) {
@@ -48,45 +53,68 @@ class _PhoneMainState extends State<PhoneMain> {
 
   @override
   Widget build(BuildContext context) {
+    final Future<DocumentSnapshot<Map<String, dynamic>>> _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).get();
+
     _changeView(_curPage);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.lecturer.title + ' ' + widget.lecturer.name,
-        ),
-      ),
-      body: Consumer<FirebaseConnector>(
-        builder: (context, appState, _) => Center(
-          child: _changeBody(appState),
-               //Text(appState.getData().toString()),
-            ),
-          ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: "Home",
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.message),
-            label: "Messages",
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.calendar_today),
-            label: "Calendar",
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.settings),
-            label: "Settings",
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-        ],
-        onTap: _changeView,
-        currentIndex: _curPage,
-      ),
+    // TODO: Currently loads when changing pages, look into circumventing this
+    return FutureBuilder<DocumentSnapshot>(
+      future: _lecturerData,
+        builder: (BuildContext builder, AsyncSnapshot<DocumentSnapshot> snapshot){
+          if(snapshot.hasError){
+            return const Text('Something went wrong');
+          }
+
+          if(snapshot.hasData && !snapshot.data!.exists){
+            return const Text('Document does not exist');
+          }
+
+          if(snapshot.connectionState == ConnectionState.done){
+            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+            lecturer.fromMap(data);
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  lecturer.title + ' ' + lecturer.name,
+                ),
+              ),
+              body: Consumer<FirebaseConnector>(
+                builder: (context, appState, _) => Center(
+                  child: _changeBody(appState),
+                  //Text(appState.getData().toString()),
+                ),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.home),
+                    label: "Home",
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.message),
+                    label: "Messages",
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.calendar_today),
+                    label: "Calendar",
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.settings),
+                    label: "Settings",
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                ],
+                onTap: _changeView,
+                currentIndex: _curPage,
+              ),
+            );
+          }
+
+          return const Text('Loading');
+        }
     );
   }
+
 }

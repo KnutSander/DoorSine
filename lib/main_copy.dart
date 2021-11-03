@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/pages/login_page.dart';
 import 'package:capstone_project/pages/phone_main.dart';
 import 'package:capstone_project/pages/testing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,11 +18,10 @@ import 'pages/phone_main.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-      ChangeNotifierProvider(
-        create: (context) => FirebaseConnector(),
-        builder: (context, _) => MyApp(),
-      ));
+  runApp(ChangeNotifierProvider(
+    create: (context) => FirebaseConnector(),
+    builder: (context, _) => MyApp(),
+  ));
 }
 
 // TODO: Come up with App name
@@ -30,7 +30,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final _page = 0; // 0 = tablet, 1 = phone, 2 = testing
+  final _page = 1; // 0 = tablet, 1 = phone, 2 = testing
   final _random = Random();
   final lecList = getLecturers();
 
@@ -42,13 +42,13 @@ class MyApp extends StatelessWidget {
       future: _init,
       builder: (context, snapshot) {
 
-        Widget page() {
+        Widget loadPage() {
           if (snapshot.hasError) {
             return Text('Something is wrong!');
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
-            return openPage();
+            return LoginPage();
           }
 
           return Text('Loading');
@@ -69,21 +69,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: page(),
+          home: loadPage(),
         );
       },
     );
-  }
-
-  Widget openPage() {
-    //Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
-    Lecturer lecturer = lecList[4];
-    if(_page == 0) {
-      return TabletHomePage(lecturer: lecturer);
-    } else if(_page == 1) {
-      return PhoneMain(lecturer: lecturer);
-    } else {
-      return TestingPage(lecturer: lecturer);
-    }
   }
 }

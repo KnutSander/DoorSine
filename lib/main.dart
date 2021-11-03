@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
-            return LoginPage(lecturer: lecList[4]);
+            return LoginPage();
           }
 
           return Text('Loading');

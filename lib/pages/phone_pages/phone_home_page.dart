@@ -4,21 +4,22 @@
 
 import 'dart:async';
 
+import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PhoneHomePage extends StatefulWidget {
-  PhoneHomePage({Key? key, required this.lecturer, required this.uploadData})
-      : super(key: key);
+  PhoneHomePage({Key? key, required this.lecturer}) : super(key: key);
 
-  Lecturer lecturer;
-  final FutureOr<void> Function(Lecturer lecturer) uploadData;
+  final Lecturer lecturer;
 
   @override
   State<PhoneHomePage> createState() => _PhoneHomePageState();
 }
 
 class _PhoneHomePageState extends State<PhoneHomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +43,7 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                       setState(() {
                         widget.lecturer.busy = value;
                       });
-                      await widget.uploadData(widget.lecturer);
+                      FirebaseConnector.uploadData(widget.lecturer);
                     },
                   ),
                 ),
@@ -68,7 +69,7 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                       setState(() {
                         widget.lecturer.outOfOffice = value;
                       });
-                      await widget.uploadData(widget.lecturer);
+                      FirebaseConnector.uploadData(widget.lecturer);
                     },
                   ),
                 ),

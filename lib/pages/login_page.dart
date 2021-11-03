@@ -11,9 +11,7 @@ import 'package:flutter/material.dart';
 /// Last updated: 01/11/2021
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, required this.lecturer}) : super(key: key);
-
-  Lecturer lecturer;
+  LoginPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -84,9 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           _loginAlert);
-                                } else {
-                                  // Login successful
-                                  //TODO: give options to setup tablet or phone side of app
+                                } else { // Login successful
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) =>
@@ -100,8 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             PhoneMain(
-                                                                lecturer: widget
-                                                                    .lecturer),
+                                                                userdata: userCredential.user),
                                                       ),
                                                       (Route<dynamic> route) =>
                                                           false);
@@ -115,8 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               TabletHomePage(
-                                                                  lecturer: widget
-                                                                      .lecturer)),
+                                                                  userdata: userCredential.user)),
                                                       (Route<dynamic> route) =>
                                                           false);
                                                 },
