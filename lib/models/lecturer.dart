@@ -27,6 +27,17 @@ class Lecturer {
     required this.outOfOffice,
   });
 
+  // Empty constructor for
+  Lecturer.empty() :
+    id = 0,
+    title = '',
+    name = '',
+    email = '',
+    pictureLink = '',
+    officeHours = '',
+    busy = false,
+    outOfOffice = false;
+
   // Function that converts the info about the lecturer into a Map
   // The keys must match the name of the columns in the database
   // Covert busy and inOffice to int because SQLite doesn't store booleans
@@ -35,8 +46,11 @@ class Lecturer {
       'id': id,
       'title': title,
       'name': name,
+      'email': email,
+      'picture link': pictureLink,
+      'office hours': officeHours,
       'busy': busy ? 0 : 1,
-      'inOffice': outOfOffice ? 0 : 1,
+      'out of office': outOfOffice ? 0 : 1,
     };
   }
 
@@ -45,14 +59,18 @@ class Lecturer {
     id = map['id'];
     title = map['title'];
     name = map['name'];
+    email = map['email'];
+    pictureLink = map['picture link'];
+    officeHours = map['office hours'];
     busy = (map['busy'] == 0) ? false : true;
-    outOfOffice = (map['inOffice'] == 0) ? false : true;
+    outOfOffice = (map['out of office'] == 0) ? false : true;
   }
 
   // toString method to visualize the information about the lecturer nicely
+  // TODO: Update this method
   @override
   String toString() {
-    return '$id, $title $name, busy: $busy, inOffice: $outOfOffice';
+    return '$id, $title $name, busy: $busy, outOfOffice: $outOfOffice';
   }
 }
 
