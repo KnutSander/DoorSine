@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/pages/login_page.dart';
 import 'package:capstone_project/pages/phone_main.dart';
 import 'package:capstone_project/pages/testing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,13 +42,13 @@ class MyApp extends StatelessWidget {
       future: _init,
       builder: (context, snapshot) {
 
-        Widget page() {
+        Widget loadPage() {
           if (snapshot.hasError) {
             return Text('Something is wrong!');
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
-            return openPage();
+            return LoginPage(lecturer: lecList[4]);
           }
 
           return Text('Loading');
@@ -68,21 +69,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: page(),
+          home: loadPage(),
         );
       },
     );
-  }
-
-  Widget openPage() {
-    //Lecturer lecturer = lecList[_random.nextInt(lecList.length)];
-    Lecturer lecturer = lecList[4];
-    if (_page == 0) {
-      return TabletHomePage(lecturer: lecturer);
-    } else if (_page == 1) {
-      return PhoneMain(lecturer: lecturer);
-    } else {
-      return TestingPage(lecturer: lecturer);
-    }
   }
 }

@@ -1,3 +1,6 @@
+import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/pages/phone_main.dart';
+import 'package:capstone_project/pages/tablet_home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +11,9 @@ import 'package:flutter/material.dart';
 /// Last updated: 01/11/2021
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key, required this.lecturer}) : super(key: key);
+
+  Lecturer lecturer;
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -27,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // User credentials that will need to be used later
   late UserCredential userCredential;
-  late AlertDialog _loginAlert;
+  AlertDialog _loginAlert = const AlertDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +77,54 @@ class _LoginPageState extends State<LoginPage> {
                               if (_formKey.currentState!.validate()) {
                                 await logIn(_emailController.text,
                                     _passwordController.text);
-                                // await for logIn to finish before trying to show dialog
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _loginAlert);
+                                // Await for logIn to finish before trying to show dialog
+                                // TODO: Create more sophisticated way of checking login success
+                                if (_loginAlert.title != null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _loginAlert);
+                                } else {
+                                  // Login successful
+                                  //TODO: give options to setup tablet or phone side of app
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          SimpleDialog(
+                                            title: const Text('Choose device'),
+                                            children: <Widget>[
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  Navigator.pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PhoneMain(
+                                                                lecturer: widget
+                                                                    .lecturer),
+                                                      ),
+                                                      (Route<dynamic> route) =>
+                                                          false);
+                                                },
+                                                child: const Text('Phone'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  Navigator.pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              TabletHomePage(
+                                                                  lecturer: widget
+                                                                      .lecturer)),
+                                                      (Route<dynamic> route) =>
+                                                          false);
+                                                },
+                                                child: const Text('Tablet'),
+                                              )
+                                            ],
+                                          ));
+                                }
                               }
                             },
                             child: const Text('Log in')),
@@ -101,35 +149,29 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Checks and validates the users email and password
-  // TODO: Make something happen when it's validated
   Future<void> logIn(String email, String password) async {
-    late Text title, message, button;
     try {
       userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      title = const Text('Success!');
-      message = const Text('Login was successful!');
-      button = const Text('Yay!');
+      _loginAlert = const AlertDialog();
     } on FirebaseAuthException catch (e) {
       print(e.code);
       if (e.code == 'user-not-found' ||
           e.code == 'wrong-password' ||
           e.code == 'invalid-email') {
-        title = const Text('Error');
-        message =
-            const Text('No user with given email and password combination, '
-                'please try again or create an account');
-        button = const Text('OK');
+        _loginAlert = AlertDialog(
+          title: const Text('Error'),
+          content:
+              const Text('No user with given email and password combination, '
+                  'please try again or create an account'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => Navigator.pop(context, 'Close'),
+                child: const Text('OK'))
+          ],
+        );
       }
     }
-    _loginAlert = AlertDialog(
-      title: title,
-      content: message,
-      actions: <Widget>[
-        TextButton(
-            onPressed: () => Navigator.pop(context, 'Close'), child: button)
-      ],
-    );
   }
 
   void createNewUser() async {}
