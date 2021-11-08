@@ -1,40 +1,39 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 31/10/2021
+/// Last updated: 08/10/2021
 
 //  Create a class to represent the lecturers
 class Lecturer {
-  // Need to store busy and inOffice as ints because sqlite has no bool type
-  int id;
   String title;
   String name;
   String email;
   String pictureLink;
   String officeHours;
+  String officeNumber;
   bool busy;
   bool outOfOffice;
 
 
   // Constructor
   Lecturer({
-    required this.id,
     required this.title,
     required this.name,
     required this.email,
     required this.pictureLink,
     required this.officeHours,
+    required this.officeNumber,
     required this.busy,
     required this.outOfOffice,
   });
 
   // Empty constructor for
   Lecturer.empty() :
-    id = 0,
     title = '',
     name = '',
     email = '',
     pictureLink = '',
     officeHours = '',
+    officeNumber = '',
     busy = false,
     outOfOffice = false;
 
@@ -43,12 +42,12 @@ class Lecturer {
   // Covert busy and inOffice to int because SQLite doesn't store booleans
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'title': title,
       'name': name,
       'email': email,
       'picture link': pictureLink,
       'office hours': officeHours,
+      'office number': officeNumber,
       'busy': busy ? 0 : 1,
       'out of office': outOfOffice ? 0 : 1,
     };
@@ -56,12 +55,12 @@ class Lecturer {
 
   // Place values from a Map into the lecturer
   void fromMap(Map<String, dynamic> map) {
-    id = map['id'];
     title = map['title'];
     name = map['name'];
     email = map['email'];
     pictureLink = map['picture link'];
     officeHours = map['office hours'];
+    officeNumber = map['office number'];
     busy = (map['busy'] == 0) ? false : true;
     outOfOffice = (map['out of office'] == 0) ? false : true;
   }
@@ -70,65 +69,6 @@ class Lecturer {
   // TODO: Update this method
   @override
   String toString() {
-    return '$id, $title $name, busy: $busy, outOfOffice: $outOfOffice';
+    return ' $title $name, busy: $busy, outOfOffice: $outOfOffice';
   }
-}
-
-List<Lecturer> getLecturers(){
-  var shoaib = Lecturer(
-    id: 0,
-    title: 'Dr.',
-    name: 'Jameel, Shoaib',
-    email: 'shoaib.jameel@essex.ac.uk',
-    pictureLink: 'http://www1.essex.ac.uk/people-images/JAMEE22406.jpg',
-    officeHours: '12:00-13:00, Tuesdays',
-    busy: false,
-    outOfOffice: true,
-  );
-
-  var vishu = Lecturer(
-    id: 1,
-    title: 'Dr.',
-    name: 'Mohan, Vishwanathan',
-    email: 'vm16090@essex.ac.uk',
-    pictureLink: 'http://www1.essex.ac.uk/people-images/MOHAN05903.jpg',
-    officeHours: '10-13, Monday-Friday',
-    busy: true,
-    outOfOffice: true,
-  );
-
-  var anthony = Lecturer(
-    id: 2,
-    title: 'Prof.',
-    name: 'Vickers, Anthony',
-    email: 'vicka@essex.ac.uk',
-    pictureLink: 'http://www1.essex.ac.uk/people-images/VICKE53909.jpg',
-    officeHours: '14:00-15:00, Thursdays',
-    busy: false,
-    outOfOffice: false,
-  );
-
-  var john = Lecturer(
-    id: 3,
-    title: 'Prof.',
-    name: 'Gan, John',
-    email: 'jqgan@essex.ac.uk',
-    pictureLink: 'http://www1.essex.ac.uk/people-images/GANJO00207.jpg',
-    officeHours: '11:00-12:00, Thursdays',
-    busy: true,
-    outOfOffice: false,
-  );
-
-  var knut = Lecturer(
-      id: 4,
-      title: 'Dr.',
-      name: 'Blakkestad, Knut Sander',
-      email: 'kb19109@essex.ac.uk',
-      pictureLink: 'https://i2-prod.mirror.co.uk/incoming/article13841727.ece/ALTERNATES/s1200b/0_Downs-Syndrome-white-tiger-bred-through-incest-in-cruel-bid-to-make-money.jpg',
-      officeHours: '13:00-15:00, Monday & Thursday',
-      busy: false,
-      outOfOffice: false,
-  );
-
-  return [shoaib, vishu, anthony, john, knut];
 }

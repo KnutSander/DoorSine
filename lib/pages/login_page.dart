@@ -1,14 +1,14 @@
-import 'package:capstone_project/models/lecturer.dart';
+/// Created by Knut Sander Lien Blakkestad
+/// Essex Capstone Project 2021/2022
+/// Last updated: 08/11/2021
+
 import 'package:capstone_project/pages/phone_main.dart';
 import 'package:capstone_project/pages/tablet_home_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// Created by Knut Sander Lien Blakkestad
-/// Essex Capstone Project 2021/2022
-/// Last updated: 01/11/2021
+import 'create_account_page.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(hintText: 'Email'),
-                      // Can removed validators because firebaseAuth does validation as well
+                      // Can remove validators because firebaseAuth does validation as well
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a valid email';
@@ -71,64 +71,74 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       children: <Widget>[
                         ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await logIn(_emailController.text,
-                                    _passwordController.text);
-                                // Await for logIn to finish before trying to show dialog
-                                // TODO: Create more sophisticated way of checking login success
-                                if (_loginAlert.title != null) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          _loginAlert);
-                                } else { // Login successful
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          SimpleDialog(
-                                            title: const Text('Choose device'),
-                                            children: <Widget>[
-                                              SimpleDialogOption(
-                                                onPressed: () {
-                                                  Navigator.pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
+                          child: const Text('Log in'),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await logIn(_emailController.text,
+                                  _passwordController.text);
+                              // Await for logIn to finish before trying to show dialog
+                              // TODO: Create more sophisticated way of checking login success
+                              if (_loginAlert.title != null) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        _loginAlert);
+                              } else {
+                                // Login successful
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        SimpleDialog(
+                                          title: const Text('Choose device'),
+                                          children: <Widget>[
+                                            SimpleDialogOption(
+                                              onPressed: () {
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PhoneMain(
+                                                              userdata:
+                                                                  userCredential
+                                                                      .user),
+                                                    ),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                              },
+                                              child: const Text('Phone'),
+                                            ),
+                                            SimpleDialogOption(
+                                              onPressed: () {
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
                                                         builder: (context) =>
-                                                            PhoneMain(
-                                                                userdata: userCredential.user),
-                                                      ),
-                                                      (Route<dynamic> route) =>
-                                                          false);
-                                                },
-                                                child: const Text('Phone'),
-                                              ),
-                                              SimpleDialogOption(
-                                                onPressed: () {
-                                                  Navigator.pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              TabletHomePage(
-                                                                  userdata: userCredential.user)),
-                                                      (Route<dynamic> route) =>
-                                                          false);
-                                                },
-                                                child: const Text('Tablet'),
-                                              )
-                                            ],
-                                          ));
-                                }
+                                                            TabletHomePage(
+                                                                userdata:
+                                                                    userCredential
+                                                                        .user)),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                              },
+                                              child: const Text('Tablet'),
+                                            )
+                                          ],
+                                        ));
                               }
-                            },
-                            child: const Text('Log in')),
+                            }
+                          },
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: ElevatedButton(
+                              child: const Text('Create account'),
                               onPressed: () {
-                                //TODO: Open create new user page
-                              },
-                              child: const Text('Create account')),
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CreateAccountPage())
+                                );
+                              }),
                         )
                       ],
                     ),

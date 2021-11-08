@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/10/2021
+/// Last updated: 08/11/2021
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +24,7 @@ class _TestingPageState extends State<TestingPage> {
     CollectionReference lecturers = FirebaseFirestore.instance.collection('lecturer');
 
     return FutureBuilder<QuerySnapshot>(
-      future: lecturers.where('id', isEqualTo: widget.lecturer.id).get(),
+      future: lecturers.where('email', isEqualTo: widget.lecturer.email).get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
         if(snapshot.hasError){
