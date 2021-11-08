@@ -41,110 +41,106 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
-          child: Column(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(hintText: 'Password'),
+                  obscureText: true,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    return null;
+                  },
+                ),
+                Row(
                   children: <Widget>[
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(hintText: 'Email'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid email';
+                    ElevatedButton(
+                      child: const Text('Log in'),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await logIn();
+                          // Await for logIn to finish before trying to show dialog
+                          // TODO: Create more sophisticated way of checking login success
+                          if (_loginAlert.title != null) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    _loginAlert);
+                          } else {
+                            // Login successful
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    SimpleDialog(
+                                      title: const Text('Choose device'),
+                                      children: <Widget>[
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PhoneMain(
+                                                          userdata:
+                                                              userCredential
+                                                                  .user),
+                                                ),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                          },
+                                          child: const Text('Phone'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TabletHomePage(
+                                                            userdata:
+                                                                userCredential
+                                                                    .user)),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                          },
+                                          child: const Text('Tablet'),
+                                        )
+                                      ],
+                                    ));
+                          }
                         }
-                        return null;
                       },
                     ),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(hintText: 'Password'),
-                      obscureText: true,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
-                        }
-                        return null;
-                      },
-                    ),
-                    Row(
-                      children: <Widget>[
-                        ElevatedButton(
-                          child: const Text('Log in'),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              await logIn();
-                              // Await for logIn to finish before trying to show dialog
-                              // TODO: Create more sophisticated way of checking login success
-                              if (_loginAlert.title != null) {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _loginAlert);
-                              } else {
-                                // Login successful
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        SimpleDialog(
-                                          title: const Text('Choose device'),
-                                          children: <Widget>[
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                Navigator.pushAndRemoveUntil(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PhoneMain(
-                                                              userdata:
-                                                                  userCredential
-                                                                      .user),
-                                                    ),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                              },
-                                              child: const Text('Phone'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                Navigator.pushAndRemoveUntil(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            TabletHomePage(
-                                                                userdata:
-                                                                    userCredential
-                                                                        .user)),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                              },
-                                              child: const Text('Tablet'),
-                                            )
-                                          ],
-                                        ));
-                              }
-                            }
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: ElevatedButton(
-                              child: const Text('Create account'),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CreateAccountPage())
-                                );
-                              }),
-                        )
-                      ],
-                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: ElevatedButton(
+                          child: const Text('Create account'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CreateAccountPage())
+                            );
+                          }),
+                    )
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

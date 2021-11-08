@@ -48,16 +48,15 @@ class _PhoneMainState extends State<PhoneMain> {
     } else if (_curPage == 2) {
       return const PhoneCalendarPage();
     } else {
-      return const PhoneSettingsPage();
+      return PhoneSettingsPage(lecturer: lecturer);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //final Future<DocumentSnapshot<Map<String, dynamic>>> _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).get();
 
     _changeView(_curPage);
-    // TODO: Currently loads when changing pages, look into circumventing this
+
     return FutureBuilder<DocumentSnapshot>(
       future: _lecturerData,
         builder: (BuildContext builder, AsyncSnapshot<DocumentSnapshot> snapshot){
