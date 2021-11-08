@@ -1,8 +1,7 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 31/10/2021
+/// Last updated: 08/11/2021
 
-import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
@@ -11,7 +10,6 @@ import 'package:capstone_project/pages/phone_pages/phone_settings_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PhoneMain extends StatefulWidget {
   const PhoneMain({Key? key, required this.userdata}) : super(key: key);
@@ -25,10 +23,13 @@ class PhoneMain extends StatefulWidget {
 class _PhoneMainState extends State<PhoneMain> {
   int _curPage = 0;
   Lecturer lecturer = Lecturer.empty();
+  late Future<DocumentSnapshot<Map<String, dynamic>>> _lecturerData;
 
+  // get the lecturer data in initState, so it doesn't have to reload between page changes
   @override
-  void initState() {
+  initState(){
     super.initState();
+    _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).get();
   }
 
   // Changes BottomNavigationBar selection
@@ -39,7 +40,7 @@ class _PhoneMainState extends State<PhoneMain> {
   }
 
   // Swaps body based on BottomNavigationBar selection
-  Widget _changeBody(FirebaseConnector connector) {
+  Widget _changeBody() {
     if (_curPage == 0) {
       return PhoneHomePage(lecturer: lecturer);
     } else if (_curPage == 1) {
@@ -53,7 +54,7 @@ class _PhoneMainState extends State<PhoneMain> {
 
   @override
   Widget build(BuildContext context) {
-    final Future<DocumentSnapshot<Map<String, dynamic>>> _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).get();
+    //final Future<DocumentSnapshot<Map<String, dynamic>>> _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).get();
 
     _changeView(_curPage);
     // TODO: Currently loads when changing pages, look into circumventing this
@@ -77,12 +78,7 @@ class _PhoneMainState extends State<PhoneMain> {
                   lecturer.title + ' ' + lecturer.name,
                 ),
               ),
-              body: Consumer<FirebaseConnector>(
-                builder: (context, appState, _) => Center(
-                  child: _changeBody(appState),
-                  //Text(appState.getData().toString()),
-                ),
-              ),
+              body:  _changeBody(),
               bottomNavigationBar: BottomNavigationBar(
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(

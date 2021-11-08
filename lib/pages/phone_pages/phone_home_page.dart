@@ -1,12 +1,10 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 01/11/2021
+/// Last updated: 08/11/2021
 
-import 'dart:async';
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PhoneHomePage extends StatefulWidget {
@@ -22,8 +20,7 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Column(
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -78,7 +75,6 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
             ],
           ),
         ],
-      ),
-    );
+      );
   }
 }
