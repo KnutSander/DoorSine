@@ -50,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(hintText: 'Email'),
-                      // Can remove validators because firebaseAuth does validation as well
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a valid email';
@@ -61,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: _passwordController,
                       decoration: const InputDecoration(hintText: 'Password'),
+                      obscureText: true,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a password';
@@ -74,8 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text('Log in'),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              await logIn(_emailController.text,
-                                  _passwordController.text);
+                              await logIn();
                               // Await for logIn to finish before trying to show dialog
                               // TODO: Create more sophisticated way of checking login success
                               if (_loginAlert.title != null) {
@@ -153,10 +152,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Checks and validates the users email and password
-  Future<void> logIn(String email, String password) async {
+  Future<void> logIn() async {
     try {
       userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
       _loginAlert = const AlertDialog();
     } on FirebaseAuthException catch (e) {
       print(e.code);

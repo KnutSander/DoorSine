@@ -47,13 +47,18 @@ class _TabletHomePageState extends State<TabletHomePage> {
 
           DocumentSnapshot<Object?>? lecturerData = snapshot.data;
 
+          // Default profile picture if one isn't specified
+          String pictureLink = lecturerData!.get('picture link') != '' ? lecturerData.get('picture link') :
+          'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
+
           return Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image(
-                    image: NetworkImage(lecturerData!.get('picture link')),
+                    // Haven't tested if this works or not
+                    image: NetworkImage(pictureLink),
                     height: 200.0,
                     width: 200.0,
                   ),
