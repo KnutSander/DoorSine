@@ -1,5 +1,6 @@
 # Firebase Security
 Firebase uses HTTPS to encrypt data in transit.  
+
 **Encryption:** Because HTTP was originally designed as a clear text protocol, it is vulnerable to eavesdropping and man in the middle attacks. By including SSL/TLS encryption, HTTPS prevents data sent over the internet from being intercepted and read by a third party. Through public-key cryptography and the SSL/TLS handshake, an encrypted communication session can be securely set up between two parties who have never met in person (e.g. a web server and browser) via the creation of a shared secret key.
 
 **Authentication:** Unlike HTTP, HTTPS includes robust authentication via the SSL/TLS protocol. A website’s SSL/TLS certificate includes a public key that a web browser can use to confirm that documents sent by the server (such as HTML pages) have been digitally signed by someone in possession of the corresponding private key. If the server’s certificate has been signed by a publicly trusted certificate authority (CA), such as SSL.com, the browser will accept that any identifying information included in the certificate has been validated by a trusted third party.
