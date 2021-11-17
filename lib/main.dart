@@ -12,15 +12,15 @@ void main() {
   //WidgetsFlutterBinding.ensureInitialized();
   runApp(ChangeNotifierProvider(
     create: (context) => FirebaseConnector(),
-    builder: (context, _) => MyApp(),
+    builder: (context, _) => DoorSine(),
   ));
 }
 
-// TODO: Come up with App name
 // TODO: Create ThemeData variable
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+// Working app name is DoorSine/Door~
+class DoorSine extends StatelessWidget {
+  DoorSine({Key? key}) : super(key: key);
 
   final Future<FirebaseApp> _init = Firebase.initializeApp();
 

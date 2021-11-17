@@ -154,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
           .signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
       _loginAlert = const AlertDialog();
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       if (e.code == 'user-not-found' ||
           e.code == 'wrong-password' ||
           e.code == 'invalid-email') {
@@ -172,6 +171,4 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-
-  void createNewUser() async {}
 }
