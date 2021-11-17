@@ -10,7 +10,7 @@ These goals will be my focus leading up to Christmas. I will mainly focus on the
 - All features working to some degree
 
 ## Database
-- Have the app pull info from a database
+- Have the app pull info from a database x
 
 ## Connectivity
-- Make phone and tablet app linkable
+- Make phone and tablet app linkable x
