@@ -15,5 +15,5 @@ The following Firebase services also encrypts their data at rest (When stored):
 Cloud Firestore, Cloud Functions for Firebase, Cloud Storage for Firebase, Firebase Crashlytics, Firebase Authentication, Firebase Cloud Messaging, Firebase Realtime Database and Firebase Test Lab.
 
 Sources:
-[HTTPS](https://www.ssl.com/faqs/what-is-https/)
+[HTTPS](https://www.ssl.com/faqs/what-is-https/)  
 [Firebase Security](https://firebase.google.com/support/privacy#security_information)
