@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/11/2021
+/// Last updated: 17/11/2021
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,11 +38,17 @@ class _TabletHomePageState extends State<TabletHomePage> {
         stream: _lecturer,
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return const Text('There seems to be a problem!');
+            return const Scaffold(body: Center(child: Text('Something went wrong')));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('Loading');
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  value: null,
+                ),
+              ),
+            );
           }
 
           DocumentSnapshot<Object?>? lecturerData = snapshot.data;

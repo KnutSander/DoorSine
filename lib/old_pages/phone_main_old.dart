@@ -23,13 +23,13 @@ class PhoneMain extends StatefulWidget {
 class _PhoneMainState extends State<PhoneMain> {
   int _curPage = 0;
   Lecturer lecturer = Lecturer.empty();
-  late Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturerData;
+  late Future<DocumentSnapshot<Map<String, dynamic>>> _lecturerData;
 
   // get the lecturer data in initState, so it doesn't have to reload between page changes
   @override
   initState(){
     super.initState();
-    _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).snapshots();
+    _lecturerData = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).get();
   }
 
   // Changes BottomNavigationBar selection
@@ -57,36 +57,24 @@ class _PhoneMainState extends State<PhoneMain> {
 
     _changeView(_curPage);
 
-    return StreamBuilder<DocumentSnapshot>(
-      stream: _lecturerData,
+    return FutureBuilder<DocumentSnapshot>(
+      future: _lecturerData,
         builder: (BuildContext builder, AsyncSnapshot<DocumentSnapshot> snapshot){
-          if (snapshot.hasError) {
+          if(snapshot.hasError){
             return const Scaffold(body: Center(child: Text('Something went wrong')));
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(
-                  value: null,
-                ),
-              ),
-            );
+          if(snapshot.hasData && !snapshot.data!.exists){
+            return const Scaffold(body: Center(child: Text('Document does not exist')));
           }
 
-          DocumentSnapshot<Object?>? lecturerData = snapshot.data;
-          Map<String, dynamic> data = lecturerData!.data() as Map<String, dynamic>;
-
-          // Got around the problem of the lecturer being updated to often by
-          // limiting updates based on changes
-          if(lecturer.busy != data['busy'] || lecturer.outOfOffice != data['out of office']){
+          if(snapshot.connectionState == ConnectionState.done){
+            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
             lecturer.fromMap(data);
-          }
-
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  lecturerData.get('title') + ' ' + lecturerData.get('name'),
+                  lecturer.title + ' ' + lecturer.name,
                 ),
               ),
               body:  _changeBody(),
@@ -117,7 +105,15 @@ class _PhoneMainState extends State<PhoneMain> {
                 currentIndex: _curPage,
               ),
             );
+          }
 
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                value: null,
+              ),
+            ),
+          );
         }
     );
   }

@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/11/2021
+/// Last updated: 17/11/2021
 
 
 import 'package:capstone_project/firebase_connector.dart';
@@ -36,7 +36,7 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   scale: 1.5,
                   child: Switch(
                     value: widget.lecturer.busy,
-                    onChanged: (bool value) async {
+                    onChanged: (bool value) {
                       setState(() {
                         widget.lecturer.busy = value;
                       });
@@ -62,7 +62,7 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   scale: 1.5,
                   child: Switch(
                     value: widget.lecturer.outOfOffice,
-                    onChanged: (bool value) async {
+                    onChanged: (bool value) {
                       setState(() {
                         widget.lecturer.outOfOffice = value;
                       });

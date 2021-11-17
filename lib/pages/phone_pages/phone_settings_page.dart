@@ -1,10 +1,9 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/11/2021
+/// Last updated: 17/11/2021
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
-import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
 import 'package:flutter/material.dart';
 
 class PhoneSettingsPage extends StatefulWidget {
@@ -103,7 +102,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
             ),
             TextFormField(
               controller: _pictureLink,
-              decoration: const InputDecoration(hintText: 'Office Hours'),
+              decoration: const InputDecoration(hintText: 'Picture Link'),
               minLines: 3,
               maxLines: 6,
               // TODO: Implement picture link validator somehow
@@ -131,6 +130,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     widget.lecturer.officeHours = _officeHours.text;
     widget.lecturer.pictureLink = _pictureLink.text;
     FirebaseConnector.uploadData(widget.lecturer);
+    setState(() {});
     // TODO: Tell user it was successful and reload data from firebase
   }
 }

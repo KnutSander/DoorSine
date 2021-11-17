@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/11/2021
+/// Last updated: 17/11/2021
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/pages/login_page.dart';
@@ -32,14 +32,22 @@ class MyApp extends StatelessWidget {
 
         Widget loadPage() {
           if (snapshot.hasError) {
-            return Text('Something is wrong!');
+            return const Scaffold(
+              body: Center(child: Text('Something is wrong!')),
+            );
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
             return LoginPage();
           }
 
-          return Text('Loading');
+          return const Scaffold(
+           body: Center(
+             child: CircularProgressIndicator(
+               value: null,
+             ),
+           ),
+          );
         }
 
         return MaterialApp(

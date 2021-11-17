@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/11/2021
+/// Last updated: 17/11/2021
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
@@ -161,7 +161,7 @@ class _CreateAccountState extends State<CreateAccountPage> {
                         builder: (BuildContext context) => const SimpleDialog(
                           title: Text("Creation Successful"),
                           children: <Widget>[
-                            Text('Please log in'),
+                            Center(child: Text('Please log in')),
                           ],
                         ),
                       );
