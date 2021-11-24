@@ -1,23 +1,24 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 31/10/2021
+/// Last updated: 24/11/2021
 
-import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/pages/tablet_pages/tablet_messages_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class TabletHomePageOld extends StatefulWidget {
-  const TabletHomePageOld({Key? key, required this.lecturer}) : super(key: key);
+class TabletHomePage extends StatefulWidget {
+  TabletHomePage({Key? key, required this.userdata}) : super(key: key);
 
-  final Lecturer lecturer;
+  final User? userdata;
 
   @override
-  State<TabletHomePageOld> createState() => _TabletHomePageStateOld();
+  State<TabletHomePage> createState() => _TabletHomePageState();
 }
 
 // TODO: Make app more adaptive, no set sizes
 
-class _TabletHomePageStateOld extends State<TabletHomePageOld> {
+class _TabletHomePageState extends State<TabletHomePage> {
   // Misc properties for the labels
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
@@ -32,20 +33,30 @@ class _TabletHomePageStateOld extends State<TabletHomePageOld> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference lecturers = FirebaseFirestore.instance.collection('lecturer');
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).snapshots();
 
-    return FutureBuilder(
-        future: lecturers.where('email', isEqualTo: widget.lecturer.email).get(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _lecturer,
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return const Text('There seems to be a problem!');
+            return const Scaffold(body: Center(child: Text('Something went wrong')));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('Loading');
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  value: null,
+                ),
+              ),
+            );
           }
 
-          DocumentSnapshot lecturerData = snapshot.data!.docs.first;
+          DocumentSnapshot<Object?>? lecturerData = snapshot.data;
+
+          // Default profile picture if one isn't specified
+          String pictureLink = lecturerData!.get('picture link') != '' ? lecturerData.get('picture link') :
+          'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
           return Scaffold(
             body: Center(
@@ -53,7 +64,8 @@ class _TabletHomePageStateOld extends State<TabletHomePageOld> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image(
-                    image: NetworkImage(widget.lecturer.pictureLink),
+                    // Haven't tested if this works or not
+                    image: NetworkImage(pictureLink),
                     height: 200.0,
                     width: 200.0,
                   ),
@@ -120,9 +132,9 @@ class _TabletHomePageStateOld extends State<TabletHomePageOld> {
                               ),
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('out of office')
-                                    ? MaterialStateProperty.all<Color>(
-                                    Colors.blue)
-                                    : disabled,
+                                    ? disabled
+                                    : MaterialStateProperty.all<Color>(
+                                    Colors.blue),
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -138,9 +150,9 @@ class _TabletHomePageStateOld extends State<TabletHomePageOld> {
                               ),
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('out of office')
-                                    ? disabled
-                                    : MaterialStateProperty.all<Color>(
-                                    Colors.orange),
+                                    ? MaterialStateProperty.all<Color>(
+                                    Colors.orange)
+                                    : disabled,
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -157,7 +169,12 @@ class _TabletHomePageStateOld extends State<TabletHomePageOld> {
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) => const TabletMessagesPage())
+                            );
+                          },
                           child: Text(
                             'Message',
                             style: buttonText,

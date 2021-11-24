@@ -1,23 +1,23 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 17/11/2021
+/// Last updated: 24/11/2021
 
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class TabletHomePage extends StatefulWidget {
-  TabletHomePage({Key? key, required this.userdata}) : super(key: key);
+class TabletHomePageOld extends StatefulWidget {
+  const TabletHomePageOld({Key? key, required this.lecturer}) : super(key: key);
 
-  final User? userdata;
+  final Lecturer lecturer;
 
   @override
-  State<TabletHomePage> createState() => _TabletHomePageState();
+  State<TabletHomePageOld> createState() => _TabletHomePageStateOld();
 }
 
 // TODO: Make app more adaptive, no set sizes
 
-class _TabletHomePageState extends State<TabletHomePage> {
+class _TabletHomePageStateOld extends State<TabletHomePageOld> {
   // Misc properties for the labels
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
@@ -32,30 +32,20 @@ class _TabletHomePageState extends State<TabletHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).snapshots();
+    CollectionReference lecturers = FirebaseFirestore.instance.collection('lecturer');
 
-    return StreamBuilder<DocumentSnapshot>(
-        stream: _lecturer,
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    return FutureBuilder(
+        future: lecturers.where('email', isEqualTo: widget.lecturer.email).get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return const Scaffold(body: Center(child: Text('Something went wrong')));
+            return const Text('There seems to be a problem!');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(
-                  value: null,
-                ),
-              ),
-            );
+            return const Text('Loading');
           }
 
-          DocumentSnapshot<Object?>? lecturerData = snapshot.data;
-
-          // Default profile picture if one isn't specified
-          String pictureLink = lecturerData!.get('picture link') != '' ? lecturerData.get('picture link') :
-          'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
+          DocumentSnapshot lecturerData = snapshot.data!.docs.first;
 
           return Scaffold(
             body: Center(
@@ -63,8 +53,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image(
-                    // Haven't tested if this works or not
-                    image: NetworkImage(pictureLink),
+                    image: NetworkImage(widget.lecturer.pictureLink),
                     height: 200.0,
                     width: 200.0,
                   ),
@@ -131,9 +120,9 @@ class _TabletHomePageState extends State<TabletHomePage> {
                               ),
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('out of office')
-                                    ? disabled
-                                    : MaterialStateProperty.all<Color>(
-                                    Colors.blue),
+                                    ? MaterialStateProperty.all<Color>(
+                                    Colors.blue)
+                                    : disabled,
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -149,9 +138,9 @@ class _TabletHomePageState extends State<TabletHomePage> {
                               ),
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('out of office')
-                                    ? MaterialStateProperty.all<Color>(
-                                    Colors.orange)
-                                    : disabled,
+                                    ? disabled
+                                    : MaterialStateProperty.all<Color>(
+                                    Colors.orange),
                                 minimumSize: minLabelSize,
                               ),
                             ),
