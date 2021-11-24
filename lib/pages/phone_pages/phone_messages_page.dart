@@ -1,13 +1,14 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 17/11/2021
+/// Last updated: 24/11/2021
 
-import 'package:capstone_project/Widgets/message_widget.dart';
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/widgets/message_page.dart';
 import 'package:flutter/material.dart';
 
 class PhoneMessagePage extends StatefulWidget{
-  const PhoneMessagePage({Key? key}) : super(key: key);
+  final Lecturer lecturer;
+  const PhoneMessagePage({Key? key, required this.lecturer}) : super(key: key);
 
   @override
   State<PhoneMessagePage> createState() => _PhoneMessagePageState();
@@ -16,7 +17,7 @@ class PhoneMessagePage extends StatefulWidget{
 class _PhoneMessagePageState extends State<PhoneMessagePage>{
   @override
   Widget build(BuildContext context) {
-    return const MessagePage();
+    return MessagePage(lecturerEmail: widget.lecturer.email ,sender: widget.lecturer.title + " " + widget.lecturer.name);
   }
 
 

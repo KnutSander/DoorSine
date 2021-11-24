@@ -8,8 +8,9 @@ import 'package:flutter/cupertino.dart';
 // Needs animations and more styling, could provide a name in the future perhaps
 class Message extends StatelessWidget {
   final String text;
+  final String sender;
 
-  const Message({Key? key, required this.text}) : super(key: key);
+  const Message({Key? key, required this.text, required this.sender}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

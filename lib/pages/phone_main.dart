@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 17/11/2021
+/// Last updated: 24/11/2021
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
@@ -44,7 +44,7 @@ class _PhoneMainState extends State<PhoneMain> {
     if (_curPage == 0) {
       return PhoneHomePage(lecturer: lecturer);
     } else if (_curPage == 1) {
-      return const PhoneMessagePage();
+      return PhoneMessagePage(lecturer: lecturer);
     } else if (_curPage == 2) {
       return const PhoneCalendarPage();
     } else {

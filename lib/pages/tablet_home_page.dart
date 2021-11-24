@@ -33,13 +33,19 @@ class _TabletHomePageState extends State<TabletHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer = FirebaseFirestore.instance.collection('lecturer').doc(widget.userdata!.email).snapshots();
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer =
+        FirebaseFirestore.instance
+            .collection('lecturer')
+            .doc(widget.userdata!.email)
+            .snapshots();
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _lecturer,
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return const Scaffold(body: Center(child: Text('Something went wrong')));
+            return const Scaffold(
+                body: Center(child: Text('Something went wrong')));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -55,8 +61,9 @@ class _TabletHomePageState extends State<TabletHomePage> {
           DocumentSnapshot<Object?>? lecturerData = snapshot.data;
 
           // Default profile picture if one isn't specified
-          String pictureLink = lecturerData!.get('picture link') != '' ? lecturerData.get('picture link') :
-          'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
+          String pictureLink = lecturerData!.get('picture link') != ''
+              ? lecturerData.get('picture link')
+              : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
           return Scaffold(
             body: Center(
@@ -93,7 +100,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                                 backgroundColor: lecturerData.get('busy')
                                     ? disabled
                                     : MaterialStateProperty.all<Color>(
-                                    Colors.green),
+                                        Colors.green),
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -110,7 +117,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                               style: ButtonStyle(
                                 backgroundColor: lecturerData.get('busy')
                                     ? MaterialStateProperty.all<Color>(
-                                    Colors.red)
+                                        Colors.red)
                                     : disabled,
                                 minimumSize: minLabelSize,
                               ),
@@ -131,10 +138,11 @@ class _TabletHomePageState extends State<TabletHomePage> {
                                 style: labelText,
                               ),
                               style: ButtonStyle(
-                                backgroundColor: lecturerData.get('out of office')
-                                    ? disabled
-                                    : MaterialStateProperty.all<Color>(
-                                    Colors.blue),
+                                backgroundColor:
+                                    lecturerData.get('out of office')
+                                        ? disabled
+                                        : MaterialStateProperty.all<Color>(
+                                            Colors.blue),
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -149,10 +157,11 @@ class _TabletHomePageState extends State<TabletHomePage> {
                                 style: labelText,
                               ),
                               style: ButtonStyle(
-                                backgroundColor: lecturerData.get('out of office')
-                                    ? MaterialStateProperty.all<Color>(
-                                    Colors.orange)
-                                    : disabled,
+                                backgroundColor:
+                                    lecturerData.get('out of office')
+                                        ? MaterialStateProperty.all<Color>(
+                                            Colors.orange)
+                                        : disabled,
                                 minimumSize: minLabelSize,
                               ),
                             ),
@@ -170,9 +179,14 @@ class _TabletHomePageState extends State<TabletHomePage> {
                         padding: const EdgeInsets.all(4.0),
                         child: OutlinedButton(
                           onPressed: () {
-                            Navigator.push(context,
+                            Navigator.push(
+                                context,
                                 MaterialPageRoute(
-                                    builder: (context) => const TabletMessagesPage())
+                                    builder: (context) => TabletMessagesPage(
+                                          lecturerEmail: lecturerData.get('email'),
+                                          name: "Testname",
+                                        )
+                                )
                             );
                           },
                           child: Text(

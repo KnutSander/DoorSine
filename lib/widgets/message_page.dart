@@ -2,13 +2,18 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 24/11/2021
 
+import 'package:capstone_project/firebase_connector.dart';
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'message_widget.dart';
 
 class MessagePage extends StatefulWidget{
-  const MessagePage({Key? key}) : super(key: key);
+  final String sender;
+  final String lecturerEmail;
+
+  const MessagePage({Key? key, required this.sender, required this.lecturerEmail}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MessagePageState();
@@ -64,7 +69,8 @@ class _MessagePageState extends State<MessagePage>{
     setState(() {
       _isWriting = false;
     });
-    var message = Message(text: text);
+    var message = Message(text: text, sender: widget.sender);
+    FirebaseConnector.sendMessage(widget.lecturerEmail, message);
     setState(() {
       _messages.insert(0, message);
     });

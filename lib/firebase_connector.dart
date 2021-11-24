@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/11/2021
+/// Last updated: 24/11/2021
 
+import 'package:capstone_project/widgets/message_widget.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,5 +29,15 @@ class FirebaseConnector extends ChangeNotifier {
       'busy': lecturer.busy,
       'out of office': lecturer.outOfOffice,
     });
+  }
+
+  static void sendMessage(String lecturerEmail, Message message){
+    FirebaseFirestore.instance.collection('messages').doc(lecturerEmail)
+        .collection('messages').add(<String, dynamic>{
+          'name': message.sender,
+          'text': message.text,
+          'time': Timestamp.now(),
+    });
+    print("We did it");
   }
 }
