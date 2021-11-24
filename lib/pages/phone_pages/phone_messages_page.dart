@@ -17,7 +17,7 @@ class PhoneMessagePage extends StatefulWidget{
 class _PhoneMessagePageState extends State<PhoneMessagePage>{
   @override
   Widget build(BuildContext context) {
-    return MessagePage(lecturerEmail: widget.lecturer.email ,sender: widget.lecturer.title + " " + widget.lecturer.name);
+    return MessagePage(lecturerEmail: widget.lecturer.email, sender: widget.lecturer.title + " " + widget.lecturer.name);
   }
 
 

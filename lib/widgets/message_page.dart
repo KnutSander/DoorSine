@@ -3,7 +3,7 @@
 /// Last updated: 24/11/2021
 
 import 'package:capstone_project/firebase_connector.dart';
-import 'package:capstone_project/models/lecturer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,21 +24,65 @@ class _MessagePageState extends State<MessagePage>{
   final List<Message> _messages = [];
   final _messageController = TextEditingController();
   bool _isWriting = false;
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _messageStream;
+  AsyncSnapshot<QuerySnapshot> lastSnapshot = const AsyncSnapshot.nothing();
+
+  @override
+  initState(){
+    super.initState();
+    _messageStream = FirebaseFirestore.instance.collection('lecturer').doc(widget.lecturerEmail).collection('messages').snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Flexible(
-          child: ListView.builder(
-            itemBuilder: (_, int index) => _messages[index],
-            itemCount: _messages.length,
-            reverse: true,
-          ),
-        ),
-        const Divider(height: 10),
-        _createMessagingField(),
-      ],
+    return StreamBuilder<QuerySnapshot>(
+      stream: _messageStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+
+        if (snapshot.hasError) {
+          return const Scaffold(
+              body: Center(child: Text('Something went wrong')));
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                value: null,
+              ),
+            ),
+          );
+        }
+
+        if(snapshot.data != null && lastSnapshot != snapshot){
+           // print(snapshot.data!.docs.first.toString());
+          _messages.clear();
+          var docIterator = snapshot.data!.docs.iterator;
+          while(docIterator.moveNext()){
+            // print(docIterator.current.data().toString());
+            var message = docIterator.current;
+            _messages.add(Message(text: message.get('text'), sender: message.get('name'), time: message.get('time'),));
+          }
+          _messages.sort((a, b) => b.time.compareTo(a.time));
+        }
+
+        lastSnapshot = snapshot;
+
+        return Column(
+          children: <Widget>[
+            Flexible(
+              child: ListView.builder(
+                itemBuilder: (_, int index) => _messages[index],
+                itemCount: _messages.length,
+                reverse: true,
+              ),
+            ),
+            const Divider(height: 10),
+            _createMessagingField(),
+          ],
+        );
+
+      }
     );
   }
 
@@ -69,11 +113,8 @@ class _MessagePageState extends State<MessagePage>{
     setState(() {
       _isWriting = false;
     });
-    var message = Message(text: text, sender: widget.sender);
+    var message = Message(text: text, sender: widget.sender, time: Timestamp.now());
     FirebaseConnector.sendMessage(widget.lecturerEmail, message);
-    setState(() {
-      _messages.insert(0, message);
-    });
   }
 
 }

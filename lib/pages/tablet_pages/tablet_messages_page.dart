@@ -2,13 +2,11 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 24/11/2021
 
-import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/widgets/message_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TabletMessagesPage extends StatefulWidget{
-  // Placeholder name for now, will be queried later
   final String name;
   final String lecturerEmail;
 

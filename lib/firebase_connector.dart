@@ -32,12 +32,11 @@ class FirebaseConnector extends ChangeNotifier {
   }
 
   static void sendMessage(String lecturerEmail, Message message){
-    FirebaseFirestore.instance.collection('messages').doc(lecturerEmail)
+    FirebaseFirestore.instance.collection('lecturer').doc(lecturerEmail)
         .collection('messages').add(<String, dynamic>{
           'name': message.sender,
           'text': message.text,
           'time': Timestamp.now(),
     });
-    print("We did it");
   }
 }
