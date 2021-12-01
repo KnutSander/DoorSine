@@ -2,7 +2,7 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 24/11/2021
 
-import 'package:capstone_project/widgets/message_page.dart';
+import 'package:capstone_project/pages/message_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,13 +29,3 @@ class _TabletMessagesPageState extends State<TabletMessagesPage>{
   }
 
 }
-
-// class TabletMessagesPage extends StatelessWidget{
-//   const TabletMessagesPage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MessagePage();
-//   }
-//
-// }
