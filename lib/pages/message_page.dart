@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/11/2021
+/// Last updated: 02/12/2021
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,46 +84,46 @@ class _MessagePageState extends State<MessagePage> {
                   reverse: true,
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   itemBuilder: (_, int index) {
-                    return Column(
-                      crossAxisAlignment:
-                      (_messages[index].sender == widget.sender
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start),
-                      children: [
-                        Container(
-                          constraints: BoxConstraints(minWidth: 100, maxWidth: MediaQuery.of(context).size.width/1.9),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: (_messages[index].sender == widget.sender
-                                ? Colors.grey[300]
-                                : Colors.redAccent),
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          alignment: (_messages[index].sender == widget.sender
-                              ? Alignment.topRight
-                              : Alignment.topLeft),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _messages[index].sender,
-                                  style: TextStyle(fontSize: 16),
+                    return Row(
+                          mainAxisAlignment: (_messages[index].sender == widget.sender
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start),
+                          children: [
+                            IntrinsicWidth(
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/1.5),
+                                margin: const EdgeInsets.only(left: 2, right: 2, top: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: (_messages[index].sender == widget.sender
+                                      ? Colors.grey[300]
+                                      : Colors.redAccent[200]),
                                 ),
-                                Text(
-                                  _messages[index].text,
-                                  style: TextStyle(fontSize: 15),
+                                padding: const EdgeInsets.all(8),
+                                alignment: (_messages[index].sender == widget.sender
+                                    ? Alignment.topRight
+                                    : Alignment.topLeft),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _messages[index].sender,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      Text(
+                                        _messages[index].text,
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
                             ),
-                          ),
-                        const Padding(padding: EdgeInsets.only(bottom: 8)),
-                      ],
+                          ],
                     );
                   },
                 ),
               ),
               _createMessagingField(),
-              const Padding(padding: EdgeInsets.only(bottom: 8))
             ],
           );
         });

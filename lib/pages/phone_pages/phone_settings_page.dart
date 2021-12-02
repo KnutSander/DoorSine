@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 17/11/2021
+/// Last updated: 02/11/2021
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
@@ -106,6 +106,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
               minLines: 3,
               maxLines: 6,
               // TODO: Implement picture link validator somehow
+              // TODO: Implement picture uploading
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your office hours';
@@ -131,6 +132,6 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     widget.lecturer.pictureLink = _pictureLink.text;
     FirebaseConnector.uploadData(widget.lecturer);
     setState(() {});
-    // TODO: Tell user it was successful and reload data from firebase
+    // TODO: Tell user it was successful
   }
 }

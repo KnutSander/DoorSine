@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/11/2021
+/// Last updated: 02/12/2021
 
 import 'package:capstone_project/pages/tablet_home_page.dart';
 import 'package:capstone_project/pages/phone_main.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'create_account_page.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -78,15 +78,18 @@ class _LoginPageState extends State<LoginPage> {
                           if (_loginAlert.title != null) {
                             showDialog(
                                 context: context,
-                                builder: (BuildContext context) =>
-                                    _loginAlert);
+                                builder: (BuildContext context) => _loginAlert);
                           } else {
                             // Login successful
                             showDialog(
                                 context: context,
-                                builder: (BuildContext context) =>
-                                    SimpleDialog(
-                                      title: const Text('Choose device'),
+                                builder: (BuildContext context) => SimpleDialog(
+                                      title: Text(
+                                        'Choose device',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                      ),
                                       children: <Widget>[
                                         SimpleDialogOption(
                                           onPressed: () {
@@ -102,7 +105,12 @@ class _LoginPageState extends State<LoginPage> {
                                                 (Route<dynamic> route) =>
                                                     false);
                                           },
-                                          child: const Text('Phone'),
+                                          child: Text(
+                                            'Phone',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5,
+                                          ),
                                         ),
                                         SimpleDialogOption(
                                           onPressed: () {
@@ -117,7 +125,12 @@ class _LoginPageState extends State<LoginPage> {
                                                 (Route<dynamic> route) =>
                                                     false);
                                           },
-                                          child: const Text('Tablet'),
+                                          child: Text(
+                                            'Tablet',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5,
+                                          ),
                                         )
                                       ],
                                     ));
@@ -133,8 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => CreateAccountPage())
-                            );
+                                    builder: (context) => CreateAccountPage()));
                           }),
                     )
                   ],
@@ -150,8 +162,8 @@ class _LoginPageState extends State<LoginPage> {
   // Checks and validates the users email and password
   Future<void> logIn() async {
     try {
-      userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
       _loginAlert = const AlertDialog();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' ||
