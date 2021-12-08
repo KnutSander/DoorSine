@@ -48,8 +48,8 @@ class Lecturer {
       'picture link': pictureLink,
       'office hours': officeHours,
       'office number': officeNumber,
-      'busy': busy ? 0 : 1,
-      'out of office': outOfOffice ? 0 : 1,
+      'busy': busy,
+      'out of office': outOfOffice,
     };
   }
 
@@ -61,8 +61,8 @@ class Lecturer {
     pictureLink = map['picture link'];
     officeHours = map['office hours'];
     officeNumber = map['office number'];
-    busy = (map['busy'] == 0) ? false : true;
-    outOfOffice = (map['out of office'] == 0) ? false : true;
+    busy = map['busy'];
+    outOfOffice = map['out of office'];
   }
 
   // toString method to visualize the information about the lecturer nicely

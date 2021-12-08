@@ -79,7 +79,8 @@ class _PhoneMainState extends State<PhoneMain> {
 
           // Got around the problem of the lecturer being updated to often by
           // limiting updates based on changes
-          if(lecturer.busy != data['busy'] || lecturer.outOfOffice != data['out of office']){
+          if((lecturer.busy != data['busy'] || lecturer.outOfOffice != data['out of office'])
+            || lecturer.email == ''){
             lecturer.fromMap(data);
           }
 
