@@ -35,9 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
-  # The following adds the SQFLite to the application
-  # It is used to interface SQLIte with FLutter
-  sqflite:
+  # Provides internationalization and localization facilities, including message translation,
+  # plurals and genders, date/number formatting and parsing, and bidirectional text.
+  intl:
 
   # A comprehensive, cross-platform path manipulation library for Dart.
   # The path package provides common operations for manipulating paths:
