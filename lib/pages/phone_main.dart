@@ -3,10 +3,11 @@
 /// Last updated: 24/11/2021
 
 import 'package:capstone_project/models/lecturer.dart';
-import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_messages_page.dart';
+import 'package:capstone_project/pages/phone_pages/phone_call_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_settings_page.dart';
+import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,8 @@ class _PhoneMainState extends State<PhoneMain> {
     } else if (_curPage == 1) {
       return PhoneMessagePage(lecturer: lecturer);
     } else if (_curPage == 2) {
+      return const PhoneCallPage();
+    } else if (_curPage == 3) {
       return const PhoneCalendarPage();
     } else {
       return PhoneSettingsPage(lecturer: lecturer);
@@ -101,6 +104,11 @@ class _PhoneMainState extends State<PhoneMain> {
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.message),
                     label: "Messages",
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.call),
+                    label: "Call",
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   BottomNavigationBarItem(

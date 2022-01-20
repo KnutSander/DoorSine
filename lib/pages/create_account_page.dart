@@ -5,6 +5,7 @@
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -169,6 +170,25 @@ class _CreateAccountState extends State<CreateAccountPage> {
                   }
                 },
               ),
+              ElevatedButton(
+                  child: const Text('Create Account with Microsoft'),
+                  onPressed: () async {
+                    await createAccountWithMicrosoft();
+                    if(creationSuccessful){
+                      // Close creation screen and return to
+                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => const SimpleDialog(
+                          title: Text("Creation Successful"),
+                          children: <Widget>[
+                            Center(child: Text('Please log in')),
+                          ],
+                        ),
+                      );
+                    }
+                  }
+              ),
             ],
           ),
         ),
@@ -199,6 +219,29 @@ class _CreateAccountState extends State<CreateAccountPage> {
         print('Password to weak');
       } else if (e.code == 'email-already-in-use') {
         print('An account with this email already exists');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> createAccountWithMicrosoft() async {
+    try {
+      User? user = await FirebaseAuthOAuth().openSignInFlow("microsoft.com", ["email"], {"locale": "en"});
+      if(user != null){
+        Lecturer newLecturer = Lecturer(
+            title: '',
+            name: user.displayName.toString(),
+            email: user.email.toString(),
+            pictureLink: '',
+            officeHours: '',
+            officeNumber: '',
+            busy: false,
+            outOfOffice: false
+        );
+        FirebaseConnector.uploadData(newLecturer);
+        print('Creation successful!');
+        creationSuccessful = true;
       }
     } catch (e) {
       print(e);

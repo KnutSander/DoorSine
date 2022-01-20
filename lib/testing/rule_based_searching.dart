@@ -56,7 +56,6 @@ class RuleBasedSearching{
 }
 
 void main(){
-  print(DateTime(2020) > DateTime(2021));
   //RuleBasedSearching rbs = RuleBasedSearching();
   //rbs.checkMessage("Meeting the 12-01-2022 at 13:30");
   // var test = DateTime.parse("1969-07-20");

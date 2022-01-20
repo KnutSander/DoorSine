@@ -5,6 +5,7 @@
 import 'package:capstone_project/pages/tablet_home_page.dart';
 import 'package:capstone_project/pages/phone_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   // User credentials that will need to be used later
-  late UserCredential userCredential;
+  late User user;
   AlertDialog _loginAlert = const AlertDialog();
 
   @override
@@ -74,8 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (_formKey.currentState!.validate()) {
                           await logIn();
                           // Await for logIn to finish before trying to show dialog
-                          // TODO: Create more sophisticated way of checking login success
-                          if (_loginAlert.title != null) {
+                          if (user.email == null) {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) => _loginAlert);
@@ -98,9 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       PhoneMain(
-                                                          userdata:
-                                                              userCredential
-                                                                  .user),
+                                                          userdata: user
+                                                      ),
                                                 ),
                                                 (Route<dynamic> route) =>
                                                     false);
@@ -119,9 +118,9 @@ class _LoginPageState extends State<LoginPage> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         TabletHomePage(
-                                                            userdata:
-                                                                userCredential
-                                                                    .user)),
+                                                            userdata: user
+                                                        )
+                                                ),
                                                 (Route<dynamic> route) =>
                                                     false);
                                           },
@@ -151,6 +150,71 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
+                ElevatedButton(
+                    child: const Text("Login with Microsoft"),
+                    onPressed: () async {
+                      await logInWithMicrosoft();
+                      if (user.email == null) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => _loginAlert);
+                      } else {
+                        // Login successful
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => SimpleDialog(
+                              title: Text(
+                                'Choose device',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4,
+                              ),
+                              children: <Widget>[
+                                SimpleDialogOption(
+                                  onPressed: () {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PhoneMain(
+                                                  userdata: user
+                                              ),
+                                        ),
+                                            (Route<dynamic> route) =>
+                                        false);
+                                  },
+                                  child: Text(
+                                    'Phone',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5,
+                                  ),
+                                ),
+                                SimpleDialogOption(
+                                  onPressed: () {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TabletHomePage(
+                                                    userdata: user
+                                                )
+                                        ),
+                                            (Route<dynamic> route) =>
+                                        false);
+                                  },
+                                  child: Text(
+                                    'Tablet',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5,
+                                  ),
+                                )
+                              ],
+                            ));
+                      }
+                    }
+                ),
               ],
             ),
           ),
@@ -162,8 +226,9 @@ class _LoginPageState extends State<LoginPage> {
   // Checks and validates the users email and password
   Future<void> logIn() async {
     try {
-      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
+      user = userCredential.user!;
       _loginAlert = const AlertDialog();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' ||
@@ -181,6 +246,25 @@ class _LoginPageState extends State<LoginPage> {
           ],
         );
       }
+    }
+  }
+
+  Future<void> logInWithMicrosoft() async {
+    try{
+      user = (await FirebaseAuthOAuth().openSignInFlow("microsoft.com", ["email"], {"locale": "en"}))!;
+    } catch (e) {
+      // _loginAlert = AlertDialog(
+      //   title: const Text('Error'),
+      //   content:
+      //   const Text('No user with given email and password combination, '
+      //       'please try again or create an account'),
+      //   actions: <Widget>[
+      //     TextButton(
+      //         onPressed: () => Navigator.pop(context, 'Close'),
+      //         child: const Text('OK'))
+      //   ],
+      // );
+      print(e);
     }
   }
 }
