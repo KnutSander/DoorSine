@@ -2,6 +2,8 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 20/10/2021
 
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -82,9 +84,10 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
                       : 'writableCalendar${_writableCals.indexWhere((c) => c.id == _calendars[index].id)}'),
                   onTap: () async {
                     if(_calendars[index].isReadOnly == false){
+                      // Creates a new event at the given date and time
                       Location location = Location('Somewhere', [0], [0], [TimeZone.UTC]);
-                      TZDateTime start = TZDateTime(location, 2022, 1, 21, 12, 30);
-                      TZDateTime end = TZDateTime(location, 2022, 1, 21, 13);
+                      TZDateTime start = TZDateTime(location, 2022, 1, 23, 12, 30);
+                      TZDateTime end = TZDateTime(location, 2022, 1, 23, 13);
                       Event event = Event(_calendars[index].id, title: 'ABBA', start: start, end: end);
                       var eventResult = await _deviceCalendarPlugin.createOrUpdateEvent(event);
                       if(eventResult!.isSuccess && eventResult.data!.isNotEmpty){
@@ -92,6 +95,17 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
                       } else {
                         print(eventResult.data);
                       }
+
+                      // var events = await _deviceCalendarPlugin.retrieveEvents(_calendars[index].id,
+                      //     RetrieveEventsParams(startDate: DateTime.now(), endDate: DateTime(2023)));
+                      // UnmodifiableListView<Event>? eventList = events.data;
+                      // if(eventList != null){
+                      //   for(Event e in eventList){
+                      //     print(e.title);
+                      //   }
+                      // } else {
+                      //   print("No events to print");
+                      // }
                     }
                   },
                   child: Padding(
