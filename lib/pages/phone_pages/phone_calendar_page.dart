@@ -11,7 +11,6 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:timezone/src/date_time.dart';
 import 'package:timezone/standalone.dart';
 
-
 class PhoneCalendarPage extends StatefulWidget {
   const PhoneCalendarPage({Key? key}) : super(key: key);
 
@@ -28,11 +27,11 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _getCalendars();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _getCalendars();
+  // }
 
   void _getCalendars() async {
     try {
@@ -50,34 +49,43 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
       final calResults = await _deviceCalendarPlugin.retrieveCalendars();
       setState(() {
         _calendars = calResults.data as List<Calendar>;
-        _getEvents();
       });
     } on PlatformException catch (e) {
       print(e);
     }
   }
 
-  void _getEvents() async {
+  Future<UnmodifiableListView<Event>?> _getEvents() async {
+    if (_calendars.isEmpty) {
+      _getCalendars();
+    }
+
     var outlookCalendar;
-    for(Calendar cal in _calendars){
-      if(cal.name == 'Calendar'){
+    for (Calendar cal in _calendars) {
+      if (cal.name == 'Calendar') {
         outlookCalendar = cal;
         break;
       }
     }
 
-    if(outlookCalendar != null){
+    if (outlookCalendar != null) {
       // Should get all events this year
-      var events = await _deviceCalendarPlugin.retrieveEvents(outlookCalendar.id,
-          RetrieveEventsParams(startDate: DateTime(DateTime.now().year), endDate: DateTime(DateTime.now().year+1)));
+      var events = await _deviceCalendarPlugin.retrieveEvents(
+          outlookCalendar.id,
+          RetrieveEventsParams(
+              startDate: DateTime(DateTime.now().year),
+              endDate: DateTime(DateTime.now().year + 1)));
 
       // Get the data and try adding them to the _events list
-      UnmodifiableListView<Event>? eventList = events.data;
-      if(eventList != null){
-        for(Event event in eventList){
-          _events.add(event);
-        }
-      }
+      //UnmodifiableListView<Event>? eventList = events.data;
+      // if (eventList != null) {
+      //   for (Event event in eventList) {
+      //     if(!_events.contains(event)) {
+      //       _events.add(event);
+      //     }
+      //   }
+      // }
+      return events.data;
     } else {
       print('No Outlook Calendar');
     }
@@ -85,14 +93,14 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
 
   CDS _getEventsDataSource() {
     List<Appointment> appointments = <Appointment>[];
-    for(Event event in _events){
-      appointments.add(
-        Appointment(
+    for (Event event in _events) {
+      appointments.add(Appointment(
           color: const Color.fromRGBO(205, 61, 50, 1),
-            subject: event.title.toString(),
-            startTime: DateTime(event.start!.year, event.start!.month, event.start!.day, event.start!.hour, event.start!.minute),
-            endTime: DateTime(event.end!.year, event.end!.month, event.end!.day, event.end!.hour, event.end!.minute))
-      );
+          subject: event.title.toString(),
+          startTime: DateTime(event.start!.year, event.start!.month,
+              event.start!.day, event.start!.hour, event.start!.minute),
+          endTime: DateTime(event.end!.year, event.end!.month, event.end!.day,
+              event.end!.hour, event.end!.minute)));
     }
 
     return CDS(appointments);
@@ -100,24 +108,61 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: SfCalendar(
-          view: CalendarView.week,
-          firstDayOfWeek: 1,
-          showNavigationArrow: true,
-          showWeekNumber: true,
-          dataSource: _getEventsDataSource(),
-        ),
-      ),
-    );
-  }
+    // return Scaffold(
+    //   body: Container(
+    //     child: SfCalendar(
+    //       view: CalendarView.week,
+    //       firstDayOfWeek: 1,
+    //       showNavigationArrow: true,
+    //       showWeekNumber: true,
+    //       dataSource: _getEventsDataSource(),
+    //     ),
+    //   ),
+    // );
 
+    return FutureBuilder(
+        future: _getEvents(),
+        builder: (BuildContext context,
+            AsyncSnapshot<UnmodifiableListView<Event>?> snapshot) {
+          if (snapshot.hasError) {
+            return const Scaffold(
+                body: Center(child: Text('Something went wrong')));
+          }
+
+          if (!snapshot.hasData) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  value: null,
+                ),
+              ),
+            );
+          }
+
+          UnmodifiableListView<Event>? eventList = snapshot.data;
+          if (eventList != null) {
+            for (Event event in eventList) {
+              if (!_events.contains(event)) {
+                _events.add(event);
+              }
+            }
+          }
+
+          return Scaffold(
+            body: SfCalendar(
+              view: CalendarView.week,
+              firstDayOfWeek: 1,
+              showNavigationArrow: true,
+              showWeekNumber: true,
+              dataSource: _getEventsDataSource(),
+            ),
+          );
+        });
+  }
 }
 
 class CDS extends CalendarDataSource {
-
-  CDS(List<Appointment> appointments){
+  CDS(List<Appointment> appointments) {
     this.appointments = appointments;
   }
 }
