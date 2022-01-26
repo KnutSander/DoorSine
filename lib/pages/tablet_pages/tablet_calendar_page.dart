@@ -32,12 +32,6 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getCalendars();
-  // }
-
   void _getCalendars() async {
     try {
       var permGranted = await _deviceCalendarPlugin.hasPermissions();

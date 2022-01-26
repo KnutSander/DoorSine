@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TabletHomePage extends StatefulWidget {
-  TabletHomePage({Key? key, required this.userdata}) : super(key: key);
+  const TabletHomePage({Key? key, required this.userdata}) : super(key: key);
 
   final User? userdata;
 
@@ -23,17 +23,9 @@ class TabletHomePage extends StatefulWidget {
 // TODO: Make app more adaptive, no set sizes
 
 class _TabletHomePageState extends State<TabletHomePage> {
-  // Misc properties for the labels
-  MaterialStateProperty<Color> disabled =
-      MaterialStateProperty.all<Color>(Colors.grey);
-  MaterialStateProperty<Size> minLabelSize =
-      MaterialStateProperty.all<Size>(const Size(450.0, 100.0));
-  TextStyle labelText = const TextStyle(fontSize: 69.0, color: Colors.white);
 
-  // Misc properties of the intractable buttons
-  TextStyle buttonText = const TextStyle(fontSize: 42.0);
-  MaterialStateProperty<Size> minButtonSize =
-      MaterialStateProperty.all<Size>(const Size(370.0, 70.0));
+  MaterialStateProperty<Color> disabled =
+  MaterialStateProperty.all<Color>(Colors.grey);
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +34,19 @@ class _TabletHomePageState extends State<TabletHomePage> {
             .collection('lecturer')
             .doc(widget.userdata!.email)
             .snapshots();
+
+    // Used to access screen size
+    MediaQueryData queryData = MediaQuery.of(context);
+    // Misc properties for the labels
+    // Initialised inside the build function to access queryData
+    MaterialStateProperty<Size> minLabelSize =
+    MaterialStateProperty.all<Size>(Size(queryData.size.width/2.5, queryData.size.height/7));
+    TextStyle labelText = TextStyle(fontSize: ((queryData.size.width*queryData.size.height)/15000), color: Colors.white);
+
+    // Misc properties of the intractable buttons
+    MaterialStateProperty<Size> minButtonSize =
+    MaterialStateProperty.all<Size>(Size(queryData.size.width/3, queryData.size.height/10));
+    TextStyle buttonText = TextStyle(fontSize: (queryData.size.width*queryData.size.height)/22000);
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _lecturer,
@@ -70,19 +75,18 @@ class _TabletHomePageState extends State<TabletHomePage> {
               : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
           return Scaffold(
-            body: Center(
+            body: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image(
-                    // Haven't tested if this works or not
                     image: NetworkImage(pictureLink),
-                    height: 200.0,
-                    width: 200.0,
+                    height: queryData.size.height/4,
+                    width: queryData.size.width/4,
                   ),
                   Text(
                     lecturerData.get('title') + ' ' + lecturerData.get('name'),
-                    style: const TextStyle(fontSize: 80.0),
+                    style: TextStyle(fontSize: (queryData.size.width*queryData.size.height)/12500),
                   ),
                   Row(
                     // This row will contain busy/available and in/out of office
@@ -94,7 +98,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
-                              // Available
                               onPressed: null,
                               child: Text(
                                 'Available',
@@ -112,7 +115,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
-                              // Busy
                               onPressed: null,
                               child: Text(
                                 'Busy',
@@ -135,7 +137,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
-                              // In Office
                               onPressed: null,
                               child: Text(
                                 'In Office',
@@ -154,7 +155,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
-                              // Out of Office
                               onPressed: null,
                               child: Text(
                                 'Out of Office',
@@ -174,11 +174,9 @@ class _TabletHomePageState extends State<TabletHomePage> {
                       ),
                     ],
                   ),
-                  Column(
-                    // This column will contain the options presented
-                    //TODO: Add functionality to the buttons
-                    //TODO: Make buttons visible based on availability and location
-                    children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: OutlinedButton(
@@ -202,6 +200,24 @@ class _TabletHomePageState extends State<TabletHomePage> {
                           ),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Call',
+                            style: buttonText,
+                          ),
+                          style: ButtonStyle(
+                            minimumSize: minButtonSize,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: OutlinedButton(

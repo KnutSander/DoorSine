@@ -2,14 +2,20 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 26/01/2022
 
+// Azure Client Secret Value: anG7Q~nwpPGMLthLq_9B_wY7SilSJGNQazQQC
+
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/pages/login_page.dart';
 import 'package:capstone_project/pages/testing_page.dart';
 import 'package:capstone_project/widgets/app_theme.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 
