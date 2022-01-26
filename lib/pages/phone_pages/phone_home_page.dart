@@ -1,9 +1,10 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 02/12/2021
+/// Last updated: 26/01/2022
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+
 import 'package:flutter/material.dart';
 
 class PhoneHomePage extends StatefulWidget {

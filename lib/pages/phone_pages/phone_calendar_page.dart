@@ -1,15 +1,20 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 20/10/2021
+/// Last updated: 26/01/2022
 
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 import 'package:device_calendar/device_calendar.dart';
+
 import 'package:timezone/src/date_time.dart';
 import 'package:timezone/standalone.dart';
+
+import 'package:capstone_project/widgets/calendar_data_source.dart';
 
 class PhoneCalendarPage extends StatefulWidget {
   const PhoneCalendarPage({Key? key}) : super(key: key);

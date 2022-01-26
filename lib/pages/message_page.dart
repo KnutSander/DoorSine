@@ -1,14 +1,15 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 02/12/2021
+/// Last updated: 26/01/2022
 
 import 'package:capstone_project/firebase_connector.dart';
+import 'package:capstone_project/widgets/message_widget.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-import '../widgets/message_widget.dart';
 
 class MessagePage extends StatefulWidget {
   final String sender;

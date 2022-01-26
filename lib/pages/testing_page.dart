@@ -1,10 +1,12 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 02/12/2021
+/// Last updated: 26/01/2022
 
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/widgets/app_theme.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

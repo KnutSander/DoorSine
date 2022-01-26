@@ -1,11 +1,14 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/11/2021
+/// Last updated: 26/01/2022
 
 import 'package:capstone_project/widgets/message_widget.dart';
 import 'package:capstone_project/models/lecturer.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/cupertino.dart';
 
 class FirebaseConnector extends ChangeNotifier {

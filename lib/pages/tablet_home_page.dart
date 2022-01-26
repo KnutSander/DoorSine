@@ -1,10 +1,14 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/11/2021
+/// Last updated: 26/01/2022
 
+import 'package:capstone_project/pages/tablet_pages/tablet_calendar_page.dart';
 import 'package:capstone_project/pages/tablet_pages/tablet_messages_page.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 
 class TabletHomePage extends StatefulWidget {
@@ -184,7 +188,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                                 MaterialPageRoute(
                                     builder: (context) => TabletMessagesPage(
                                           lecturerEmail: lecturerData.get('email'),
-                                          name: "Testname",
+                                          name: "Student",
                                         )
                                 )
                             );
@@ -201,7 +205,14 @@ class _TabletHomePageState extends State<TabletHomePage> {
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const TabletCalendarPage()
+                              )
+                            );
+                          },
                           child: Text(
                             'Schedule Meeting',
                             style: buttonText,
