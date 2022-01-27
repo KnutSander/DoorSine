@@ -23,9 +23,8 @@ class TabletHomePage extends StatefulWidget {
 // TODO: Make app more adaptive, no set sizes
 
 class _TabletHomePageState extends State<TabletHomePage> {
-
   MaterialStateProperty<Color> disabled =
-  MaterialStateProperty.all<Color>(Colors.grey);
+      MaterialStateProperty.all<Color>(Colors.grey);
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +38,17 @@ class _TabletHomePageState extends State<TabletHomePage> {
     MediaQueryData queryData = MediaQuery.of(context);
     // Misc properties for the labels
     // Initialised inside the build function to access queryData
-    MaterialStateProperty<Size> minLabelSize =
-    MaterialStateProperty.all<Size>(Size(queryData.size.width/2.5, queryData.size.height/7));
-    TextStyle labelText = TextStyle(fontSize: ((queryData.size.width*queryData.size.height)/15000), color: Colors.white);
+    MaterialStateProperty<Size> minLabelSize = MaterialStateProperty.all<Size>(
+        Size(queryData.size.width / 2.5, queryData.size.height / 7));
+    TextStyle labelText = TextStyle(
+        fontSize: ((queryData.size.width * queryData.size.height) / 15000),
+        color: Colors.white);
 
     // Misc properties of the intractable buttons
-    MaterialStateProperty<Size> minButtonSize =
-    MaterialStateProperty.all<Size>(Size(queryData.size.width/3, queryData.size.height/10));
-    TextStyle buttonText = TextStyle(fontSize: (queryData.size.width*queryData.size.height)/22000);
+    MaterialStateProperty<Size> minButtonSize = MaterialStateProperty.all<Size>(
+        Size(queryData.size.width / 3, queryData.size.height / 10));
+    TextStyle buttonText = TextStyle(
+        fontSize: (queryData.size.width * queryData.size.height) / 22000);
 
     return StreamBuilder<DocumentSnapshot>(
         stream: _lecturer,
@@ -81,191 +83,206 @@ class _TabletHomePageState extends State<TabletHomePage> {
                 children: <Widget>[
                   Image(
                     image: NetworkImage(pictureLink),
-                    height: queryData.size.height/4,
-                    width: queryData.size.width/4,
+                    height: queryData.size.height / 4,
+                    width: queryData.size.width / 4,
                   ),
                   Text(
                     lecturerData.get('title') + ' ' + lecturerData.get('name'),
-                    style: TextStyle(fontSize: (queryData.size.width*queryData.size.height)/12500),
-                  ),
-                  Row(
-                    // This row will contain busy/available and in/out of office
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        // Busy/Available
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: null,
-                              child: Text(
-                                'Available',
-                                style: labelText,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: lecturerData.get('busy')
-                                    ? disabled
-                                    : MaterialStateProperty.all<Color>(
-                                        Colors.green),
-                                minimumSize: minLabelSize,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: null,
-                              child: Text(
-                                'Busy',
-                                style: labelText,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: lecturerData.get('busy')
-                                    ? MaterialStateProperty.all<Color>(
-                                        Colors.red)
-                                    : disabled,
-                                minimumSize: minLabelSize,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        // In/Out of Office
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: null,
-                              child: Text(
-                                'In Office',
-                                style: labelText,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    lecturerData.get('out of office')
-                                        ? disabled
-                                        : MaterialStateProperty.all<Color>(
-                                            Colors.blue),
-                                minimumSize: minLabelSize,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: null,
-                              child: Text(
-                                'Out of Office',
-                                style: labelText,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    lecturerData.get('out of office')
-                                        ? MaterialStateProperty.all<Color>(
-                                            Colors.orange)
-                                        : disabled,
-                                minimumSize: minLabelSize,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    style: TextStyle(
+                        fontSize:
+                            (queryData.size.width * queryData.size.height) /
+                                12500),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TabletMessagesPage(
-                                          lecturerEmail: lecturerData.get('email'),
-                                          name: "Student",
-                                        )
-                                )
-                            );
-                          },
-                          child: Text(
-                            'Message',
-                            style: buttonText,
-                          ),
-                          style: ButtonStyle(
-                            minimumSize: minButtonSize,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Call',
-                            style: buttonText,
-                          ),
-                          style: ButtonStyle(
-                            minimumSize: minButtonSize,
-                          ),
-                        ),
-                      ),
+                      _busyOrAvailableWidgets(
+                          lecturerData, minLabelSize, labelText),
+                      _inOrOutOfOfficeWidget(
+                          lecturerData, minLabelSize, labelText)
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const TabletCalendarPage()
-                              )
-                            );
-                          },
-                          child: Text(
-                            'Schedule Meeting',
-                            style: buttonText,
-                          ),
-                          style: ButtonStyle(
-                            minimumSize: minButtonSize,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: OutlinedButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    _showStaffInfo(context, lecturerData));
-                          },
-                          child: Text(
-                            'Staff Info',
-                            style: buttonText,
-                          ),
-                          style: ButtonStyle(
-                            minimumSize: minButtonSize,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _messageAndCallButtons(
+                      lecturerData, minButtonSize, buttonText),
+                  _meetingAndInfoButtons(
+                      lecturerData, minButtonSize, buttonText)
                 ],
               ),
             ),
           );
         });
   }
-  // TODO: Create QR code that opens email when scanned
 
+  Widget _busyOrAvailableWidgets(DocumentSnapshot<Object?>? lecturerData,
+      MaterialStateProperty<Size> minLabelSize, TextStyle labelText) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: Text(
+              'Available',
+              style: labelText,
+            ),
+            style: ButtonStyle(
+              backgroundColor: lecturerData!.get('busy')
+                  ? disabled
+                  : MaterialStateProperty.all<Color>(Colors.green),
+              minimumSize: minLabelSize,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: Text(
+              'Busy',
+              style: labelText,
+            ),
+            style: ButtonStyle(
+              backgroundColor: lecturerData.get('busy')
+                  ? MaterialStateProperty.all<Color>(Colors.red)
+                  : disabled,
+              minimumSize: minLabelSize,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _inOrOutOfOfficeWidget(DocumentSnapshot<Object?>? lecturerData,
+      MaterialStateProperty<Size> minLabelSize, TextStyle labelText) {
+    return Column(
+      // In/Out of Office
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: Text(
+              'In Office',
+              style: labelText,
+            ),
+            style: ButtonStyle(
+              backgroundColor: lecturerData!.get('out of office')
+                  ? disabled
+                  : MaterialStateProperty.all<Color>(Colors.blue),
+              minimumSize: minLabelSize,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: Text(
+              'Out of Office',
+              style: labelText,
+            ),
+            style: ButtonStyle(
+              backgroundColor: lecturerData.get('out of office')
+                  ? MaterialStateProperty.all<Color>(Colors.orange)
+                  : disabled,
+              minimumSize: minLabelSize,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _messageAndCallButtons(DocumentSnapshot<Object?>? lecturerData,
+      MaterialStateProperty<Size> minButtonSize, TextStyle buttonText) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: OutlinedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TabletMessagesPage(
+                            lecturerEmail: lecturerData!.get('email'),
+                            name: "Student",
+                          )));
+            },
+            child: Text(
+              'Message',
+              style: buttonText,
+            ),
+            style: ButtonStyle(
+              minimumSize: minButtonSize,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: OutlinedButton(
+            onPressed: () {},
+            child: Text(
+              'Call',
+              style: buttonText,
+            ),
+            style: ButtonStyle(
+              minimumSize: minButtonSize,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _meetingAndInfoButtons(DocumentSnapshot<Object?> lecturerData,
+      MaterialStateProperty<Size> minButtonSize, TextStyle buttonText) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: OutlinedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TabletCalendarPage()));
+            },
+            child: Text(
+              'Schedule Meeting',
+              style: buttonText,
+            ),
+            style: ButtonStyle(
+              minimumSize: minButtonSize,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: OutlinedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      _showStaffInfo(context, lecturerData));
+            },
+            child: Text(
+              'Staff Info',
+              style: buttonText,
+            ),
+            style: ButtonStyle(
+              minimumSize: minButtonSize,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // TODO: Create QR code that opens email when scanned
   Widget _showStaffInfo(BuildContext context, DocumentSnapshot lecturerData) {
     return SimpleDialog(
       title: const Center(child: Text('Staff Info')),
@@ -278,7 +295,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
-                  // Email
                   children: <Widget>[
                     const Expanded(
                         child: Text(
@@ -300,7 +316,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
-                  // Office hours
                   children: <Widget>[
                     const Expanded(
                         child: Text(
