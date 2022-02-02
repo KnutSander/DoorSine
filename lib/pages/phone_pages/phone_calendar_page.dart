@@ -118,12 +118,10 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
             );
           }
 
-          UnmodifiableListView<Event>? eventList = snapshot.data;
-          if (eventList != null) {
+          List<Event>? eventList = snapshot.data;
+          if (eventList != null && _events.isEmpty) {
             for (Event event in eventList) {
-              if (!_events.contains(event)) {
-                _events.add(event);
-              }
+              _events.add(event);
             }
           }
 

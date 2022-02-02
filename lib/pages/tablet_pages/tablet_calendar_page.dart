@@ -7,6 +7,7 @@ import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -33,14 +34,20 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
 
   // Form variables
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
+  final DateFormat format = DateFormat("dd-MM-yyyy");
+  String _date = "";
+  String _time = "";
 
-  final TextEditingController _appointmentName = TextEditingController();
+  final TextEditingController _personName = TextEditingController();
   final TextEditingController _appointmentDate = TextEditingController();
-  final TextEditingController _appointmentStart = TextEditingController();
+  final TextEditingController _personEmail = TextEditingController();
   final TextEditingController _appointmentEnd = TextEditingController();
 
   _TabletCalendarPageState() {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
+    _date = format.format(DateTime.now());
+    _time = TimeOfDay.now().hour.toString() + ":" + TimeOfDay.now().minute.toString();
   }
 
   @override
@@ -65,11 +72,9 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
           }
 
           List<Event>? eventList = snapshot.data;
-          if (eventList != null) {
+          if (eventList != null && _events.isEmpty) {
             for (Event event in eventList) {
-              if (!_events.contains(event)) {
-                _events.add(event);
-              }
+              _events.add(event);
             }
           }
 
@@ -96,12 +101,12 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                       children: <Widget>[
                         Expanded(
                           child: TextFormField(
-                            controller: _appointmentName,
+                            controller: _personName,
                             decoration: const InputDecoration(
-                                hintText: 'Appointment name'),
+                                hintText: 'Your name'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please a name';
+                                return 'Please enter your name';
                               }
                               return null;
                             },
@@ -110,12 +115,12 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                         const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
                           child: TextFormField(
-                            controller: _appointmentDate,
+                            controller: _personEmail,
                             decoration: const InputDecoration(
-                                hintText: 'Appointment date'),
+                                hintText: 'Your Email'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter a date';
+                                return 'Please enter your email';
                               }
                               return null;
                             },
@@ -123,31 +128,39 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                         ),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
-                          child: TextFormField(
-                            controller: _appointmentStart,
-                            decoration: const InputDecoration(
-                                hintText: 'Appointment start'),
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a start time';
+                          child: OutlinedButton(
+                              child: Text(_date),
+                              onPressed: () async {
+                               var meetingDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(DateTime.now().year, DateTime.december, 31),
+                                );
+                                setState(() {
+                                  if(meetingDate != null){
+                                    _date = format.format(meetingDate);
+                                  }
+                                });
                               }
-                              return null;
-                            },
-                          ),
+                          )
                         ),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
-                          child: TextFormField(
-                            controller: _appointmentEnd,
-                            decoration: const InputDecoration(
-                                hintText: 'Appointment end'),
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter an end time';
-                              }
-                              return null;
+                          child: OutlinedButton(
+                            child: Text(_time),
+                            onPressed: () async {
+                              var meetingTime = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now());
+                              setState(() {
+                                if(meetingTime != null){
+                                  _time = meetingTime.hour.toString() + ":" +
+                                  meetingTime.minute.toString();
+                                }
+                              });
                             },
-                          ),
+                          )
                         ),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         ElevatedButton(
@@ -177,7 +190,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       dateInts.add(int.parse(s));
     }
 
-    List<String> startTimeStrings = _appointmentStart.text.split(':');
+    List<String> startTimeStrings = _personEmail.text.split(':');
     List<int> startTimeInts = [];
     for(String s in startTimeStrings){
       startTimeInts.add(int.parse(s));
@@ -191,7 +204,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
 
     TZDateTime start = TZDateTime(location, dateInts[2], dateInts[1], dateInts[0], startTimeInts[0], startTimeInts[1]);
     TZDateTime end = TZDateTime(location, dateInts[2], dateInts[1], dateInts[0], endTimeInts[0], endTimeInts[1]);
-    Event event = Event(_calendars[5].id, title: _appointmentName.text, start: start, end: end);
+    Event event = Event(_calendars[5].id, title: "Meeting", start: start, end: end);
     print(event.end);
     var eventResult = await _deviceCalendarPlugin.createOrUpdateEvent(event);
     if(eventResult!.isSuccess && eventResult.data!.isNotEmpty){
@@ -199,6 +212,8 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     } else {
       print(eventResult.data);
     }
+
+    // TODO: Reload events after the appointment is created
   }
 
   void _getCalendars() async {

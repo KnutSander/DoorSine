@@ -41,6 +41,10 @@ dependencies:
   # Provides calendar object and functionalities to flutter
   syncfusion_flutter_calendar:
 
+  # The Flutter Date Range Picker is a lightweight widget that allows users to easily select a
+  # single date, multiple dates, or a range of dates.
+  syncfusion_flutter_datepicker:
+
   # A comprehensive, cross-platform path manipulation library for Dart.
   # The path package provides common operations for manipulating paths:
   # joining, splitting, normalizing, etc.
