@@ -24,6 +24,8 @@ class _TabletHomePageState extends State<TabletHomePage> {
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
 
+  DocumentSnapshot<Object?>? lecturerData;
+
   @override
   Widget build(BuildContext context) {
     final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer =
@@ -67,11 +69,11 @@ class _TabletHomePageState extends State<TabletHomePage> {
             );
           }
 
-          DocumentSnapshot<Object?>? lecturerData = snapshot.data;
+          lecturerData = snapshot.data;
 
           // Default profile picture if one isn't specified
           String pictureLink = lecturerData!.get('picture link') != ''
-              ? lecturerData.get('picture link')
+              ? lecturerData!.get('picture link')
               : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
           // TODO: Hide buttons based on lecturer availability and location
@@ -86,11 +88,20 @@ class _TabletHomePageState extends State<TabletHomePage> {
                     width: queryData.size.width / 4,
                   ),
                   Text(
-                    lecturerData.get('title') + ' ' + lecturerData.get('name'),
+                    lecturerData!.get('title') +
+                        ' ' +
+                        lecturerData!.get('name'),
                     style: TextStyle(
                         fontSize:
                             (queryData.size.width * queryData.size.height) /
-                                12500),
+                                15000),
+                  ),
+                  Text(
+                    lecturerData!.get('office number'),
+                    style: TextStyle(
+                        fontSize:
+                            (queryData.size.width * queryData.size.height) /
+                                30000),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +115,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
                   _messageAndCallButtons(
                       lecturerData, minButtonSize, buttonText),
                   _meetingAndInfoButtons(
-                      lecturerData, minButtonSize, buttonText)
+                      lecturerData!, minButtonSize, buttonText)
                 ],
               ),
             ),
@@ -248,7 +259,10 @@ class _TabletHomePageState extends State<TabletHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TabletCalendarPage(userdata: widget.userdata,)));
+                      builder: (context) => TabletCalendarPage(
+                            userdata: widget.userdata,
+                            lecturerData: lecturerData,
+                          )));
             },
             child: Text(
               'Schedule Meeting',
