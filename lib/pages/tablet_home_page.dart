@@ -248,7 +248,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const TabletCalendarPage()));
+                      builder: (context) => TabletCalendarPage(userdata: widget.userdata,)));
             },
             child: Text(
               'Schedule Meeting',

@@ -4,6 +4,7 @@
 
 import 'dart:collection';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,9 @@ import 'package:timezone/standalone.dart';
 import 'package:capstone_project/widgets/calendar_data_source.dart';
 
 class TabletCalendarPage extends StatefulWidget {
-  const TabletCalendarPage({Key? key}) : super(key: key);
+  const TabletCalendarPage({Key? key, this.userdata,}) : super(key: key);
+
+  final User? userdata;
 
   @override
   State<TabletCalendarPage> createState() => _TabletCalendarPageState();
@@ -25,7 +28,6 @@ class TabletCalendarPage extends StatefulWidget {
 
 class _TabletCalendarPageState extends State<TabletCalendarPage> {
   late DeviceCalendarPlugin _deviceCalendarPlugin;
-  String? calendarID;
   List<Calendar> _calendars = [];
   List<Event> _events = [];
 
@@ -46,10 +48,10 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     return FutureBuilder(
         future: _getEvents(),
         builder: (BuildContext context,
-            AsyncSnapshot<UnmodifiableListView<Event>?> snapshot) {
+            AsyncSnapshot<List<Event>> snapshot) {
           if (snapshot.hasError) {
-            return const Scaffold(
-                body: Center(child: Text('Something went wrong')));
+            return Scaffold(
+                body: Center(child: Text(snapshot.error.toString())));
           }
 
           if (!snapshot.hasData) {
@@ -62,7 +64,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
             );
           }
 
-          UnmodifiableListView<Event>? eventList = snapshot.data;
+          List<Event>? eventList = snapshot.data;
           if (eventList != null) {
             for (Event event in eventList) {
               if (!_events.contains(event)) {
@@ -105,7 +107,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(4.0)),
+                        const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
                           child: TextFormField(
                             controller: _appointmentDate,
@@ -119,7 +121,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(4.0)),
+                        const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
                           child: TextFormField(
                             controller: _appointmentStart,
@@ -133,7 +135,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(4.0)),
+                        const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
                           child: TextFormField(
                             controller: _appointmentEnd,
@@ -147,7 +149,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(4.0)),
+                        const Padding(padding: EdgeInsets.all(4.0)),
                         ElevatedButton(
                             child: const Text('Create Appointment'),
                             onPressed: () {
@@ -221,34 +223,56 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     }
   }
 
-  Future<UnmodifiableListView<Event>?> _getEvents() async {
+  Future<List<Event>> _getEvents() async {
     if (_calendars.isEmpty) {
       _getCalendars();
     }
 
-    var outlookCalendar;
+    var outlookCalendar, personalCalendar;
     for (Calendar cal in _calendars) {
       // Looking for 'Calendar"=' because that is the default name outlook
       // is imported with to the google calendar
       if (cal.name == 'Calendar') {
         outlookCalendar = cal;
-        calendarID = cal.id;
-        break;
+      } else if (cal.name == widget.userdata!.email){
+         personalCalendar = cal;
       }
     }
 
+    List<Event> combinedEvents = [];
+
     if (outlookCalendar != null) {
-      // Gets all events this year
       var events = await _deviceCalendarPlugin.retrieveEvents(
           outlookCalendar.id,
           RetrieveEventsParams(
               startDate: DateTime(DateTime.now().year),
               endDate: DateTime(DateTime.now().year + 1)));
 
-      return events.data;
-    } else {
-      print('No Outlook Calendar');
+      UnmodifiableListView<Event>? list = events.data;
+
+      if(list!.isNotEmpty){
+        for(Event e in list){
+          combinedEvents.add(e);
+        }
+      }
     }
+
+    if (personalCalendar != null) {
+      var events = await _deviceCalendarPlugin.retrieveEvents(
+          personalCalendar.id,
+          RetrieveEventsParams(
+              startDate: DateTime(DateTime.now().year),
+              endDate: DateTime(DateTime.now().year + 1)));
+
+      UnmodifiableListView<Event>? list = events.data;
+
+      if(list!.isNotEmpty){
+        for(Event e in list){
+          combinedEvents.add(e);
+        }
+      }
+    }
+    return combinedEvents;
   }
 
   CDS _getEventsDataSource() {
