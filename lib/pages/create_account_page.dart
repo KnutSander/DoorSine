@@ -214,7 +214,6 @@ class _CreateAccountState extends State<CreateAccountPage> {
           outOfOffice: false
       );
       FirebaseConnector.uploadData(newLecturer);
-      print('Creation successful!');
       creationSuccessful = true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

@@ -30,7 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -71,6 +70,17 @@ dependencies:
 
   # This package provides the IANA time zone database and time zone aware DateTime class, TZDateTime
   timezone:
+
+  # A command-line tool which simplifies the task of updating your Flutter app's launcher icon.
+  flutter_launcher_icons:
+
+flutter_icons:
+  image_path: "media/images/DoorSine_V1.png"
+  adaptive_icon_foreground: "media/images/DoorSine_V1.png"
+  adaptive_icon_background: "media/images/DoorSine_V1.png"
+  android: true
+  ios: true
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 27/01/2022
 
 import 'package:capstone_project/pages/tablet_pages/tablet_calendar_page.dart';
 import 'package:capstone_project/pages/tablet_pages/tablet_messages_page.dart';
@@ -19,8 +19,6 @@ class TabletHomePage extends StatefulWidget {
   @override
   State<TabletHomePage> createState() => _TabletHomePageState();
 }
-
-// TODO: Make app more adaptive, no set sizes
 
 class _TabletHomePageState extends State<TabletHomePage> {
   MaterialStateProperty<Color> disabled =
@@ -76,6 +74,7 @@ class _TabletHomePageState extends State<TabletHomePage> {
               ? lecturerData.get('picture link')
               : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
+          // TODO: Hide buttons based on lecturer availability and location
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.only(top: 30.0),
