@@ -4,6 +4,7 @@
 
 import 'dart:collection';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,9 +20,14 @@ import 'package:timezone/standalone.dart';
 import 'package:capstone_project/widgets/calendar_data_source.dart';
 
 class TabletCalendarPage extends StatefulWidget {
-  const TabletCalendarPage({Key? key, this.userdata,}) : super(key: key);
+  const TabletCalendarPage({
+    Key? key,
+    this.userdata,
+    this.lecturerData,
+  }) : super(key: key);
 
   final User? userdata;
+  final DocumentSnapshot<Object?>? lecturerData;
 
   @override
   State<TabletCalendarPage> createState() => _TabletCalendarPageState();
@@ -34,34 +40,39 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
 
   // Form variables
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+
+  // Date info
   final DateFormat format = DateFormat("dd-MM-yyyy");
   String _date = "";
+  DateTime _meetingStart = DateTime.now();
+
+  // Time info
   String _time = "";
+  TimeOfDay _meetingTime = TimeOfDay.now();
 
   final TextEditingController _personName = TextEditingController();
-  final TextEditingController _appointmentDate = TextEditingController();
   final TextEditingController _personEmail = TextEditingController();
-  final TextEditingController _appointmentEnd = TextEditingController();
 
   _TabletCalendarPageState() {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
     _date = format.format(DateTime.now());
-    _time = TimeOfDay.now().hour.toString() + ":" + TimeOfDay.now().minute.toString();
+    _time = TimeOfDay.now().hour.toString().padLeft(2, '0') +
+        ":" +
+        TimeOfDay.now().minute.toString().padLeft(2, '0');
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _getEvents(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Event>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
           if (snapshot.hasError) {
             return Scaffold(
-                body: Center(child: Text(snapshot.error.toString())));
+                body:
+                    Center(child: Text("Error: " + snapshot.error.toString())));
           }
 
-          if (!snapshot.hasData) {
+          if (snapshot.data == [] || snapshot.data == null) {
             return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(
@@ -100,10 +111,11 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                     child: Row(
                       children: <Widget>[
                         Expanded(
+                          flex: 2,
                           child: TextFormField(
                             controller: _personName,
-                            decoration: const InputDecoration(
-                                hintText: 'Your name'),
+                            decoration:
+                                const InputDecoration(hintText: 'Your name'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your name';
@@ -114,10 +126,11 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                         ),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
+                          flex: 2,
                           child: TextFormField(
                             controller: _personEmail,
-                            decoration: const InputDecoration(
-                                hintText: 'Your Email'),
+                            decoration:
+                                const InputDecoration(hintText: 'Your Email'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
@@ -128,45 +141,49 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                         ),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
-                          child: OutlinedButton(
-                              child: Text(_date),
-                              onPressed: () async {
-                               var meetingDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime(DateTime.now().year, DateTime.december, 31),
-                                );
-                                setState(() {
-                                  if(meetingDate != null){
-                                    _date = format.format(meetingDate);
-                                  }
-                                });
-                              }
-                          )
-                        ),
+                            child: OutlinedButton(
+                                child: Text(_date),
+                                onPressed: () async {
+                                  var meetingDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(DateTime.now().year,
+                                        DateTime.december, 31),
+                                  );
+                                  setState(() {
+                                    if (meetingDate != null) {
+                                      _date = format.format(meetingDate);
+                                      _meetingStart = meetingDate;
+                                    }
+                                  });
+                                })),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         Expanded(
-                          child: OutlinedButton(
-                            child: Text(_time),
-                            onPressed: () async {
-                              var meetingTime = await showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now());
-                              setState(() {
-                                if(meetingTime != null){
-                                  _time = meetingTime.hour.toString() + ":" +
-                                  meetingTime.minute.toString();
-                                }
-                              });
-                            },
-                          )
-                        ),
+                            child: OutlinedButton(
+                          child: Text(_time),
+                          onPressed: () async {
+                            var meetingTime = await showTimePicker(
+                                context: context, initialTime: TimeOfDay.now());
+                            setState(() {
+                              if (meetingTime != null) {
+                                _time = meetingTime.hour
+                                        .toString()
+                                        .padLeft(2, '0') +
+                                    ":" +
+                                    meetingTime.minute
+                                        .toString()
+                                        .padLeft(2, '0');
+                                _meetingTime = meetingTime;
+                              }
+                            });
+                          },
+                        )),
                         const Padding(padding: EdgeInsets.all(4.0)),
                         ElevatedButton(
                             child: const Text('Create Appointment'),
                             onPressed: () {
-                              if(_formKey.currentState!.validate()){
+                              if (_formKey.currentState!.validate()) {
                                 _createAppointment();
                               }
                             }),
@@ -181,36 +198,53 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
   }
 
   void _createAppointment() async {
-    // TODO: Set location as the lecturers office
-    Location location = Location('Office', [0], [0], [TimeZone.UTC]);
+    Location location = Location(
+        widget.lecturerData!.get('office number').toString(),
+        [0],
+        [0],
+        [TimeZone.UTC]);
 
-    List<String> dateStrings = _appointmentDate.text.split('.');
-    List<int> dateInts = [];
-    for (String s in dateStrings){
-      dateInts.add(int.parse(s));
-    }
+    TZDateTime start = TZDateTime(
+        location,
+        _meetingStart.year,
+        _meetingStart.month,
+        _meetingStart.day,
+        _meetingTime.hour,
+        _meetingTime.minute);
 
-    List<String> startTimeStrings = _personEmail.text.split(':');
-    List<int> startTimeInts = [];
-    for(String s in startTimeStrings){
-      startTimeInts.add(int.parse(s));
-    }
+    TZDateTime end = TZDateTime(
+        location,
+        _meetingStart.year,
+        _meetingStart.month,
+        _meetingStart.day,
+        _meetingTime.hour + 1,
+        _meetingTime.minute);
 
-    List<String> endTimeStrings = _appointmentEnd.text.split(':');
-    List<int> endTimeInts = [];
-    for(String s in endTimeStrings){
-      endTimeInts.add(int.parse(s));
-    }
+    Event event = Event(_calendars[5].id,
+        title: "Meeting",
+        start: start,
+        end: end,
+        description: _personName.text +
+            " with email " +
+            _personEmail.text +
+            " wants a meeting at the given time and date");
 
-    TZDateTime start = TZDateTime(location, dateInts[2], dateInts[1], dateInts[0], startTimeInts[0], startTimeInts[1]);
-    TZDateTime end = TZDateTime(location, dateInts[2], dateInts[1], dateInts[0], endTimeInts[0], endTimeInts[1]);
-    Event event = Event(_calendars[5].id, title: "Meeting", start: start, end: end);
-    print(event.end);
     var eventResult = await _deviceCalendarPlugin.createOrUpdateEvent(event);
-    if(eventResult!.isSuccess && eventResult.data!.isNotEmpty){
-      print('Success!');
+
+    if (eventResult!.isSuccess && eventResult.data!.isNotEmpty) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => const SimpleDialog(
+                children: <Widget>[
+                  Text("Meeting created successfully!"),
+                ],
+              )).then(
+          // Forces a page reload to show that the event has been added
+          // Does layer another calendar page on top, but should be fine
+          (value) => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (BuildContext context) => widget)));
     } else {
-      print(eventResult.data);
+      print('Error creating event');
     }
 
     // TODO: Reload events after the appointment is created
@@ -249,8 +283,8 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       // is imported with to the google calendar
       if (cal.name == 'Calendar') {
         outlookCalendar = cal;
-      } else if (cal.name == widget.userdata!.email){
-         personalCalendar = cal;
+      } else if (cal.name == widget.userdata!.email) {
+        personalCalendar = cal;
       }
     }
 
@@ -265,8 +299,8 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
 
       UnmodifiableListView<Event>? list = events.data;
 
-      if(list!.isNotEmpty){
-        for(Event e in list){
+      if (list!.isNotEmpty) {
+        for (Event e in list) {
           combinedEvents.add(e);
         }
       }
@@ -281,8 +315,8 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
 
       UnmodifiableListView<Event>? list = events.data;
 
-      if(list!.isNotEmpty){
-        for(Event e in list){
+      if (list!.isNotEmpty) {
+        for (Event e in list) {
           combinedEvents.add(e);
         }
       }
