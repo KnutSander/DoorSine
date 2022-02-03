@@ -241,9 +241,12 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                 context: context,
                 builder: (BuildContext context) => const SimpleDialog(
                       children: <Widget>[
-                        Text(
-                            "The time you chose isn't available, please refer\n"
-                            "to the calendar to choose an available time"),
+                        Center(
+                          child: Text(
+                              "The time you chose isn't available, please refer\n"
+                              "to the calendar to choose an available time",
+                          textScaleFactor: 2.0,),
+                        ),
                       ],
                     ));
             return;
@@ -256,9 +259,12 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                 context: context,
                 builder: (BuildContext context) => const SimpleDialog(
                       children: <Widget>[
-                        Text(
-                            "The time you chose is to close to another event,\n "
-                            "please refer to the calendar to choose an available time"),
+                        Center(
+                          child: Text(
+                              "The time you chose is to close to another event,\n "
+                              "please refer to the calendar to choose an available time",
+                            textScaleFactor: 2.0,),
+                        ),
                       ],
                     ));
             return;
@@ -284,7 +290,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
           context: context,
           builder: (BuildContext context) => const SimpleDialog(
                 children: <Widget>[
-                  Text("Meeting created successfully!"),
+                  Center(child: Text("Meeting created successfully!", textScaleFactor: 2.0,)),
                 ],
               )).then(
           // Forces a page reload to show that the event has been added
