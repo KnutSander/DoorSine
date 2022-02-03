@@ -220,6 +220,54 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
         _meetingTime.hour + 1,
         _meetingTime.minute);
 
+    // Make sure new event doesn't overlap with existing ones
+    for (Event event in _events) {
+      // Check if dates match
+      if (start.year == event.start!.year &&
+          start.month == event.start!.month &&
+          start.day == event.start!.day) {
+
+        // Skip checking all day events
+        bool? allDay = event.allDay;
+        if (allDay != null) {
+          if (allDay) {
+            continue;
+            // Check if start falls within another event
+          } else if ((start.hour == event.start!.hour &&
+                  start.minute >= event.start!.minute) ||
+              (start.hour == event.end!.hour &&
+                  start.minute < event.end!.minute)) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => const SimpleDialog(
+                      children: <Widget>[
+                        Text(
+                            "The time you chose isn't available, please refer\n"
+                            "to the calendar to choose an available time"),
+                      ],
+                    ));
+            return;
+            // Check if end falls within another event
+          } else if ((end.hour == event.start!.hour &&
+                  end.minute > event.start!.minute) ||
+              (end.hour == event.end!.hour &&
+                  end.minute <= event.end!.minute)) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => const SimpleDialog(
+                      children: <Widget>[
+                        Text(
+                            "The time you chose is to close to another event,\n "
+                            "please refer to the calendar to choose an available time"),
+                      ],
+                    ));
+            return;
+          }
+        }
+      }
+    }
+
+    // TODO: Change the calendar id variable to be more reliable
     Event event = Event(_calendars[5].id,
         title: "Meeting",
         start: start,
