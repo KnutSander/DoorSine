@@ -38,9 +38,6 @@ dependencies:
   # plurals and genders, date/number formatting and parsing, and bidirectional text.
   intl:
 
-  # Provides calendar object and functionalities to flutter
-  syncfusion_flutter_calendar:
-
   # A comprehensive, cross-platform path manipulation library for Dart.
   # The path package provides common operations for manipulating paths:
   # joining, splitting, normalizing, etc.
@@ -73,6 +70,17 @@ dependencies:
 
   # A command-line tool which simplifies the task of updating your Flutter app's launcher icon.
   flutter_launcher_icons:
+
+  # Provides calendar object and functionalities to flutter
+  syncfusion_flutter_calendar:
+
+  # This Flutter plugin is a wrapper for Agora Video SDK. Agora.io provides building blocks for you
+  # to add real-time voice and video communications through a simple and powerful SDK
+  agora_rtc_engine:
+
+  # This plugin provides a cross-platform (iOS, Android) API to request permissions and check their
+  # status. You can also open the device's app settings so users can grant a permission.
+  permission_handler:
 
 flutter_icons:
   image_path: "media/images/DoorSine_V1.png"

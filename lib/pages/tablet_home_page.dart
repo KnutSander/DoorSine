@@ -3,6 +3,7 @@
 /// Last updated: 27/01/2022
 
 import 'package:capstone_project/pages/tablet_pages/tablet_calendar_page.dart';
+import 'package:capstone_project/pages/tablet_pages/tablet_call_page.dart';
 import 'package:capstone_project/pages/tablet_pages/tablet_messages_page.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -233,7 +234,14 @@ class _TabletHomePageState extends State<TabletHomePage> {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TabletCallPage(
+                        lecturerEmail: lecturerData!.get('email'),
+                      )));
+            },
             child: Text(
               'Call',
               style: buttonText,

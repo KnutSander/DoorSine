@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 05/02/2022
 
 // Azure Client Secret Value: anG7Q~nwpPGMLthLq_9B_wY7SilSJGNQazQQC
 
@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+
+const appID = "d73f28067efd4f2bb80d756a87326e33";
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();

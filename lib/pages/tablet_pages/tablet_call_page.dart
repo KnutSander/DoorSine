@@ -1,26 +1,32 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 05/02/2021
+/// Last updated: 04/02/2021
 
 import 'dart:async';
 import 'package:capstone_project/pages/call_page.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class PhoneCallPage extends StatefulWidget {
+class TabletCallPage extends StatefulWidget {
   final String lecturerEmail;
 
-  const PhoneCallPage({Key? key, required this.lecturerEmail}) : super(key: key);
+  const TabletCallPage({Key? key, required this.lecturerEmail}) : super(key: key);
 
   @override
-  _PhoneCallPageState createState() => _PhoneCallPageState();
+  _TabletCallPageState createState() => _TabletCallPageState();
 }
 
-class _PhoneCallPageState extends State<PhoneCallPage> {
+class _TabletCallPageState extends State<TabletCallPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Call'),
+        elevation: 0,
+      ),
+      body: SafeArea(
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +65,8 @@ class _PhoneCallPageState extends State<PhoneCallPage> {
             ],
           ),
         ),
-      );
+      ),
+    );
   }
 
   Future<void> onJoin() async {
