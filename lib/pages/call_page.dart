@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 05/02/2021
+/// Last updated: 07/02/2021
 
 import 'package:capstone_project/main.dart';
 
@@ -20,131 +20,102 @@ class CallPage extends StatefulWidget {
 }
 
 class _CallPageState extends State<CallPage> {
-  static final _users = <int>[];
-  final _infoStrings = <String>[];
-  bool muted = false;
-  late RtcEngine _engine;
+  static final _usedIDs = <int>[];
+  final _info = <String>[];
+  late RtcEngine _rtcEngine;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    // initialize agora sdk
-    initialize();
+    initialise();
   }
 
   @override
   void dispose() {
-    _users.clear();
-    _engine.leaveChannel();
-    _engine.destroy();
+    _usedIDs.clear();
+    _rtcEngine.leaveChannel();
+    _rtcEngine.destroy();
     super.dispose();
   }
 
-  Future<void> initialize() async {
+  Future<void> initialise() async {
     if (appID.isEmpty) {
       setState(() {
-        _infoStrings.add(
-          'APP_ID missing!',
-        );
-        _infoStrings.add('Agora Engine not starting');
+        _info.add('no App ID found, please provide an App ID');
       });
       return;
     }
 
-    await _initAgoraRtcEngine();
+    await _initRtcEngine();
     _addAgoraEventHandlers();
-    // await _engine.enableWebSdkInteroperability(true);
     // TODO: Generate tokens automatically
-    await _engine.joinChannel(
-        '006d73f28067efd4f2bb80d756a87326e33IACFeVxFmFcv/KwUw0o/adHHowSdJpAMJhIHAzsnYrY39B7wLAoAAAAAEAD1z9KPqLv/YQEAAQCou/9h',
+    await _rtcEngine.joinChannel(
+        '006d73f28067efd4f2bb80d756a87326e33IABLo7absLP9pdDFG/8fbW3zdS1F7k+hoTt8MC2eWquTkx7wLAoAAAAAEAD1z9KP+00CYgEAAQD7TQJi',
         widget.channelName,
         null,
         0);
   }
 
-  // Create agora sdk instance and initialize
-  Future<void> _initAgoraRtcEngine() async {
-    _engine = await RtcEngine.create(appID);
-    await _engine.enableVideo();
+  Future<void> _initRtcEngine() async {
+    _rtcEngine = await RtcEngine.create(appID);
+    await _rtcEngine.enableVideo();
   }
 
-  // Add agora event handlers
   void _addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(
+    _rtcEngine.setEventHandler(RtcEngineEventHandler(
       error: (code) {
         setState(() {
-          final info = 'onError: $code';
-          _infoStrings.add(info);
+          final info = 'Error: $code';
+          _info.add(info);
         });
       },
       joinChannelSuccess: (channel, uid, elapsed) {
         setState(() {
-          final info = 'onJoinChannel: $channel, uid: $uid';
-          _infoStrings.add(info);
+          final info = 'JoinChannel: $channel, uid: $uid';
+          _info.add(info);
         });
       },
       leaveChannel: (stats) {
         setState(() {
-          _infoStrings.add('onLeaveChannel');
-          _users.clear();
+          _info.add('onLeaveChannel');
+          _usedIDs.clear();
         });
       },
       userJoined: (uid, elapsed) {
         setState(() {
           final info = 'userJoined: $uid';
-          _infoStrings.add(info);
-          _users.add(uid);
+          _info.add(info);
+          _usedIDs.add(uid);
         });
       },
       userOffline: (uid, reason) {
         setState(() {
           final info = 'userOffline: $uid , reason: $reason';
-          _infoStrings.add(info);
-          _users.remove(uid);
+          _info.add(info);
+          _usedIDs.remove(uid);
         });
       },
       firstRemoteVideoFrame: (uid, width, height, elapsed) {
         setState(() {
           final info = 'firstRemoteVideoFrame: $uid';
-          _infoStrings.add(info);
+          _info.add(info);
         });
       },
     ));
   }
 
-  // Toolbar layout
-  Widget _toolbar() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: RawMaterialButton(
-        onPressed: () => _onCallEnd(context),
-        child: const Icon(
-          Icons.call_end,
-          color: Colors.white,
-          size: 35.0,
-        ),
-        shape: const CircleBorder(),
-        elevation: 2.0,
-        fillColor: Colors.redAccent,
-        padding: const EdgeInsets.all(15.0),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Switch camera to front facing view
-    _engine.switchCamera();
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Video Call'),
       ),
-      backgroundColor: Colors.black,
       body: Center(
         child: Stack(
           children: <Widget>[
-            _viewRows(),
+            _recipientVideo(),
+            _callerVideo(),
             _toolbar(),
           ],
         ),
@@ -152,71 +123,85 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
-  // TODO: Change look of video view, will be a max of two people calling
-
-  // Helper function to get list of native views
-  List<Widget> _getRenderViews() {
-    final List<StatefulWidget> list = [];
-    list.add(RtcLocalView.SurfaceView());
-    _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid)));
-    return list;
+  Widget _recipientVideo() {
+    final videoFeeds = _getVideos();
+    if (videoFeeds.length == 2) {
+      return _videoView(videoFeeds[1]);
+    } else {
+      return const Text("Calling...");
+    }
   }
 
-  // Video view wrapper
-  Widget _videoView(view) {
-    return Expanded(child: Container(child: view));
-  }
-
-  // Video view row wrapper
-  Widget _expandedVideoRow(List<Widget> views) {
-    final wrappedViews = views.map<Widget>(_videoView).toList();
-    return Expanded(
-      child: Row(
-        children: wrappedViews,
+  Widget _callerVideo() {
+    final videoFeeds = _getVideos();
+    return Container(
+      alignment: Alignment.bottomRight,
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 4,
+        height: MediaQuery.of(context).size.height / 4,
+        child: _videoView(videoFeeds[0]),
       ),
     );
   }
 
-  // Video layout wrapper
-  Widget _viewRows() {
-    final views = _getRenderViews();
-    switch (views.length) {
-      case 1:
-        return Container(
-            child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
-      case 2:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-          ],
-        ));
-      case 3:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
-      case 4:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
-      default:
-    }
-    return Container();
+  Widget _toolbar() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RawMaterialButton(
+            onPressed: () => _endCall(context),
+            child: const Icon(
+              Icons.call_end,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
+          ),
+          RawMaterialButton(
+            onPressed: _flipCamera,
+            child: const Icon(
+              Icons.switch_camera,
+              color: Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          )
+        ],
+      ),
+    );
   }
 
-  void _onCallEnd(BuildContext context) {
+  List<Widget> _getVideos() {
+    final List<StatefulWidget> list = [];
+    list.add(RtcLocalView.SurfaceView());
+    for (var uid in _usedIDs) {
+      list.add(RtcRemoteView.SurfaceView(
+        uid: uid,
+        renderMode: VideoRenderMode.Fit,
+      ));
+    }
+    return list;
+  }
+
+  Widget _videoView(video) {
+    return Expanded(child: Container(child: video));
+  }
+
+  void _endCall(BuildContext context) {
     Navigator.pop(context);
   }
 
+  void _flipCamera() {
+    _rtcEngine.switchCamera();
+  }
 }
