@@ -25,6 +25,59 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text('Current Status',
+                style: Theme.of(context).textTheme.headline4),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
+            ElevatedButton(
+              child: Text(
+                widget.lecturer.busy ? 'Busy' : 'Available',
+                style: const TextStyle(fontSize: 35),
+              ),
+              onPressed: () {
+                setState(() {
+                  widget.lecturer.busy = !widget.lecturer.busy;
+                });
+                FirebaseConnector.uploadData(widget.lecturer);
+              },
+              style: ButtonStyle(
+                  backgroundColor: widget.lecturer.busy
+                      ? MaterialStateProperty.all<Color>(Colors.red)
+                      : MaterialStateProperty.all<Color>(Colors.green),
+                  minimumSize: MaterialStateProperty.all<Size>(Size(
+                      MediaQuery.of(context).size.width / 1.5,
+                      MediaQuery.of(context).size.height / 10))),
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
+            ElevatedButton(
+              child: Text(
+                widget.lecturer.outOfOffice ? 'Out of Office' : 'In Office',
+                style: const TextStyle(fontSize: 35),
+              ),
+              onPressed: () {
+                setState(() {
+                  widget.lecturer.outOfOffice = !widget.lecturer.outOfOffice;
+                });
+                FirebaseConnector.uploadData(widget.lecturer);
+              },
+              style: ButtonStyle(
+                  backgroundColor: widget.lecturer.outOfOffice
+                      ? MaterialStateProperty.all<Color>(Colors.red)
+                      : MaterialStateProperty.all<Color>(Colors.green),
+                  minimumSize: MaterialStateProperty.all<Size>(Size(
+                      MediaQuery.of(context).size.width / 1.5,
+                      MediaQuery.of(context).size.height / 10))),
+            )
+          ],
+        ),
+      ),
+    );
+
+    return SafeArea(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
             Row(
               children: <Widget>[
                 Expanded(
@@ -80,7 +133,11 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                     ),
                   ),
                 ),
-                Expanded(child: Text('Out of Office', style: Theme.of(context).textTheme.headline5,))
+                Expanded(
+                    child: Text(
+                  'Out of Office',
+                  style: Theme.of(context).textTheme.headline5,
+                ))
               ],
             ),
           ],

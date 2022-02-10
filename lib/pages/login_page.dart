@@ -61,27 +61,33 @@ class _LoginPageState extends State<LoginPage> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(hintText: 'Email'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/1.5,
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(hintText: 'Email'),
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(hintText: 'Password'),
-                      obscureText: true,
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
-                        }
-                        return null;
-                      },
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width/1.5,
+                      child: TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(hintText: 'Password'),
+                        obscureText: true,
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
                     Row(

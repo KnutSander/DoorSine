@@ -20,29 +20,34 @@ class TabletCallPage extends StatefulWidget {
 class _TabletCallPageState extends State<TabletCallPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Join Call',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
-            MaterialButton(
-              onPressed: _joinCall,
-              height: 80,
-              color: Colors.green[700],
-              shape: const CircleBorder(),
-              child: const Icon(
-                Icons.call,
-                color: Colors.white,
-                size: 40.0,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Call Page'),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Join Call',
+                style: Theme.of(context).textTheme.headline5,
               ),
-            ),
-          ],
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
+              MaterialButton(
+                onPressed: _joinCall,
+                height: 80,
+                color: Colors.green[700],
+                shape: const CircleBorder(),
+                child: const Icon(
+                  Icons.call,
+                  color: Colors.white,
+                  size: 40.0,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
