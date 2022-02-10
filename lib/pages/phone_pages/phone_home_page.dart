@@ -19,67 +19,73 @@ class PhoneHomePage extends StatefulWidget {
 class _PhoneHomePageState extends State<PhoneHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
+    return SafeArea(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              child: Text(
-                'Available',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Transform.scale(
-                scale: 1.5,
-                child: Switch(
-                  value: widget.lecturer.busy,
-                  onChanged: (bool value) {
-                    setState(() {
-                      widget.lecturer.busy = value;
-                    });
-                    FirebaseConnector.uploadData(widget.lecturer);
-                  },
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'Available',
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: Switch(
+                      value: widget.lecturer.busy,
+                      onChanged: (bool value) {
+                        setState(() {
+                          widget.lecturer.busy = value;
+                        });
+                        FirebaseConnector.uploadData(widget.lecturer);
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: Text(
+                  'Busy',
+                  style: Theme.of(context).textTheme.headline5,
+                ))
+              ],
             ),
-            Expanded(
-                child: Text(
-              'Busy',
-              style: Theme.of(context).textTheme.headline5,
-            ))
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'In Office',
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: Switch(
+                      value: widget.lecturer.outOfOffice,
+                      onChanged: (bool value) {
+                        setState(() {
+                          widget.lecturer.outOfOffice = value;
+                        });
+                        FirebaseConnector.uploadData(widget.lecturer);
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(child: Text('Out of Office', style: Theme.of(context).textTheme.headline5,))
+              ],
+            ),
           ],
         ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                'In Office',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Transform.scale(
-                scale: 1.5,
-                child: Switch(
-                  value: widget.lecturer.outOfOffice,
-                  onChanged: (bool value) {
-                    setState(() {
-                      widget.lecturer.outOfOffice = value;
-                    });
-                    FirebaseConnector.uploadData(widget.lecturer);
-                  },
-                ),
-              ),
-            ),
-            Expanded(child: Text('Out of Office', style: Theme.of(context).textTheme.headline5,))
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

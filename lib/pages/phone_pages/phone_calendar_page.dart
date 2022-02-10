@@ -137,21 +137,6 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
                     dataSource: _getEventsDataSource(),
                   ),
                 ),
-                ElevatedButton(
-                    child: const Text('Test'),
-                    onPressed: () async {
-                      Location location = Location('Somewhere', [0], [0], [TimeZone.UTC]);
-                      TZDateTime start = TZDateTime(location, 2022, 1, 28, 12, 30);
-                      TZDateTime end = TZDateTime(location, 2022, 1, 28, 13);
-                      Event event = Event(_calendars[5].id, title: 'ABBA', start: start, end: end);
-                      var eventResult = await _deviceCalendarPlugin.createOrUpdateEvent(event);
-                      if(eventResult!.isSuccess && eventResult.data!.isNotEmpty){
-                        print('Success!');
-                      } else {
-                        print(eventResult.data);
-                      }
-                    },
-                )
               ],
             ),
           );

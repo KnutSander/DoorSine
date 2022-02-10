@@ -32,94 +32,109 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     _officeHours.text = widget.lecturer.officeHours;
     _pictureLink.text = widget.lecturer.pictureLink;
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Form(
-        child: Column(
-          children: <Widget>[
-            Row(
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: TextFormField(
-                    controller: _title,
-                    decoration: const InputDecoration(hintText: 'Title.'),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your title';
-                      }
-                      return null;
-                    },
-                  ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: _title,
+                        decoration: const InputDecoration(hintText: 'Title.'),
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your title';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 6.0)),
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        controller: _name,
+                        decoration: const InputDecoration(
+                            hintText: 'Last Name, First Name'),
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                const Padding(padding: EdgeInsets.all(4.0)),
-                Expanded(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: _name,
-                    decoration: const InputDecoration(
-                        hintText: 'Last Name, First Name'),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    },
+                const Padding(padding: EdgeInsets.symmetric(vertical: 10.0)),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: _officeNumber,
+                        decoration:
+                            const InputDecoration(hintText: 'Office Number'),
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your office number';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 6.0)),
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        controller: _officeHours,
+                        decoration: const InputDecoration(hintText: 'Office Hours'),
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your office hours';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 10.0)),
+                TextFormField(
+                  controller: _pictureLink,
+                  decoration: const InputDecoration(hintText: 'Picture Link'),
+                  minLines: 3,
+                  maxLines: 6,
+                  // TODO: Implement picture link validator somehow
+                  // TODO: Implement picture uploading
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your office hours';
+                    }
+                    return null;
+                  },
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 10.0)),
+                ElevatedButton(
+                  child: Text(
+                      'Update Info',
+                    style: TextStyle(
+                        fontSize: Theme.of(context).textTheme.headline6!.fontSize,
+                        color: Colors.white
+                    ),
                   ),
+                  onPressed: updateInfo,
                 ),
               ],
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: TextFormField(
-                    controller: _officeNumber,
-                    decoration:
-                        const InputDecoration(hintText: 'Office Number'),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your office number';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.all(4.0)),
-                Expanded(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: _officeHours,
-                    decoration: const InputDecoration(hintText: 'Office Hours'),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your office hours';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            TextFormField(
-              controller: _pictureLink,
-              decoration: const InputDecoration(hintText: 'Picture Link'),
-              minLines: 3,
-              maxLines: 6,
-              // TODO: Implement picture link validator somehow
-              // TODO: Implement picture uploading
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your office hours';
-                }
-                return null;
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Update info'),
-              onPressed: updateInfo,
-            ),
-          ],
+          ),
         ),
       ),
     );
