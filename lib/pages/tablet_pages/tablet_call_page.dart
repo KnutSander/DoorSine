@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 07/02/2021
+/// Last updated: 10/02/2021
 
 import 'dart:async';
 import 'package:capstone_project/pages/call_page.dart';
@@ -10,67 +10,45 @@ import 'package:permission_handler/permission_handler.dart';
 class TabletCallPage extends StatefulWidget {
   final String lecturerEmail;
 
-  const TabletCallPage({Key? key, required this.lecturerEmail}) : super(key: key);
+  const TabletCallPage({Key? key, required this.lecturerEmail})
+      : super(key: key);
 
   @override
   _TabletCallPageState createState() => _TabletCallPageState();
 }
 
 class _TabletCallPageState extends State<TabletCallPage> {
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Call'),
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              const Text(
-                'Agora Group Video Call Demo',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+    return SafeArea(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Join Call',
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
+            MaterialButton(
+              onPressed: _joinCall,
+              height: 80,
+              color: Colors.green[700],
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.call,
+                color: Colors.white,
+                size: 40.0,
               ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.25,
-                child: MaterialButton(
-                  onPressed: onJoin,
-                  height: 40,
-                  color: Colors.blueAccent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Text(
-                        'Join',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Future<void> onJoin() async {
-
+  Future<void> _joinCall() async {
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
 
