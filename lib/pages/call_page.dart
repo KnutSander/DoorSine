@@ -50,7 +50,7 @@ class _CallPageState extends State<CallPage> {
     _addAgoraEventHandlers();
     // TODO: Generate tokens automatically
     await _rtcEngine.joinChannel(
-        '006d73f28067efd4f2bb80d756a87326e33IAAf7nvWOBoPaqc2xNh/djq75QpO2E6TnqRSd75QPDfs+B7wLAoAAAAAEADL5xHftjUGYgEAAQC3NQZi',
+        '006d73f28067efd4f2bb80d756a87326e33IAB4J1AwcbgXTRC77fLHhqUcEVZQYJnuoTASw0P2KkdMpR7wLAoAAAAAEADzxwcSjioOYgEAAQCOKg5i',
         widget.channelName,
         null,
         0);

@@ -303,7 +303,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
     );
   }
 
-  // TODO: Create QR code that opens email when scanned
   Widget _showStaffInfo(BuildContext context, DocumentSnapshot lecturerData) {
     return SimpleDialog(
       title: const Center(child: Text('Staff Info')),
@@ -348,13 +347,6 @@ class _TabletHomePageState extends State<TabletHomePage> {
                   ],
                 ),
               ),
-              const Image(
-                image: NetworkImage(
-                    'https://i.pinimg.com/originals/60/c1/4a/60c14a43fb4745795b3b358868517e79.png'),
-                height: 150.0,
-                width: 150.0,
-              ),
-              const Text('Scan QR code for email'),
             ],
           ),
         ),
