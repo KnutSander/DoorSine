@@ -24,8 +24,31 @@ class _TabletMessagesPageState extends State<TabletMessagesPage>{
     return Scaffold(
       appBar: AppBar(
         title: const Text("Messages"),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.help_outline),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        _displayPageInfo());
+              })
+        ],
       ),
         body: MessagePage(lecturerEmail: widget.lecturerEmail, sender: widget.name,)
+    );
+  }
+
+  Widget _displayPageInfo() {
+    return const SimpleDialog(
+      title: Center(child: Text('Page Info')),
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text("On this page you can message the lecturer"
+                "Simply type a message and wait for them to respond")
+        ),
+      ],
     );
   }
 

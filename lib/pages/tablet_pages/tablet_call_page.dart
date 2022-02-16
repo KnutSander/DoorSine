@@ -23,6 +23,16 @@ class _TabletCallPageState extends State<TabletCallPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Call Page'),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.help_outline),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        _displayPageInfo());
+              })
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -50,6 +60,19 @@ class _TabletCallPageState extends State<TabletCallPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _displayPageInfo() {
+    return const SimpleDialog(
+      title: Center(child: Text('Page Info')),
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text("On this page you can join a video call with the lecturer"
+                "Simply press the Join Call button to join the video chat")
+        ),
+      ],
     );
   }
 

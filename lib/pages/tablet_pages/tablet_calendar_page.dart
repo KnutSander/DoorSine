@@ -92,6 +92,16 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Calendar'),
+              actions: <Widget>[
+                IconButton(
+                    icon: const Icon(Icons.help_outline),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _displayPageInfo());
+                    })
+              ],
             ),
             body: Column(
               children: <Widget>[
@@ -195,6 +205,20 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
             ),
           );
         });
+  }
+
+  Widget _displayPageInfo() {
+    return const SimpleDialog(
+      title: Center(child: Text('Page Info')),
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text("On this page you can see when the lecturer has events scheduled\n"
+              "You can book a meeting if it isn't to close to any of these events\n"
+              "The lecturer will contact you regarding the specifics of you meeting")
+        ),
+      ],
+    );
   }
 
   void _createAppointment() async {
