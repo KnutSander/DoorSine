@@ -1,8 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 16/02/2022
 
-import 'package:capstone_project/pages/tablet_home_page.dart';
+import 'package:capstone_project/pages/tablet_main.dart';
 import 'package:capstone_project/pages/phone_main.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                TabletHomePage(userdata: user)),
+                                TabletMain(userdata: user)),
                         (Route<dynamic> route) => false);
                   },
                   child: Text(

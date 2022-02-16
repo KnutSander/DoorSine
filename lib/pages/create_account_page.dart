@@ -39,157 +39,165 @@ class _CreateAccountState extends State<CreateAccountPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
+        child: Center(
           child: Column(
-            children: <Widget>[
-              TextFormField(
-                controller: _email,
-                decoration: const InputDecoration(hintText: 'Email'),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextFormField(
-                      controller: _password,
-                      obscureText: true,
-                      decoration: const InputDecoration(hintText: 'Password'),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      controller: _email,
+                      decoration: const InputDecoration(hintText: 'Email'),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
+                          return 'Please enter a valid email';
                         }
                         return null;
                       },
                     ),
-                  ),
-                  const Padding(padding: EdgeInsets.all(4.0)),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _passwordConfirm,
-                      obscureText: true,
-                      decoration:
-                          const InputDecoration(hintText: 'Confirm Password'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
-                        } else if (value != _password.text) {
-                          return 'Please provide the same password';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      controller: _title,
-                      decoration: const InputDecoration(hintText: 'Title'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your title';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.all(4.0)),
-                  Expanded(
-                    flex: 2,
-                    child: TextFormField(
-                      controller: _name,
-                      decoration: const InputDecoration(hintText: 'Name'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      controller: _officeNumber,
-                      decoration:
-                          const InputDecoration(hintText: 'Office Number'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your office number';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.all(4.0)),
-                  Expanded(
-                    flex: 2,
-                    child: TextFormField(
-                      controller: _officeHours,
-                      decoration:
-                          const InputDecoration(hintText: 'Office Hours'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your office hours';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                child: const Text("Create Account"),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    await createAccount();
-                    if(creationSuccessful){
-                      // Close creation screen and return to
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => const SimpleDialog(
-                          title: Text("Creation Successful"),
-                          children: <Widget>[
-                            Center(child: Text('Please log in')),
-                          ],
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextFormField(
+                            controller: _password,
+                            obscureText: true,
+                            decoration: const InputDecoration(hintText: 'Password'),
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                      );
-                    }
-                  }
-                },
-              ),
-              ElevatedButton(
-                  child: const Text('Create Account with Microsoft'),
-                  onPressed: () async {
-                    await createAccountWithMicrosoft();
-                    if(creationSuccessful){
-                      // Close creation screen and return to
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => const SimpleDialog(
-                          title: Text("Creation Successful"),
-                          children: <Widget>[
-                            Center(child: Text('Please log in')),
-                          ],
+                        const Padding(padding: EdgeInsets.all(4.0)),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _passwordConfirm,
+                            obscureText: true,
+                            decoration:
+                                const InputDecoration(hintText: 'Confirm Password'),
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              } else if (value != _password.text) {
+                                return 'Please provide the same password';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                      );
-                    }
-                  }
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            controller: _title,
+                            decoration: const InputDecoration(hintText: 'Title'),
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your title';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(4.0)),
+                        Expanded(
+                          flex: 2,
+                          child: TextFormField(
+                            controller: _name,
+                            decoration: const InputDecoration(hintText: 'Name'),
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your name';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: TextFormField(
+                            controller: _officeNumber,
+                            decoration:
+                                const InputDecoration(hintText: 'Office Number'),
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your office number';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(4.0)),
+                        Expanded(
+                          flex: 2,
+                          child: TextFormField(
+                            controller: _officeHours,
+                            decoration:
+                                const InputDecoration(hintText: 'Office Hours'),
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your office hours';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      child: const Text("Create Account"),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await createAccount();
+                          if(creationSuccessful){
+                            // Close creation screen and return to
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => const SimpleDialog(
+                                title: Text("Creation Successful"),
+                                children: <Widget>[
+                                  Center(child: Text('Please log in')),
+                                ],
+                              ),
+                            );
+                          }
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                        child: const Text('Create Account with Microsoft'),
+                        onPressed: () async {
+                          await createAccountWithMicrosoft();
+                          if(creationSuccessful){
+                            // Close creation screen and return to
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => const SimpleDialog(
+                                title: Text("Creation Successful"),
+                                children: <Widget>[
+                                  Center(child: Text('Please log in')),
+                                ],
+                              ),
+                            );
+                          }
+                        }
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

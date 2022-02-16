@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/01/2022
+/// Last updated: 16/02/2022
 
 import 'package:capstone_project/pages/tablet_pages/tablet_calendar_page.dart';
 import 'package:capstone_project/pages/tablet_pages/tablet_call_page.dart';
@@ -12,16 +12,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
-class TabletHomePage extends StatefulWidget {
-  const TabletHomePage({Key? key, required this.userdata}) : super(key: key);
+class TabletMain extends StatefulWidget {
+  const TabletMain({Key? key, required this.userdata}) : super(key: key);
 
   final User? userdata;
 
   @override
-  State<TabletHomePage> createState() => _TabletHomePageState();
+  State<TabletMain> createState() => _TabletMainState();
 }
 
-class _TabletHomePageState extends State<TabletHomePage> {
+class _TabletMainState extends State<TabletMain> {
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
 
