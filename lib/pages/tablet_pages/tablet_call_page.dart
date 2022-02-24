@@ -31,7 +31,7 @@ class _TabletCallPageState extends State<TabletCallPage> {
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {
-    final status = await permission.request();
+    await permission.request();
   }
 
   @override

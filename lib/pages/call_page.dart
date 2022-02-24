@@ -187,10 +187,6 @@ class _CallPageState extends State<CallPage> {
     return Expanded(child: Container(child: video));
   }
 
-  void _endCall(BuildContext context) {
-    Navigator.pop(context);
-  }
-
   void _flipCamera() {
     _rtcEngine.switchCamera();
   }
