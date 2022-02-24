@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 07/02/2021
+/// Last updated: 24/02/2021
 
 import 'package:capstone_project/main.dart';
 
@@ -50,7 +50,7 @@ class _CallPageState extends State<CallPage> {
     _addAgoraEventHandlers();
     // TODO: Generate tokens automatically
     await _rtcEngine.joinChannel(
-        '006d73f28067efd4f2bb80d756a87326e33IAB4J1AwcbgXTRC77fLHhqUcEVZQYJnuoTASw0P2KkdMpR7wLAoAAAAAEADzxwcSjioOYgEAAQCOKg5i',
+        '006d73f28067efd4f2bb80d756a87326e33IADEaMHIUNlUOleTTZ++lb1NcaaMo0ZuGGzK07n9guAydR7wLAoAAAAAEAATtvR9M7EYYgEAAQAzsRhi',
         widget.channelName,
         null,
         0);
@@ -108,9 +108,6 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('Video Call'),
-      ),
       body: Center(
         child: Stack(
           children: <Widget>[
@@ -128,7 +125,12 @@ class _CallPageState extends State<CallPage> {
     if (videoFeeds.length == 2) {
       return _videoView(videoFeeds[1]);
     } else {
-      return const Text("Calling...");
+      return const Center(
+          child: Text(
+        "Calling...",
+        style: TextStyle(color: Colors.white),
+        textScaleFactor: 2,
+      ));
     }
   }
 
@@ -153,23 +155,11 @@ class _CallPageState extends State<CallPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           RawMaterialButton(
-            onPressed: () => _endCall(context),
-            child: const Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
             onPressed: _flipCamera,
             child: const Icon(
               Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
+              color: Colors.red,
+              size: 35.0,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,

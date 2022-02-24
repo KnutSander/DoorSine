@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 16/02/2022
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';

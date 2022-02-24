@@ -219,7 +219,7 @@ class _TabletMainState extends State<TabletMain> {
                   MaterialPageRoute(
                       builder: (context) => TabletMessagesPage(
                             lecturerEmail: lecturerData!.get('email'),
-                            name: "Student",
+                            name: "Visitor",
                           )));
             },
             child: Text(
