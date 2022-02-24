@@ -2,6 +2,8 @@
 /// Essex Capstone Project 2021/2022
 /// Last updated: 24/02/2021
 
+import 'dart:convert';
+
 import 'package:capstone_project/main.dart';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -9,6 +11,8 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 
 class CallPage extends StatefulWidget {
   final String channelName;
@@ -22,7 +26,10 @@ class CallPage extends StatefulWidget {
 class _CallPageState extends State<CallPage> {
   static final _usedIDs = <int>[];
   final _info = <String>[];
+  String baseUrl = 'https://door-sine.herokuapp.com'; //TODO: Find url of server
+  int uid = 0;
   late RtcEngine _rtcEngine;
+  late String token;
 
   @override
   initState() {
@@ -48,17 +55,44 @@ class _CallPageState extends State<CallPage> {
 
     await _initRtcEngine();
     _addAgoraEventHandlers();
-    // TODO: Generate tokens automatically
+    await getToken();
+
+    // Joins the channel with the given name securely using a token
+    // No optional parameters and 0 as the user id (assigns num automatically)
     await _rtcEngine.joinChannel(
-        '006d73f28067efd4f2bb80d756a87326e33IADEaMHIUNlUOleTTZ++lb1NcaaMo0ZuGGzK07n9guAydR7wLAoAAAAAEAATtvR9M7EYYgEAAQAzsRhi',
+        token,
         widget.channelName,
         null,
         0);
+
+    // await _rtcEngine.joinChannel(
+    //     '006d73f28067efd4f2bb80d756a87326e33IADEaMHIUNlUOleTTZ++lb1NcaaMo0ZuGGzK07n9guAydR7wLAoAAAAAEAATtvR9M7EYYgEAAQAzsRhi',
+    //     widget.channelName,
+    //     null,
+    //     0);
   }
 
   Future<void> _initRtcEngine() async {
     _rtcEngine = await RtcEngine.create(appID);
     await _rtcEngine.enableVideo();
+  }
+
+  // Function adapted from https://gist.github.com/Meherdeep/25d4bdac5dad0c4547809754c9e8417e
+  Future<void> getToken() async {
+    final response = await http.get(Uri.parse(baseUrl +
+        '/rtc/' +
+        widget.channelName +
+        '/publisher/uid/' +
+        uid.toString()));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        token = response.body;
+        token = jsonDecode(token)['rtcToken'];
+      });
+    } else {
+      print('Failed to fetch token');
+    }
   }
 
   void _addAgoraEventHandlers() {
@@ -100,6 +134,10 @@ class _CallPageState extends State<CallPage> {
           final info = 'firstRemoteVideoFrame: $uid';
           _info.add(info);
         });
+      },
+      tokenPrivilegeWillExpire: (token) async {
+        await getToken();
+        await _rtcEngine.renewToken(token);
       },
     ));
   }
