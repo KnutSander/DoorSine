@@ -64,12 +64,6 @@ class _CallPageState extends State<CallPage> {
         widget.channelName,
         null,
         0);
-
-    // await _rtcEngine.joinChannel(
-    //     '006d73f28067efd4f2bb80d756a87326e33IADEaMHIUNlUOleTTZ++lb1NcaaMo0ZuGGzK07n9guAydR7wLAoAAAAAEAATtvR9M7EYYgEAAQAzsRhi',
-    //     widget.channelName,
-    //     null,
-    //     0);
   }
 
   Future<void> _initRtcEngine() async {
@@ -95,6 +89,7 @@ class _CallPageState extends State<CallPage> {
     }
   }
 
+  // Add necessary event handlers
   void _addAgoraEventHandlers() {
     _rtcEngine.setEventHandler(RtcEngineEventHandler(
       error: (code) {
@@ -158,6 +153,7 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
+  // Returns a video of the recipient, person on the other device
   Widget _recipientVideo() {
     final videoFeeds = _getVideos();
     if (videoFeeds.length == 2) {
@@ -172,6 +168,7 @@ class _CallPageState extends State<CallPage> {
     }
   }
 
+  // Returns the video of the caller, device user
   Widget _callerVideo() {
     final videoFeeds = _getVideos();
     return Container(
@@ -185,6 +182,7 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
+  // Toolbar that contains a button that can flip the camera
   Widget _toolbar() {
     return Container(
       alignment: Alignment.bottomCenter,
@@ -209,6 +207,7 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
+  // Returns a list of all the videos
   List<Widget> _getVideos() {
     final List<StatefulWidget> list = [];
     list.add(RtcLocalView.SurfaceView());
@@ -221,10 +220,12 @@ class _CallPageState extends State<CallPage> {
     return list;
   }
 
+  // Returns a video container
   Widget _videoView(video) {
     return Expanded(child: Container(child: video));
   }
 
+  // Flips the camera
   void _flipCamera() {
     _rtcEngine.switchCamera();
   }
