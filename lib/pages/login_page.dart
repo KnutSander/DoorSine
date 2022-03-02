@@ -1,6 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 16/02/2022
+/// Last updated: 02/03/2022
+
+import 'dart:async';
 
 import 'package:capstone_project/pages/tablet_main.dart';
 import 'package:capstone_project/pages/phone_main.dart';
@@ -26,9 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   // Used to validate the form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // Initialise firebase authentication
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   // Used to get the values of the text fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -36,6 +35,19 @@ class _LoginPageState extends State<LoginPage> {
   // User credentials that will need to be used later
   late User user;
   AlertDialog _loginAlert = const AlertDialog();
+
+  @override
+  void initState(){
+    super.initState();
+    // Run this after the build finishes to log in if state is still saved
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // Check if logged in
+      if (FirebaseAuth.instance.currentUser != null){
+        user = FirebaseAuth.instance.currentUser!;
+        _logInSuccess(context);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text('Log in'),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              await logIn();
+                              await _logIn();
                               // Await for logIn to finish before trying to show dialog
                               if (user.email == null) {
                                 showDialog(
@@ -107,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                         _loginAlert);
                               } else {
                                 // Login successful
-                                logInSuccess(context);
+                                _logInSuccess(context);
                               }
                             }
                           },
@@ -121,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          CreateAccountPage()));
+                                          const CreateAccountPage()));
                             })
                       ],
                     ),
@@ -129,14 +141,14 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                         child: const Text("Login with Microsoft"),
                         onPressed: () async {
-                          await logInWithMicrosoft();
+                          await _microsoftLogIn();
                           if (user.email == null) {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) => _loginAlert);
                           } else {
                             // Login successful
-                            logInSuccess(context);
+                            _logInSuccess(context);
                           }
                         }),
                   ],
@@ -149,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void logInSuccess(BuildContext context) {
+  void _logInSuccess(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
@@ -191,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Checks and validates the users email and password
-  Future<void> logIn() async {
+  Future<void> _logIn() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
@@ -217,22 +229,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> logInWithMicrosoft() async {
+  // Logs inn using Microsoft credentials
+  Future<void> _microsoftLogIn() async {
     try {
       user = (await FirebaseAuthOAuth()
           .openSignInFlow("microsoft.com", ["email"], {"locale": "en"}))!;
     } catch (e) {
-      // _loginAlert = AlertDialog(
-      //   title: const Text('Error'),
-      //   content:
-      //   const Text('No user with given email and password combination, '
-      //       'please try again or create an account'),
-      //   actions: <Widget>[
-      //     TextButton(
-      //         onPressed: () => Navigator.pop(context, 'Close'),
-      //         child: const Text('OK'))
-      //   ],
-      // );
       print(e);
     }
   }

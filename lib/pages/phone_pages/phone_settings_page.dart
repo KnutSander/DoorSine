@@ -1,9 +1,12 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 02/03/2022
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/pages/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
@@ -34,7 +37,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 100),
         child: Form(
           child: Center(
             child: Column(
@@ -56,7 +59,8 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                         },
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 6.0)),
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.0)),
                     Expanded(
                       flex: 2,
                       child: TextFormField(
@@ -90,12 +94,14 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                         },
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 6.0)),
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.0)),
                     Expanded(
                       flex: 2,
                       child: TextFormField(
                         controller: _officeHours,
-                        decoration: const InputDecoration(hintText: 'Office Hours'),
+                        decoration:
+                            const InputDecoration(hintText: 'Office Hours'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your office hours';
@@ -124,14 +130,23 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                 const Padding(padding: EdgeInsets.symmetric(vertical: 10.0)),
                 ElevatedButton(
                   child: Text(
-                      'Update Info',
+                    'Update Info',
                     style: TextStyle(
-                        fontSize: Theme.of(context).textTheme.headline6!.fontSize,
-                        color: Colors.white
+                        fontSize:
+                            Theme.of(context).textTheme.headline6!.fontSize,
+                        color: Colors.white),
+                  ),
+                  onPressed: _updateInfo,
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      child: const Text('Logout'),
+                      onPressed: _logout,
                     ),
                   ),
-                  onPressed: updateInfo,
-                ),
+                )
               ],
             ),
           ),
@@ -140,7 +155,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     );
   }
 
-  void updateInfo(){
+  void _updateInfo() {
     widget.lecturer.title = _title.text;
     widget.lecturer.name = _name.text;
     widget.lecturer.officeNumber = _officeNumber.text;
@@ -149,5 +164,11 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     FirebaseConnector.uploadData(widget.lecturer);
     setState(() {});
     // TODO: Tell user it was successful
+  }
+
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 }

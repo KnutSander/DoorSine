@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 05/02/2022
+/// Last updated: 02/03/2022
 
 // Azure Client Secret Value: anG7Q~nwpPGMLthLq_9B_wY7SilSJGNQazQQC
 
@@ -21,15 +21,15 @@ import 'package:provider/provider.dart';
 
 const appID = "d73f28067efd4f2bb80d756a87326e33";
 
+// Main function
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
   runApp(ChangeNotifierProvider(
     create: (context) => FirebaseConnector(),
     builder: (context, _) => DoorSine(),
   ));
 }
 
-// Working app name is DoorSine/Door~
+// Main app class
 class DoorSine extends StatelessWidget {
   DoorSine({Key? key}) : super(key: key);
 
@@ -37,7 +37,6 @@ class DoorSine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //return const TestingPage();
 
     return FutureBuilder(
       future: _init,
@@ -50,7 +49,7 @@ class DoorSine extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
-            return LoginPage();
+            return const LoginPage();
           }
 
           return const Scaffold(
