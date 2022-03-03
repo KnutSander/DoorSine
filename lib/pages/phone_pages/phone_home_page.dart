@@ -4,8 +4,10 @@
 
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:capstone_project/notification_service.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class PhoneHomePage extends StatefulWidget {
   PhoneHomePage({Key? key, required this.lecturer}) : super(key: key);
@@ -38,6 +40,10 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   widget.lecturer.busy = !widget.lecturer.busy;
                 });
                 FirebaseConnector.uploadData(widget.lecturer);
+                NotificationService.displayNotification(
+                  title: "Test",
+                  body: "This is a test"
+                );
               },
               style: ButtonStyle(
                   backgroundColor: widget.lecturer.busy
@@ -67,79 +73,6 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                       MediaQuery.of(context).size.width / 1.5,
                       MediaQuery.of(context).size.height / 10))),
             )
-          ],
-        ),
-      ),
-    );
-
-    return SafeArea(
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    'Available',
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Transform.scale(
-                    scale: 1.5,
-                    child: Switch(
-                      value: widget.lecturer.busy,
-                      onChanged: (bool value) {
-                        setState(() {
-                          widget.lecturer.busy = value;
-                        });
-                        FirebaseConnector.uploadData(widget.lecturer);
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: Text(
-                  'Busy',
-                  style: Theme.of(context).textTheme.headline5,
-                ))
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    'In Office',
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Transform.scale(
-                    scale: 1.5,
-                    child: Switch(
-                      value: widget.lecturer.outOfOffice,
-                      onChanged: (bool value) {
-                        setState(() {
-                          widget.lecturer.outOfOffice = value;
-                        });
-                        FirebaseConnector.uploadData(widget.lecturer);
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: Text(
-                  'Out of Office',
-                  style: Theme.of(context).textTheme.headline5,
-                ))
-              ],
-            ),
           ],
         ),
       ),

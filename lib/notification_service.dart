@@ -5,17 +5,18 @@
 // Imports
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-// Singleton objet for handling notifications
 class NotificationService {
-  // Static reference to itself
-  static final NotificationService _notificationService =
-      NotificationService._internal();
+  static final _notificationPlugin = FlutterLocalNotificationsPlugin();
 
-  // A factory constructor that doesn't create a new instance every call
-  factory NotificationService(){
-    return _notificationService;
+  static Future _notificationDetails() async {
+    return NotificationDetails(
+        android: AndroidNotificationDetails('Notification', 'Notification',
+            importance: Importance.max));
   }
 
-  // Cache constructor
-  NotificationService._internal();
+  static Future displayNotification(
+      {int id = 0, String? title, String? body, String? payload}) async {
+    _notificationPlugin.show(id, title, body, await _notificationDetails(),
+        payload: payload);
+  }
 }
