@@ -159,7 +159,7 @@ class _CallPageState extends State<CallPage> {
     final List<StatefulWidget> list = [];
     list.add(RtcLocalView.SurfaceView());
     for (var uid in _users) {
-      list.add(RtcRemoteView.SurfaceView(uid: uid));
+      list.add(RtcRemoteView.SurfaceView(uid: uid, channelId: widget.channelName,));
     }
     return list;
   }

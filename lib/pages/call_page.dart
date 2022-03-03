@@ -213,6 +213,7 @@ class _CallPageState extends State<CallPage> {
     list.add(RtcLocalView.SurfaceView());
     for (var uid in _usedIDs) {
       list.add(RtcRemoteView.SurfaceView(
+        channelId: widget.channelName,
         uid: uid,
         renderMode: VideoRenderMode.Fit,
       ));

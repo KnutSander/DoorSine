@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 02/03/2022
+/// Last updated: 03/03/2022
 
 // Imports
 import 'package:capstone_project/firebase_connector.dart';
@@ -10,11 +10,21 @@ import 'package:capstone_project/widgets/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:provider/provider.dart';
 
 // App ID used for calling
 const appID = "d73f28067efd4f2bb80d756a87326e33";
+
+// Initialise the notification plugin
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+// Initialise the android side of the plugin
+const AndroidInitializationSettings androidInitializationSettings =
+    AndroidInitializationSettings('app_icon');
+
 
 // Main function
 void main() {

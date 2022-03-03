@@ -77,11 +77,14 @@ dependencies:
   # This Flutter plugin is a wrapper for Agora Video SDK. Agora.io provides building blocks for you
   # to add real-time voice and video communications through a simple and powerful SDK
   # Version 4.2.1 causes an error, so not updating yet
-  agora_rtc_engine: 4.2.0
+  agora_rtc_engine:
 
   # This plugin provides a cross-platform (iOS, Android) API to request permissions and check their
   # status. You can also open the device's app settings so users can grant a permission.
   permission_handler:
+
+  # A cross platform plugin for displaying local notifications.
+  flutter_local_notifications:
 
 flutter_icons:
   image_path: "media/images/DoorSine_V1.png"
