@@ -68,6 +68,7 @@ class DoorSine extends StatelessWidget {
         // Everything must be and is inside it
         return MaterialApp(
           title: 'DoorSine',
+          debugShowCheckedModeBanner: false,
           theme: AppTheme.appTheme,
           home: loadPage(),
         );
