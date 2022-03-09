@@ -4,6 +4,7 @@
 
 // Imports
 import 'package:capstone_project/firebase_connector.dart';
+import 'package:capstone_project/notification_service.dart';
 import 'package:capstone_project/pages/login_page.dart';
 import 'package:capstone_project/widgets/app_theme.dart';
 
@@ -17,12 +18,14 @@ import 'package:provider/provider.dart';
 const appID = "d73f28067efd4f2bb80d756a87326e33";
 
 // Main function
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(ChangeNotifierProvider(
     create: (context) => FirebaseConnector(),
     builder: (context, _) => DoorSine(),
   ));
 }
+
 
 // Main App class
 class DoorSine extends StatelessWidget {
@@ -65,6 +68,7 @@ class DoorSine extends StatelessWidget {
         // Everything must be and is inside it
         return MaterialApp(
           title: 'DoorSine',
+          debugShowCheckedModeBanner: false,
           theme: AppTheme.appTheme,
           home: loadPage(),
         );

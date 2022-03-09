@@ -35,6 +35,7 @@ class TabletCalendarPage extends StatefulWidget {
 
 class _TabletCalendarPageState extends State<TabletCalendarPage> {
   late DeviceCalendarPlugin _deviceCalendarPlugin;
+  late Calendar _deviceCalendar, _outlookCalendar;
   List<Calendar> _calendars = [];
   List<Event> _events = [];
 
@@ -67,9 +68,18 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
         future: _getEvents(),
         builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
           if (snapshot.hasError) {
-            return Scaffold(
-                body:
-                    Center(child: Text("Error: " + snapshot.error.toString())));
+            if (snapshot.error.runtimeType.toString() == 'LateError') {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(
+                    value: null,
+                  ),
+                ),
+              );
+            } else {
+              return Scaffold(
+                  body: Center(child: Text(snapshot.error.toString())));
+            }
           }
 
           if (snapshot.data == [] || snapshot.data == null) {
@@ -212,11 +222,11 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       title: Center(child: Text('Page Info')),
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text("On this page you can see when the lecturer has events scheduled\n"
-              "You can book a meeting if it isn't to close to any of these events\n"
-              "The lecturer will contact you regarding the specifics of you meeting")
-        ),
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                "On this page you can see when the lecturer has events scheduled\n"
+                "You can book a meeting if it isn't to close to any of these events\n"
+                "The lecturer will contact you regarding the specifics of you meeting")),
       ],
     );
   }
@@ -250,7 +260,6 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       if (start.year == event.start!.year &&
           start.month == event.start!.month &&
           start.day == event.start!.day) {
-
         // Skip checking all day events
         bool? allDay = event.allDay;
         if (allDay != null) {
@@ -267,9 +276,10 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                       children: <Widget>[
                         Center(
                           child: Text(
-                              "The time you chose isn't available, please refer\n"
-                              "to the calendar to choose an available time",
-                          textScaleFactor: 2.0,),
+                            "The time you chose isn't available, please refer\n"
+                            "to the calendar to choose an available time",
+                            textScaleFactor: 2.0,
+                          ),
                         ),
                       ],
                     ));
@@ -285,9 +295,10 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
                       children: <Widget>[
                         Center(
                           child: Text(
-                              "The time you chose is to close to another event,\n "
-                              "please refer to the calendar to choose an available time",
-                            textScaleFactor: 2.0,),
+                            "The time you chose is to close to another event,\n "
+                            "please refer to the calendar to choose an available time",
+                            textScaleFactor: 2.0,
+                          ),
                         ),
                       ],
                     ));
@@ -297,8 +308,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       }
     }
 
-    // TODO: Change the calendar id variable to be more reliable
-    Event event = Event(_calendars[5].id,
+    Event event = Event(_deviceCalendar.id,
         title: "Meeting",
         start: start,
         end: end,
@@ -314,7 +324,11 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
           context: context,
           builder: (BuildContext context) => const SimpleDialog(
                 children: <Widget>[
-                  Center(child: Text("Meeting created successfully!", textScaleFactor: 2.0,)),
+                  Center(
+                      child: Text(
+                    "Meeting created successfully!",
+                    textScaleFactor: 2.0,
+                  )),
                 ],
               )).then(
           // Forces a page reload to show that the event has been added
@@ -324,8 +338,6 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     } else {
       print('Error creating event');
     }
-
-    // TODO: Reload events after the appointment is created
   }
 
   void _getCalendars() async {
@@ -345,6 +357,15 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       setState(() {
         _calendars = calResults.data as List<Calendar>;
       });
+
+      // Assign outlook and device calendar
+      for (Calendar cal in _calendars) {
+        if (cal.name == 'Calendar') {
+          _outlookCalendar = cal;
+        } else if (cal.name == widget.userdata!.email) {
+          _deviceCalendar = cal;
+        }
+      }
     } on PlatformException catch (e) {
       print(e);
     }
@@ -355,22 +376,11 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       _getCalendars();
     }
 
-    var outlookCalendar, personalCalendar;
-    for (Calendar cal in _calendars) {
-      // Looking for 'Calendar"=' because that is the default name outlook
-      // is imported with to the google calendar
-      if (cal.name == 'Calendar') {
-        outlookCalendar = cal;
-      } else if (cal.name == widget.userdata!.email) {
-        personalCalendar = cal;
-      }
-    }
-
     List<Event> combinedEvents = [];
 
-    if (outlookCalendar != null) {
+    if (_outlookCalendar != null) {
       var events = await _deviceCalendarPlugin.retrieveEvents(
-          outlookCalendar.id,
+          _outlookCalendar.id,
           RetrieveEventsParams(
               startDate: DateTime(DateTime.now().year),
               endDate: DateTime(DateTime.now().year + 1)));
@@ -384,9 +394,9 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
       }
     }
 
-    if (personalCalendar != null) {
+    if (_deviceCalendar != null) {
       var events = await _deviceCalendarPlugin.retrieveEvents(
-          personalCalendar.id,
+          _deviceCalendar.id,
           RetrieveEventsParams(
               startDate: DateTime(DateTime.now().year),
               endDate: DateTime(DateTime.now().year + 1)));

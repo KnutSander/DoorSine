@@ -37,7 +37,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 100),
+        padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 80),
         child: Form(
           child: Center(
             child: Column(

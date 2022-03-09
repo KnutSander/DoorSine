@@ -57,7 +57,9 @@ class _PhoneMainState extends State<PhoneMain> {
         lecturerEmail: lecturer.email,
       );
     } else if (_curPage == 3) {
-      return const PhoneCalendarPage();
+      return PhoneCalendarPage(
+        lecturerEmail: lecturer.email,
+      );
     } else {
       return PhoneSettingsPage(lecturer: lecturer);
     }

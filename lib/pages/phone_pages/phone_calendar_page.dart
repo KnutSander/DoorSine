@@ -4,6 +4,7 @@
 
 import 'dart:collection';
 
+import 'package:capstone_project/models/lecturer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,9 @@ import 'package:timezone/standalone.dart';
 import 'package:capstone_project/widgets/calendar_data_source.dart';
 
 class PhoneCalendarPage extends StatefulWidget {
-  const PhoneCalendarPage({Key? key}) : super(key: key);
+  String lecturerEmail;
+
+  PhoneCalendarPage({Key? key, required  this.lecturerEmail}) : super(key: key);
 
   @override
   State<PhoneCalendarPage> createState() => _PhoneCalendarPageState();
@@ -25,6 +28,7 @@ class PhoneCalendarPage extends StatefulWidget {
 
 class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
   late DeviceCalendarPlugin _deviceCalendarPlugin;
+  late Calendar _deviceCalendar, _outlookCalendar;
   String? calendarID;
   List<Calendar> _calendars = [];
   List<Event> _events = [];
@@ -50,35 +54,60 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
       setState(() {
         _calendars = calResults.data as List<Calendar>;
       });
+
+      // Assign outlook and device calendar
+      for (Calendar cal in _calendars) {
+        if (cal.name == 'Calendar') {
+          _outlookCalendar = cal;
+        } else if (cal.name == widget.lecturerEmail) {
+          _deviceCalendar = cal;
+        }
+      }
+
     } on PlatformException catch (e) {
       print(e);
     }
   }
 
-  Future<UnmodifiableListView<Event>?> _getEvents() async {
+  Future<List<Event>> _getEvents() async {
     if (_calendars.isEmpty) {
       _getCalendars();
     }
 
-    var outlookCalendar;
-    for (Calendar cal in _calendars) {
-      if (cal.name == 'Calendar') {
-        outlookCalendar = cal;
-        break;
-      }
-    }
+    List<Event> combinedEvents = [];
 
-    if (outlookCalendar != null) {
-      // Should get all events this year
+    if (_outlookCalendar != null) {
       var events = await _deviceCalendarPlugin.retrieveEvents(
-          outlookCalendar.id,
+          _outlookCalendar.id,
           RetrieveEventsParams(
               startDate: DateTime(DateTime.now().year),
               endDate: DateTime(DateTime.now().year + 1)));
-      return events.data;
-    } else {
-      print('No Outlook Calendar');
+
+      UnmodifiableListView<Event>? list = events.data;
+
+      if (list!.isNotEmpty) {
+        for (Event e in list) {
+          combinedEvents.add(e);
+        }
+      }
     }
+
+    if (_deviceCalendar != null) {
+      var events = await _deviceCalendarPlugin.retrieveEvents(
+          _deviceCalendar.id,
+          RetrieveEventsParams(
+              startDate: DateTime(DateTime.now().year),
+              endDate: DateTime(DateTime.now().year + 1)));
+
+      UnmodifiableListView<Event>? list = events.data;
+
+      if (list!.isNotEmpty) {
+        for (Event e in list) {
+          combinedEvents.add(e);
+        }
+      }
+    }
+    return combinedEvents;
   }
 
   CDS _getEventsDataSource() {
@@ -102,10 +131,20 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
     return FutureBuilder(
         future: _getEvents(),
         builder: (BuildContext context,
-            AsyncSnapshot<UnmodifiableListView<Event>?> snapshot) {
+            AsyncSnapshot<List<Event>> snapshot) {
           if (snapshot.hasError) {
-            return const Scaffold(
-                body: Center(child: Text('Something went wrong')));
+            if (snapshot.error.runtimeType.toString() == 'LateError') {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(
+                    value: null,
+                  ),
+                ),
+              );
+            } else {
+              return Scaffold(
+                  body: Center(child: Text(snapshot.error.toString())));
+            }
           }
 
           if (!snapshot.hasData) {
