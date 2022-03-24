@@ -1,8 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 08/10/2021
+/// Last updated: 24/03/2021
 
-//  Create a class to represent the lecturers
+//  A class that represents a lecturer and what it stores
 class Lecturer {
   String title;
   String name;
@@ -65,10 +65,4 @@ class Lecturer {
     outOfOffice = map['out of office'];
   }
 
-  // toString method to visualize the information about the lecturer nicely
-  // TODO: Update this method
-  @override
-  String toString() {
-    return ' $title $name, busy: $busy, outOfOffice: $outOfOffice';
-  }
 }

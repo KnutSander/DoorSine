@@ -3,12 +3,13 @@ List of all classes and which ones I have cleaned so far.
 The old_pages and testing folders will be removed  
 
 ## lib
-main.dart 
-main_copy.dart 
-firebase_connector.dart  
+main.dart X  
+main_copy.dart X  
+firebase_connector.dart X  
+notification_service.dart
 
 ### models
-lecturer.dart  
+lecturer.dart X
 
 ### pages
 call_page.dart  
@@ -31,6 +32,6 @@ tablet_call_page.dart
 tablet_messages_page.dart  
 
 ### widgets
-app_theme.dart  
-calendar_data_source.dart  
-message_widget.dart  
+app_theme.dart X  
+calendar_data_source.dart X  
+message_widget.dart X
