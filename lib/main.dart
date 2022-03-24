@@ -1,10 +1,14 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
 /// Last updated: 03/03/2022
-
+/*
+ * main.dart
+ *
+ * This is the starting class of the entire app, the backbone from which
+ * everything else builds of from
+ */
 // Imports
 import 'package:capstone_project/firebase_connector.dart';
-import 'package:capstone_project/notification_service.dart';
 import 'package:capstone_project/pages/login_page.dart';
 import 'package:capstone_project/widgets/app_theme.dart';
 

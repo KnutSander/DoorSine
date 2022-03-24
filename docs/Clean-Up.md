@@ -3,8 +3,8 @@ List of all classes and which ones I have cleaned so far.
 The old_pages and testing folders will be removed  
 
 ## lib
-main.dart x  
-main_copy.dart x  
+main.dart 
+main_copy.dart 
 firebase_connector.dart  
 
 ### models
