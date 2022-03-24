@@ -46,7 +46,7 @@ class _PhoneMainState extends State<PhoneMain> {
     } else if (_curPage == 1) {
       return PhoneMessagePage(lecturer: lecturer);
     } else if (_curPage == 2) {
-      return const PhoneCalendarPage();
+      return const PhoneCalendarPage(lecturerEmail: '',);
     } else {
       return PhoneSettingsPage(lecturer: lecturer);
     }

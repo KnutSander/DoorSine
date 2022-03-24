@@ -1,26 +1,32 @@
-# My Capstone Project.
-### Welcome one and all to my Capstone Project!
-The purpose of this project is to digitise the name signs outside your office and add useful  
-functionalities to it, both for the owner of the office and whoever is outside the office.  
-The app is created with a school location in mind, but could be used in similar situations as well.
+# DoorSine
+![App Logo](./android/app/src/main/res/mipmap-xxxhdpi/app_icon_round.png "DoorSine")
+### Capstone Project 2021/2022, University of Essex
+This is the repository of my Capstone Project undertaken as my final year project at the  
+University of Essex in the academic year 2021/2022.  
+The project was under the supervision of Dr. Shoaib Jameel.
 
-## Main goals
-### Staff
-- Set their availability as to not be disturbed
-- Let someone outside their door if they are in or out of office
-- Set available times for meetings based on their calender schedule
-- Reply to quick messages from someone outside their office
-- Share their contact info with people who arrive at their office
+## Project Description
+The goal of the project was to create an app that would replace the traditional door signs of  
+office doors with an interactive application that staff at the school could use to signal to  
+anyone outside their office whether they are available or not. With additional functionalities like  
+messaging, calling, booking meetings and more.
 
-### Student
-- Find out if the staff they are looking for is available
-- See if the staff they are looking for is in their office or not
-- Request meetings with the staff based on the staffs availability
-- Send the staff quick messages with small questions
-- Get the staffs contact info if needed
+The finished project has evolved beyond its original scope of only being implemented in a school  
+environment to an application that is industry ready. It can be implemented by as few as a single  
+person in a workplace to as many as the entire work force of a corporation.  
 
-## Stretch Goals
-These goals are pretty out there, but I would like to attempt them at some point.
-- Log in system for users outside the door
-- Search for lecturers, to find their office or contact them via the tablet currently being used
-- QR code that can be scanned to open the email app on the users phone to send the staff an email
+## Project Features
+* An easy and intuitive way for the office owner to signal of they are available/busy or in/out of
+office. This provides a visitor a clear picture of what action to take when arriving at their door.
+* A quick and convenient way for a person at the door to communicate with the office owner via
+instant messaging. Messages are sent and received almost instantly through the online database.
+* A stable and fast way to have a video conversation through the two sides of the app. A
+visitor can easily request a video call when outside the office if necessary.
+* A robust meeting booking system that interfaces with the office owners calendar to give someone
+who want to meet them a good picture of when they are available, and a way to book a meeting 
+through the app.
+* A minimalistic and efficient user interface that is easy to navigate and understand, and gives
+the users of both sides of the app the functionality needed to accomplish what they need to do.
+* A safe and secure login system that stores the personal data safely and encrypted in the cloud.
+* An account creation that supports users that want to build their account from scratch, or
+import data from their Microsoft account to build their info from.
