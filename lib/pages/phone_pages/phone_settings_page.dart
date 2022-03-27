@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 02/03/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/login_page.dart';
@@ -10,25 +11,33 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
+// PhoneSettingsPage allows the lecturer to edit their details
 class PhoneSettingsPage extends StatefulWidget {
+  // Constructor
   const PhoneSettingsPage({Key? key, required this.lecturer}) : super(key: key);
 
+  // Lecturer object
   final Lecturer lecturer;
 
+  // Create state function
   @override
   State<PhoneSettingsPage> createState() => _PhoneSettingsPageState();
 }
 
+// State class all StatefulWidgets use
 class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
+  // Controllers to retrieve the text from the text fields
   final TextEditingController _title = TextEditingController();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _officeNumber = TextEditingController();
   final TextEditingController _officeHours = TextEditingController();
   final TextEditingController _pictureLink = TextEditingController();
 
-  // Allow changing of title, name, office hours and number, picture link
+  // Main build function
   @override
   Widget build(BuildContext context) {
+
+    // Get the info from the lecturer to fill the text fields
     _title.text = widget.lecturer.title;
     _name.text = widget.lecturer.name;
     _officeNumber.text = widget.lecturer.officeNumber;
@@ -118,8 +127,6 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                   decoration: const InputDecoration(hintText: 'Picture Link'),
                   minLines: 3,
                   maxLines: 6,
-                  // TODO: Implement picture link validator somehow
-                  // TODO: Implement picture uploading
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your office hours';
@@ -155,6 +162,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     );
   }
 
+  // Upload the updated info
   void _updateInfo() {
     widget.lecturer.title = _title.text;
     widget.lecturer.name = _name.text;
@@ -163,9 +171,9 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
     widget.lecturer.pictureLink = _pictureLink.text;
     FirebaseConnector.uploadData(widget.lecturer);
     setState(() {});
-    // TODO: Tell user it was successful
   }
 
+  // Log out functionality
   void _logout() async {
     await FirebaseAuth.instance.signOut();
     Navigator.push(

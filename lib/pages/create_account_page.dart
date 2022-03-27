@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 16/02/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 
@@ -11,16 +12,22 @@ import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// CreateAccountPage is where new users can create an account
 class CreateAccountPage extends StatefulWidget {
+  // Constructor
   const CreateAccountPage({Key? key}) : super(key: key);
 
+  // Create state function
   @override
   State<StatefulWidget> createState() => _CreateAccountState();
 }
 
+// State class all StatefulWidgets use
 class _CreateAccountState extends State<CreateAccountPage> {
+  // Key to make sure the form has been completed correctly
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // Controllers to retrieve the text from the form text fields
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _passwordConfirm = TextEditingController();
@@ -29,8 +36,10 @@ class _CreateAccountState extends State<CreateAccountPage> {
   final TextEditingController _officeNumber = TextEditingController();
   final TextEditingController _officeHours = TextEditingController();
 
+  // Boolean to check if creation was successful
   bool creationSuccessful = false;
 
+  // Build function
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,6 +215,7 @@ class _CreateAccountState extends State<CreateAccountPage> {
     );
   }
 
+  // Attempts to create an account given the information provided in the form
   Future<void> createAccount() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -234,6 +244,7 @@ class _CreateAccountState extends State<CreateAccountPage> {
     }
   }
 
+  // Attempts to create an account using a Microsoft login
   Future<void> createAccountWithMicrosoft() async {
     try {
       User? user = await FirebaseAuthOAuth().openSignInFlow("microsoft.com", ["email"], {"locale": "en"});

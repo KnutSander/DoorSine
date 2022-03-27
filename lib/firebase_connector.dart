@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/03/2022
+/// Last updated: 27/03/2022
 
 // Imports
 import 'package:capstone_project/widgets/message_widget.dart';
@@ -14,7 +14,6 @@ import 'package:flutter/cupertino.dart';
 
 // Class that connects Firebase to the app
 class FirebaseConnector extends ChangeNotifier {
-
   // Constructor
   FirebaseConnector() {init();}
 

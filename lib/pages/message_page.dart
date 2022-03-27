@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/widgets/message_widget.dart';
 
@@ -11,25 +12,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+// MessagePage class is used by both sides of the app to send messages
 class MessagePage extends StatefulWidget {
-  final String sender;
-  final String lecturerEmail;
-
+  // Constructor
   const MessagePage(
       {Key? key, required this.sender, required this.lecturerEmail})
       : super(key: key);
 
+  // Name of the sender and the email of the lecturer
+  final String sender;
+  final String lecturerEmail;
+
+  // Create state function
   @override
   State<StatefulWidget> createState() => _MessagePageState();
 }
 
+// State class all StatefulWidgets use
 class _MessagePageState extends State<MessagePage> {
+  // List of messages, using the Message widget
   final List<Message> _messages = [];
+
+  // Controller to retrieve the text from the message field
   final _messageController = TextEditingController();
+
+  // Boolean to check if the user is writing
   bool _isWriting = false;
+
+  // QuerySnapshot that contains and retrieves messages
   late Stream<QuerySnapshot<Map<String, dynamic>>> _messageStream;
+
+  // QuerySnapshot to compare with to lower number of updates to look for
+  // new messages
   AsyncSnapshot<QuerySnapshot> lastSnapshot = const AsyncSnapshot.nothing();
 
+  // Initialise function called when the state is created
   @override
   initState() {
     super.initState();
@@ -40,6 +57,7 @@ class _MessagePageState extends State<MessagePage> {
         .snapshots();
   }
 
+  // Main build function
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -130,6 +148,7 @@ class _MessagePageState extends State<MessagePage> {
         });
   }
 
+  // Widget that messages is typed into
   Widget _createMessagingField() {
     return Row(
       children: <Widget>[
@@ -152,6 +171,7 @@ class _MessagePageState extends State<MessagePage> {
     );
   }
 
+  // Uploads the message to the online database
   void _sendMessage(String text) {
     _messageController.clear();
     setState(() {

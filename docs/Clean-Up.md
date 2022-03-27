@@ -12,24 +12,24 @@ notification_service.dart
 lecturer.dart X
 
 ### pages
-call_page.dart  
-create_account_page.dart  
-login_page.dart  
-message_page.dart  
-phone_main.dart  
-tablet_main.dart
+call_page.dart X  
+create_account_page.dart X  
+login_page.dart X  
+message_page.dart X  
+phone_main.dart X  
+tablet_main.dart X
 
 #### phone_pages
-phone_calendar_page.dart  
-phone_call_page.dart  
-phone_home_page.dart  
-phone_messages_page.dart  
-phone_settings_page.dart  
+phone_calendar_page.dart X  
+phone_call_page.dart X  
+phone_home_page.dart X  
+phone_messages_page.dart X  
+phone_settings_page.dart X
 
 #### tablet_pages
-tablet_calendar_page.dart  
-tablet_call_page.dart  
-tablet_messages_page.dart  
+tablet_calendar_page.dart X  
+tablet_call_page.dart X  
+tablet_messages_page.dart X  
 
 ### widgets
 app_theme.dart X  

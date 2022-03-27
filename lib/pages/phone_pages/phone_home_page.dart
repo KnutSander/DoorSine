@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/notification_service.dart';
@@ -9,16 +10,22 @@ import 'package:capstone_project/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+// PhoneHomePage is the main page of the phone side of the app
 class PhoneHomePage extends StatefulWidget {
+  // Constructor
   PhoneHomePage({Key? key, required this.lecturer}) : super(key: key);
 
+  // Lecturer object
   final Lecturer lecturer;
 
+  // Create state function
   @override
   State<PhoneHomePage> createState() => _PhoneHomePageState();
 }
 
+// State class all StatefulWidgets use
 class _PhoneHomePageState extends State<PhoneHomePage> {
+  // Main build function
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 02/03/2022
+/// Last updated: 27/03/2022
 
+// imports
 import 'dart:async';
 
 import 'package:capstone_project/pages/tablet_main.dart';
@@ -13,17 +14,19 @@ import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:io';
-
 import 'create_account_page.dart';
 
+// LoginPage is the first page seen when opening the app
 class LoginPage extends StatefulWidget {
+  // Constructor
   const LoginPage({Key? key}) : super(key: key);
 
+  // Create state function
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
+// State class all StatefulWidgets use
 class _LoginPageState extends State<LoginPage> {
   // Used to validate the form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -36,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   late User user;
   AlertDialog _loginAlert = const AlertDialog();
 
+  // Initialise function called when the state is created
   @override
   void initState(){
     super.initState();
@@ -49,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  // Main build function
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,6 +166,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // Show dialogue pop-up if login was successful
   void _logInSuccess(BuildContext context) {
     showDialog(
         context: context,

@@ -1,10 +1,11 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 16/02/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/pages/tablet_pages/tablet_calendar_page.dart';
 import 'package:capstone_project/pages/tablet_pages/tablet_call_page.dart';
-import 'package:capstone_project/pages/tablet_pages/tablet_messages_page.dart';
+import 'package:capstone_project/pages/tablet_pages/tablet_message_page.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,21 +13,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
+// TabletMain class is the starting page of the tablet side of the app
 class TabletMain extends StatefulWidget {
+  // Constructor
   const TabletMain({Key? key, required this.userdata}) : super(key: key);
 
+  // User data
   final User? userdata;
 
+  // Create state function
   @override
   State<TabletMain> createState() => _TabletMainState();
 }
 
+// State class all StatefulWidgets use
 class _TabletMainState extends State<TabletMain> {
+  // Disabled label property
   MaterialStateProperty<Color> disabled =
       MaterialStateProperty.all<Color>(Colors.grey);
 
+  // The DocumentSnapshot that looks for updates on the database
   DocumentSnapshot<Object?>? lecturerData;
 
+  // Main build function
   @override
   Widget build(BuildContext context) {
     final Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturer =
@@ -77,7 +86,6 @@ class _TabletMainState extends State<TabletMain> {
               ? lecturerData!.get('picture link')
               : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
-          // TODO: Hide buttons based on lecturer availability and location
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.only(top: 30.0),
@@ -124,6 +132,7 @@ class _TabletMainState extends State<TabletMain> {
         });
   }
 
+  // Busy/Available labels
   Widget _busyOrAvailableWidgets(DocumentSnapshot<Object?>? lecturerData,
       MaterialStateProperty<Size> minLabelSize, TextStyle labelText) {
     return Column(
@@ -164,6 +173,7 @@ class _TabletMainState extends State<TabletMain> {
     );
   }
 
+  // In/Out of Office labels
   Widget _inOrOutOfOfficeWidget(DocumentSnapshot<Object?>? lecturerData,
       MaterialStateProperty<Size> minLabelSize, TextStyle labelText) {
     return Column(
@@ -205,6 +215,7 @@ class _TabletMainState extends State<TabletMain> {
     );
   }
 
+  // Message and call buttons
   Widget _messageAndCallButtons(DocumentSnapshot<Object?>? lecturerData,
       MaterialStateProperty<Size> minButtonSize, TextStyle buttonText) {
     return Row(
@@ -255,6 +266,7 @@ class _TabletMainState extends State<TabletMain> {
     );
   }
 
+  // Meeting and info buttons
   Widget _meetingAndInfoButtons(DocumentSnapshot<Object?> lecturerData,
       MaterialStateProperty<Size> minButtonSize, TextStyle buttonText) {
     return Row(
@@ -303,6 +315,7 @@ class _TabletMainState extends State<TabletMain> {
     );
   }
 
+  // Staff info button
   Widget _showStaffInfo(BuildContext context, DocumentSnapshot lecturerData) {
     return SimpleDialog(
       title: const Center(child: Text('Staff Info')),

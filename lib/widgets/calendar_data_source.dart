@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/03/2022
+/// Last updated: 27/03/2022
 
 // Imports
 import 'package:syncfusion_flutter_calendar/calendar.dart';

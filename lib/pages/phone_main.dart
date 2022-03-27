@@ -1,10 +1,11 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 26/01/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/phone_pages/phone_home_page.dart';
-import 'package:capstone_project/pages/phone_pages/phone_messages_page.dart';
+import 'package:capstone_project/pages/phone_pages/phone_message_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_call_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_settings_page.dart';
 import 'package:capstone_project/pages/phone_pages/phone_calendar_page.dart';
@@ -15,21 +16,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
+// PhoneMain class is what all the other phone pages builds of from
+// All other phone pages are displayed within PhoneMain
 class PhoneMain extends StatefulWidget {
+  // Constructor
   const PhoneMain({Key? key, required this.userdata}) : super(key: key);
 
+  // User information
   final User? userdata;
 
+  // Create state function
   @override
   State<PhoneMain> createState() => _PhoneMainState();
 }
 
+// State class all StatefulWidgets use
 class _PhoneMainState extends State<PhoneMain> {
+  // Integer to keep track of the current page
   int _curPage = 0;
+
+  // Lecturer information
   Lecturer lecturer = Lecturer.empty();
+
+  // Stream to look for updates
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _lecturerData;
 
-  // get the lecturer data in initState, so it doesn't have to reload between page changes
+  // Initialise function called when the state is created
   @override
   initState() {
     super.initState();
@@ -39,32 +51,7 @@ class _PhoneMainState extends State<PhoneMain> {
         .snapshots();
   }
 
-  // Changes BottomNavigationBar selection
-  void _changeView(int index) {
-    setState(() {
-      _curPage = index;
-    });
-  }
-
-  // Swaps body based on BottomNavigationBar selection
-  Widget _changeBody() {
-    if (_curPage == 0) {
-      return PhoneHomePage(lecturer: lecturer);
-    } else if (_curPage == 1) {
-      return PhoneMessagePage(lecturer: lecturer);
-    } else if (_curPage == 2) {
-      return PhoneCallPage(
-        lecturerEmail: lecturer.email,
-      );
-    } else if (_curPage == 3) {
-      return PhoneCalendarPage(
-        lecturerEmail: lecturer.email,
-      );
-    } else {
-      return PhoneSettingsPage(lecturer: lecturer);
-    }
-  }
-
+  // Main build function
   @override
   Widget build(BuildContext context) {
     _changeView(_curPage);
@@ -90,12 +77,12 @@ class _PhoneMainState extends State<PhoneMain> {
 
           DocumentSnapshot<Object?>? lecturerData = snapshot.data;
           Map<String, dynamic> data =
-              lecturerData!.data() as Map<String, dynamic>;
+          lecturerData!.data() as Map<String, dynamic>;
 
           // Got around the problem of the lecturer being updated to often by
           // limiting updates based on changes
           if ((lecturer.busy != data['busy'] ||
-                  lecturer.outOfOffice != data['out of office']) ||
+              lecturer.outOfOffice != data['out of office']) ||
               lecturer.email == '') {
             lecturer.fromMap(data);
           }
@@ -152,6 +139,33 @@ class _PhoneMainState extends State<PhoneMain> {
         });
   }
 
+  // Changes BottomNavigationBar selection
+  void _changeView(int index) {
+    setState(() {
+      _curPage = index;
+    });
+  }
+
+  // Swaps body based on BottomNavigationBar selection
+  Widget _changeBody() {
+    if (_curPage == 0) {
+      return PhoneHomePage(lecturer: lecturer);
+    } else if (_curPage == 1) {
+      return PhoneMessagePage(lecturer: lecturer);
+    } else if (_curPage == 2) {
+      return PhoneCallPage(
+        lecturerEmail: lecturer.email,
+      );
+    } else if (_curPage == 3) {
+      return PhoneCalendarPage(
+        lecturerEmail: lecturer.email,
+      );
+    } else {
+      return PhoneSettingsPage(lecturer: lecturer);
+    }
+  }
+
+  // Displays the page info
   Widget _displayPageInfo() {
     return SimpleDialog(
       title: const Center(child: Text('Page Info')),

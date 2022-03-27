@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 16/02/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,24 +20,42 @@ import 'package:timezone/standalone.dart';
 
 import 'package:capstone_project/widgets/calendar_data_source.dart';
 
+// TabletCalendarPage interfaces with the lecturers calendars and allows
+// the user to book meetings
 class TabletCalendarPage extends StatefulWidget {
+  // Constructor
   const TabletCalendarPage({
     Key? key,
     this.userdata,
     this.lecturerData,
   }) : super(key: key);
 
+  // User data
   final User? userdata;
+
+  // DocumentSnapshot to retrieve the lecturer information
   final DocumentSnapshot<Object?>? lecturerData;
 
+  // Create state function
   @override
   State<TabletCalendarPage> createState() => _TabletCalendarPageState();
 }
 
+// State class all StatefulWidgets use
 class _TabletCalendarPageState extends State<TabletCalendarPage> {
+  // Calendar plugin to interface with the device calendar
   late DeviceCalendarPlugin _deviceCalendarPlugin;
+
+  // The normal device calendar and outlook calendar
   late Calendar _deviceCalendar, _outlookCalendar;
+
+  // ID of the device calendar
+  String? calendarID;
+
+  // List of all calendars
   List<Calendar> _calendars = [];
+
+  // List of all events
   List<Event> _events = [];
 
   // Form variables
@@ -51,6 +70,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
   String _time = "";
   TimeOfDay _meetingTime = TimeOfDay.now();
 
+  // Controller to retrieve the text from the text fields
   final TextEditingController _personName = TextEditingController();
   final TextEditingController _personEmail = TextEditingController();
 
@@ -62,6 +82,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
         TimeOfDay.now().minute.toString().padLeft(2, '0');
   }
 
+  // Main build function
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -217,6 +238,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
         });
   }
 
+  // Displays the page info
   Widget _displayPageInfo() {
     return const SimpleDialog(
       title: Center(child: Text('Page Info')),
@@ -231,6 +253,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     );
   }
 
+  // Attempts to create an appointment
   void _createAppointment() async {
     Location location = Location(
         widget.lecturerData!.get('office number').toString(),
@@ -340,6 +363,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     }
   }
 
+  // Get the calendars from the device
   void _getCalendars() async {
     try {
       var permGranted = await _deviceCalendarPlugin.hasPermissions();
@@ -371,6 +395,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     }
   }
 
+  // Get the events from the calendar
   Future<List<Event>> _getEvents() async {
     if (_calendars.isEmpty) {
       _getCalendars();
@@ -412,6 +437,7 @@ class _TabletCalendarPageState extends State<TabletCalendarPage> {
     return combinedEvents;
   }
 
+  // Create the calendar datasource objects
   CDS _getEventsDataSource() {
     List<Appointment> appointments = <Appointment>[];
     for (Event event in _events) {

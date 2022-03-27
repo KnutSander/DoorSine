@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/03/2022
+/// Last updated: 27/03/2022
 
 // Imports
 import 'package:capstone_project/firebase_connector.dart';
@@ -28,10 +28,13 @@ Future<void> main() async {
 
 // Main App class
 class DoorSine extends StatelessWidget {
+  // Constructor
   DoorSine({Key? key}) : super(key: key);
 
+  // Initialises the connection to Firebase
   final Future<FirebaseApp> _init = Firebase.initializeApp();
 
+  // Main build function
   @override
   Widget build(BuildContext context) {
 

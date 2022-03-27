@@ -1,7 +1,8 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/02/2021
+/// Last updated: 27/03/2021
 
+// Imports
 import 'dart:convert';
 
 import 'package:capstone_project/main.dart';
@@ -14,29 +15,48 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
+// CallPage class is used by both sides of the app for calling
 class CallPage extends StatefulWidget {
-  final String channelName;
-
+  // Constructor
   const CallPage({Key? key, required this.channelName}) : super(key: key);
 
+  // Channel name is lecturer email
+  final String channelName;
+
+  // Create state function
   @override
   _CallPageState createState() => _CallPageState();
 }
 
+// State class all StatefulWidgets use
 class _CallPageState extends State<CallPage> {
+
+  // The ids of the connected users, list is necessary for functionality
   static final _usedIDs = <int>[];
+
+  // List of information strings when different events happen
   final _info = <String>[];
-  String baseUrl = 'https://door-sine.herokuapp.com'; //TODO: Find url of server
+
+  // Base url that links to Heroku, which generates the channel token
+  String baseUrl = 'https://door-sine.herokuapp.com';
+
+  // Starting user id
   int uid = 0;
+
+  // RtcEngine which connects the app to AgoraIO
   late RtcEngine _rtcEngine;
+
+  // Channel token
   late String token;
 
+  // Initialise function when state is created
   @override
   initState() {
     super.initState();
     initialise();
   }
 
+  // Dispose function when state is terminated
   @override
   void dispose() {
     _usedIDs.clear();
@@ -45,7 +65,28 @@ class _CallPageState extends State<CallPage> {
     super.dispose();
   }
 
+  // Main build function
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Stack(
+          children: <Widget>[
+            _recipientVideo(),
+            _callerVideo(),
+            _toolbar(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Initialise function that initialises everything the app needs
+  // to be able to call one another
   Future<void> initialise() async {
+
+    // Check that the app id has been set in main
     if (appID.isEmpty) {
       setState(() {
         _info.add('no App ID found, please provide an App ID');
@@ -53,6 +94,7 @@ class _CallPageState extends State<CallPage> {
       return;
     }
 
+    // More necessary initialisation of various variables and objects
     await _initRtcEngine();
     _addAgoraEventHandlers();
     await getToken();
@@ -66,11 +108,13 @@ class _CallPageState extends State<CallPage> {
         0);
   }
 
+  // Initialises the RtcEngine
   Future<void> _initRtcEngine() async {
     _rtcEngine = await RtcEngine.create(appID);
     await _rtcEngine.enableVideo();
   }
 
+  // Retrieve the token needed to initialise the call
   // Function adapted from https://gist.github.com/Meherdeep/25d4bdac5dad0c4547809754c9e8417e
   Future<void> getToken() async {
     final response = await http.get(Uri.parse(baseUrl +
@@ -135,22 +179,6 @@ class _CallPageState extends State<CallPage> {
         await _rtcEngine.renewToken(token);
       },
     ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            _recipientVideo(),
-            _callerVideo(),
-            _toolbar(),
-          ],
-        ),
-      ),
-    );
   }
 
   // Returns a video of the recipient, person on the other device

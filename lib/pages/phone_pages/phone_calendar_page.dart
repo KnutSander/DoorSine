@@ -1,10 +1,9 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/01/2022
+/// Last updated: 27/03/2022
 
 import 'dart:collection';
 
-import 'package:capstone_project/models/lecturer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,119 +11,43 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import 'package:device_calendar/device_calendar.dart';
 
-import 'package:timezone/src/date_time.dart';
-import 'package:timezone/standalone.dart';
-
 import 'package:capstone_project/widgets/calendar_data_source.dart';
 
+// PhoneCalendarPage class
 class PhoneCalendarPage extends StatefulWidget {
-  String lecturerEmail;
-
+  // Constructor
   PhoneCalendarPage({Key? key, required  this.lecturerEmail}) : super(key: key);
 
+  // Lecturer email
+  String lecturerEmail;
+
+  // Create state function
   @override
   State<PhoneCalendarPage> createState() => _PhoneCalendarPageState();
 }
 
+// State class all StatefulWidgets use
 class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
+  // Calendar plugin to interface with the device calendar
   late DeviceCalendarPlugin _deviceCalendarPlugin;
+
+  // The normal device calendar and outlook calendar
   late Calendar _deviceCalendar, _outlookCalendar;
+
+  // ID of the device calendar
   String? calendarID;
+
+  // List of all calendars
   List<Calendar> _calendars = [];
+
+  // List of all events
   List<Event> _events = [];
 
   _PhoneCalendarPageState() {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
   }
 
-  void _getCalendars() async {
-    try {
-      var permGranted = await _deviceCalendarPlugin.hasPermissions();
-      if (permGranted.isSuccess &&
-          (permGranted.data == null || permGranted.data == false)) {
-        permGranted = await _deviceCalendarPlugin.requestPermissions();
-        if (!permGranted.isSuccess ||
-            permGranted.data == null ||
-            permGranted.data == false) {
-          return;
-        }
-      }
-
-      final calResults = await _deviceCalendarPlugin.retrieveCalendars();
-      setState(() {
-        _calendars = calResults.data as List<Calendar>;
-      });
-
-      // Assign outlook and device calendar
-      for (Calendar cal in _calendars) {
-        if (cal.name == 'Calendar') {
-          _outlookCalendar = cal;
-        } else if (cal.name == widget.lecturerEmail) {
-          _deviceCalendar = cal;
-        }
-      }
-
-    } on PlatformException catch (e) {
-      print(e);
-    }
-  }
-
-  Future<List<Event>> _getEvents() async {
-    if (_calendars.isEmpty) {
-      _getCalendars();
-    }
-
-    List<Event> combinedEvents = [];
-
-    if (_outlookCalendar != null) {
-      var events = await _deviceCalendarPlugin.retrieveEvents(
-          _outlookCalendar.id,
-          RetrieveEventsParams(
-              startDate: DateTime(DateTime.now().year),
-              endDate: DateTime(DateTime.now().year + 1)));
-
-      UnmodifiableListView<Event>? list = events.data;
-
-      if (list!.isNotEmpty) {
-        for (Event e in list) {
-          combinedEvents.add(e);
-        }
-      }
-    }
-
-    if (_deviceCalendar != null) {
-      var events = await _deviceCalendarPlugin.retrieveEvents(
-          _deviceCalendar.id,
-          RetrieveEventsParams(
-              startDate: DateTime(DateTime.now().year),
-              endDate: DateTime(DateTime.now().year + 1)));
-
-      UnmodifiableListView<Event>? list = events.data;
-
-      if (list!.isNotEmpty) {
-        for (Event e in list) {
-          combinedEvents.add(e);
-        }
-      }
-    }
-    return combinedEvents;
-  }
-
-  CDS _getEventsDataSource() {
-    List<Appointment> appointments = <Appointment>[];
-    for (Event event in _events) {
-      appointments.add(Appointment(
-          color: const Color.fromRGBO(205, 61, 50, 1),
-          subject: event.title.toString(),
-          startTime: DateTime(event.start!.year, event.start!.month,
-              event.start!.day, event.start!.hour, event.start!.minute),
-          endTime: DateTime(event.end!.year, event.end!.month, event.end!.day,
-              event.end!.hour, event.end!.minute)));
-    }
-
-    return CDS(appointments);
-  }
-
+  // Main build function
   @override
   Widget build(BuildContext context) {
 
@@ -181,10 +104,95 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
           );
         });
   }
-}
 
-class CDS extends CalendarDataSource {
-  CDS(List<Appointment> appointments) {
-    this.appointments = appointments;
+  // Get the calendars from the device
+  void _getCalendars() async {
+    try {
+      var permGranted = await _deviceCalendarPlugin.hasPermissions();
+      if (permGranted.isSuccess &&
+          (permGranted.data == null || permGranted.data == false)) {
+        permGranted = await _deviceCalendarPlugin.requestPermissions();
+        if (!permGranted.isSuccess ||
+            permGranted.data == null ||
+            permGranted.data == false) {
+          return;
+        }
+      }
+
+      final calResults = await _deviceCalendarPlugin.retrieveCalendars();
+      setState(() {
+        _calendars = calResults.data as List<Calendar>;
+      });
+
+      // Assign outlook and device calendar
+      for (Calendar cal in _calendars) {
+        if (cal.name == 'Calendar') {
+          _outlookCalendar = cal;
+        } else if (cal.name == widget.lecturerEmail) {
+          _deviceCalendar = cal;
+        }
+      }
+
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
+  // Get the events from the calendar
+  Future<List<Event>> _getEvents() async {
+    if (_calendars.isEmpty) {
+      _getCalendars();
+    }
+
+    List<Event> combinedEvents = [];
+
+    if (_outlookCalendar != null) {
+      var events = await _deviceCalendarPlugin.retrieveEvents(
+          _outlookCalendar.id,
+          RetrieveEventsParams(
+              startDate: DateTime(DateTime.now().year),
+              endDate: DateTime(DateTime.now().year + 1)));
+
+      UnmodifiableListView<Event>? list = events.data;
+
+      if (list!.isNotEmpty) {
+        for (Event e in list) {
+          combinedEvents.add(e);
+        }
+      }
+    }
+
+    if (_deviceCalendar != null) {
+      var events = await _deviceCalendarPlugin.retrieveEvents(
+          _deviceCalendar.id,
+          RetrieveEventsParams(
+              startDate: DateTime(DateTime.now().year),
+              endDate: DateTime(DateTime.now().year + 1)));
+
+      UnmodifiableListView<Event>? list = events.data;
+
+      if (list!.isNotEmpty) {
+        for (Event e in list) {
+          combinedEvents.add(e);
+        }
+      }
+    }
+    return combinedEvents;
+  }
+
+  // Create the calendar datasource objects
+  CDS _getEventsDataSource() {
+    List<Appointment> appointments = <Appointment>[];
+    for (Event event in _events) {
+      appointments.add(Appointment(
+          color: const Color.fromRGBO(205, 61, 50, 1),
+          subject: event.title.toString(),
+          startTime: DateTime(event.start!.year, event.start!.month,
+              event.start!.day, event.start!.hour, event.start!.minute),
+          endTime: DateTime(event.end!.year, event.end!.month, event.end!.day,
+              event.end!.hour, event.end!.minute)));
+    }
+
+    return CDS(appointments);
   }
 }

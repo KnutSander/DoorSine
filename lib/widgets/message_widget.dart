@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 24/03/2022
+/// Last updated: 27/03/2022
 
 // Imports
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,15 +10,14 @@ import 'package:flutter/material.dart';
 
 // The wrapper class for messages in the app
 class Message extends StatelessWidget {
+  // Constructor
+  const Message({Key? key, required this.text, required this.sender,
+    required this.time}) : super(key: key);
 
   // Message info
   final String text;
   final String sender;
   final Timestamp time;
-
-  // Constructor
-  const Message({Key? key, required this.text, required this.sender,
-    required this.time}) : super(key: key);
 
   // Build method, creates the message object
   @override

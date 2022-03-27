@@ -1,24 +1,31 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 16/02/2022
+/// Last updated: 27/03/2022
 
+// Imports
 import 'package:capstone_project/pages/message_page.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// TabletMessagesPage uses MessagePage to send messages to the other side
+// of the app
 class TabletMessagesPage extends StatefulWidget{
+  // Constructor
+  const TabletMessagesPage({Key? key, required this.name, required this.lecturerEmail}) : super(key: key);
+
+  // Strings for name and lecturer email
   final String name;
   final String lecturerEmail;
 
-  const TabletMessagesPage({Key? key, required this.name, required this.lecturerEmail}) : super(key: key);
-
+  // Create state function
   @override
   State<StatefulWidget> createState() => _TabletMessagesPageState();
-
 }
 
+// State class all StatefulWidgets use
 class _TabletMessagesPageState extends State<TabletMessagesPage>{
+  // Main build function
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +46,7 @@ class _TabletMessagesPageState extends State<TabletMessagesPage>{
     );
   }
 
+  // Displays the page info
   Widget _displayPageInfo() {
     return const SimpleDialog(
       title: Center(child: Text('Page Info')),
@@ -51,5 +59,4 @@ class _TabletMessagesPageState extends State<TabletMessagesPage>{
       ],
     );
   }
-
 }
