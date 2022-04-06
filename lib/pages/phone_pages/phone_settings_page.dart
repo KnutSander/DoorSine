@@ -3,7 +3,7 @@
 /// Last updated: 27/03/2022
 
 // Imports
-import 'package:capstone_project/firebase_connector.dart';
+import 'package:capstone_project/widgets/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
 import 'package:capstone_project/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';

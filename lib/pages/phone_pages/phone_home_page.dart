@@ -3,9 +3,9 @@
 /// Last updated: 27/03/2022
 
 // Imports
-import 'package:capstone_project/firebase_connector.dart';
+import 'package:capstone_project/widgets/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
-import 'package:capstone_project/notification_service.dart';
+import 'package:capstone_project/widgets/notification_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
