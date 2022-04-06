@@ -18,7 +18,11 @@ const appID = "d73f28067efd4f2bb80d756a87326e33";
 
 // Main function
 Future<void> main() async {
+  // Create and initialise the WidgetsBinding
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Run the app using a ChangeNotifierProvider that
+  // looks for changes retrieved from Firebase
   runApp(ChangeNotifierProvider(
     create: (context) => FirebaseConnector(),
     builder: (context, _) => DoorSine(),
