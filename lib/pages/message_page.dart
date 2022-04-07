@@ -63,6 +63,7 @@ class _MessagePageState extends State<MessagePage> {
     return StreamBuilder<QuerySnapshot>(
         stream: _messageStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
           if (snapshot.hasError) {
             return const Scaffold(
                 body: Center(child: Text('Something went wrong')));

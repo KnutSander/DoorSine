@@ -60,6 +60,7 @@ class _PhoneMainState extends State<PhoneMain> {
         stream: _lecturerData,
         builder:
             (BuildContext builder, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
           if (snapshot.hasError) {
             return const Scaffold(
                 body: Center(child: Text('Something went wrong')));
