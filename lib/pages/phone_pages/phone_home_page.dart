@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/03/2022
+/// Last updated: 08/04/2022
 
 // Imports
 import 'package:capstone_project/widgets/firebase_connector.dart';
@@ -47,10 +47,6 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   widget.lecturer.busy = !widget.lecturer.busy;
                 });
                 FirebaseConnector.uploadData(widget.lecturer);
-                NotificationService.displayNotification(
-                  title: "Test",
-                  body: "This is a test"
-                );
               },
               style: ButtonStyle(
                   backgroundColor: widget.lecturer.busy

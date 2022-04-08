@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/03/2021
+/// Last updated: 08/04/2021
 
 // imports
 import 'dart:async';
@@ -33,7 +33,7 @@ class _PhoneCallPageState extends State<PhoneCallPage> {
     getPermissions();
   }
 
-  // Main build finction
+  // Main build function
   @override
   Widget build(BuildContext context) {
     return CallPage(channelName: widget.lecturerEmail);

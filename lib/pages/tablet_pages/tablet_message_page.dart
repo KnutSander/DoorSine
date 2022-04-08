@@ -10,9 +10,9 @@ import 'package:flutter/material.dart';
 
 // TabletMessagesPage uses MessagePage to send messages to the other side
 // of the app
-class TabletMessagesPage extends StatefulWidget{
+class TabletMessagePage extends StatefulWidget{
   // Constructor
-  const TabletMessagesPage({Key? key, required this.name, required this.lecturerEmail}) : super(key: key);
+  const TabletMessagePage({Key? key, required this.name, required this.lecturerEmail}) : super(key: key);
 
   // Strings for name and lecturer email
   final String name;
@@ -20,11 +20,11 @@ class TabletMessagesPage extends StatefulWidget{
 
   // Create state function
   @override
-  State<StatefulWidget> createState() => _TabletMessagesPageState();
+  State<StatefulWidget> createState() => _TabletMessagePageState();
 }
 
 // State class all StatefulWidgets use
-class _TabletMessagesPageState extends State<TabletMessagesPage>{
+class _TabletMessagePageState extends State<TabletMessagePage>{
   // Main build function
   @override
   Widget build(BuildContext context) {

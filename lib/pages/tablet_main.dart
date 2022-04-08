@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/03/2022
+/// Last updated: 08/04/2022
 
 // Imports
 import 'package:capstone_project/pages/tablet_pages/tablet_calendar_page.dart';
@@ -228,7 +228,7 @@ class _TabletMainState extends State<TabletMain> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TabletMessagesPage(
+                      builder: (context) => TabletMessagePage(
                             lecturerEmail: lecturerData!.get('email'),
                             name: "Visitor",
                           )));
