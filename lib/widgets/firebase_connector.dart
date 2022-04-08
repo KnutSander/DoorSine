@@ -1,6 +1,6 @@
 /// Created by Knut Sander Lien Blakkestad
 /// Essex Capstone Project 2021/2022
-/// Last updated: 27/03/2022
+/// Last updated: 08/04/2022
 
 // Imports
 import 'package:capstone_project/widgets/message_widget.dart';
@@ -15,7 +15,9 @@ import 'package:flutter/cupertino.dart';
 // Class that connects Firebase to the app
 class FirebaseConnector extends ChangeNotifier {
   // Constructor
-  FirebaseConnector() {init();}
+  FirebaseConnector() {
+    init();
+  }
 
   // Initialisation function
   Future<void> init() async {
@@ -25,8 +27,11 @@ class FirebaseConnector extends ChangeNotifier {
   }
 
   // Used to upload data about the given lecturer to Firebase
-  static void uploadData(Lecturer lecturer){
-    FirebaseFirestore.instance.collection('lecturer').doc(lecturer.email).set(<String, dynamic>{
+  static void uploadData(Lecturer lecturer) {
+    FirebaseFirestore.instance
+        .collection('lecturer')
+        .doc(lecturer.email)
+        .set(<String, dynamic>{
       'title': lecturer.title,
       'name': lecturer.name,
       'email': lecturer.email,
@@ -39,12 +44,15 @@ class FirebaseConnector extends ChangeNotifier {
   }
 
   // Used to send messages on the given lecturers channel
-  static void sendMessage(String lecturerEmail, Message message){
-    FirebaseFirestore.instance.collection('lecturer').doc(lecturerEmail)
-        .collection('messages').add(<String, dynamic>{
-          'name': message.sender,
-          'text': message.text,
-          'time': Timestamp.now(),
+  static void sendMessage(String lecturerEmail, Message message) {
+    FirebaseFirestore.instance
+        .collection('lecturer')
+        .doc(lecturerEmail)
+        .collection('messages')
+        .add(<String, dynamic>{
+      'name': message.sender,
+      'text': message.text,
+      'time': Timestamp.now(),
     });
   }
 }

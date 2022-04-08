@@ -47,6 +47,11 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   widget.lecturer.busy = !widget.lecturer.busy;
                 });
                 FirebaseConnector.uploadData(widget.lecturer);
+                NotificationService.displayNotification(
+                  title: "Message",
+                  body: "This is a message",
+                  payload: "Message payload"
+                );
               },
               style: ButtonStyle(
                   backgroundColor: widget.lecturer.busy
