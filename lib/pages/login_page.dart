@@ -7,6 +7,7 @@ import 'dart:async';
 
 import 'package:capstone_project/pages/tablet_main.dart';
 import 'package:capstone_project/pages/phone_main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
@@ -146,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text("Login with Microsoft"),
                         onPressed: () async {
                           await _microsoftLogIn();
-                          if (user.email == null) {
+                          if (_loginAlert.title != null) {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) => _loginAlert);
@@ -237,28 +238,33 @@ class _LoginPageState extends State<LoginPage> {
 
   // Logs inn using Microsoft credentials
   Future<void> _microsoftLogIn() async {
-    try {
-      user = (await FirebaseAuthOAuth()
-          .openSignInFlow("microsoft.com", ["email"], {"locale": "en"}))!;
+    // Get user info from Microsoft
+    user = (await FirebaseAuthOAuth()
+        .openSignInFlow("microsoft.com", ["email"], {"locale": "en"}))!;
+
+    // Try getting the user document
+    DocumentSnapshot<Map<String, dynamic>> data = await FirebaseFirestore
+        .instance
+        .collection('lecturer')
+        .doc(user.email)
+        .get();
+
+    // If user does not have any data, display error message
+    if (data.exists) {
       _loginAlert = const AlertDialog();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' ||
-          e.code == 'wrong-password' ||
-          e.code == 'invalid-email') {
-        _loginAlert = AlertDialog(
-          title: const Center(child: Text('Error')),
-          content:
-          const Text('No user with given email and password combination, '
-              'please try again or create an account'),
-          actions: <Widget>[
-            Center(
-              child: TextButton(
-                  onPressed: () => Navigator.pop(context, 'Close'),
-                  child: const Text('OK')),
-            )
-          ],
-        );
-      }
+    } else {
+      _loginAlert = AlertDialog(
+        title: const Center(child: Text('Error')),
+        content: const Text('No user linked with given Microsoft account, '
+            'please create an account'),
+        actions: <Widget>[
+          Center(
+            child: TextButton(
+                onPressed: () => Navigator.pop(context, 'Close'),
+                child: const Text('OK')),
+          )
+        ],
+      );
     }
   }
 }
