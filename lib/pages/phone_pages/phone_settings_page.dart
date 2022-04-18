@@ -26,6 +26,9 @@ class PhoneSettingsPage extends StatefulWidget {
 
 // State class all StatefulWidgets use
 class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
+  // Key to make sure the form has been completed correctly
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   // Controllers to retrieve the text from the text fields
   final TextEditingController _title = TextEditingController();
   final TextEditingController _name = TextEditingController();
@@ -47,6 +50,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
       child: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 80),
         child: Form(
+          key: _formKey,
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,7 +65,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                         decoration: const InputDecoration(hintText: 'Title.'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your title';
+                            return 'Information needed';
                           }
                           return null;
                         },
@@ -77,7 +81,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                             hintText: 'Last Name, First Name'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
+                            return 'Information needed';
                           }
                           return null;
                         },
@@ -96,7 +100,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                             const InputDecoration(hintText: 'Office Number'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your office number';
+                            return 'Information needed';
                           }
                           return null;
                         },
@@ -112,7 +116,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                             const InputDecoration(hintText: 'Office Hours'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your office hours';
+                            return 'Information needed';
                           }
                           return null;
                         },
@@ -128,7 +132,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                   maxLines: 6,
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your office hours';
+                      return 'Information needed';
                     }
                     return null;
                   },
@@ -142,7 +146,11 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
                             Theme.of(context).textTheme.headline6!.fontSize,
                         color: Colors.white),
                   ),
-                  onPressed: _updateInfo,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _updateInfo();
+                    }
+                  }
                 ),
                 Expanded(
                   child: Align(
@@ -163,6 +171,7 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
 
   // Upload the updated info
   void _updateInfo() {
+    print(_title.text + 'weeeeeeeeeeeeeeeeeeeeeeeeeeee');
     widget.lecturer.title = _title.text;
     widget.lecturer.name = _name.text;
     widget.lecturer.officeNumber = _officeNumber.text;
