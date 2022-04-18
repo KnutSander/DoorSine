@@ -240,6 +240,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       user = (await FirebaseAuthOAuth()
           .openSignInFlow("microsoft.com", ["email"], {"locale": "en"}))!;
+      _loginAlert = const AlertDialog();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' ||
           e.code == 'wrong-password' ||
