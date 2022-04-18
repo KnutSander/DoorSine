@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                             if (_formKey.currentState!.validate()) {
                               await _logIn();
                               // Await for logIn to finish before trying to show dialog
-                              if (user.email == null) {
+                              if (_loginAlert.title != null) {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
@@ -219,14 +219,16 @@ class _LoginPageState extends State<LoginPage> {
           e.code == 'wrong-password' ||
           e.code == 'invalid-email') {
         _loginAlert = AlertDialog(
-          title: const Text('Error'),
+          title: const Center(child: Text('Error')),
           content:
               const Text('No user with given email and password combination, '
                   'please try again or create an account'),
           actions: <Widget>[
-            TextButton(
-                onPressed: () => Navigator.pop(context, 'Close'),
-                child: const Text('OK'))
+            Center(
+              child: TextButton(
+                  onPressed: () => Navigator.pop(context, 'Close'),
+                  child: const Text('OK')),
+            )
           ],
         );
       }
@@ -238,8 +240,24 @@ class _LoginPageState extends State<LoginPage> {
     try {
       user = (await FirebaseAuthOAuth()
           .openSignInFlow("microsoft.com", ["email"], {"locale": "en"}))!;
-    } catch (e) {
-      print(e);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' ||
+          e.code == 'wrong-password' ||
+          e.code == 'invalid-email') {
+        _loginAlert = AlertDialog(
+          title: const Center(child: Text('Error')),
+          content:
+          const Text('No user with given email and password combination, '
+              'please try again or create an account'),
+          actions: <Widget>[
+            Center(
+              child: TextButton(
+                  onPressed: () => Navigator.pop(context, 'Close'),
+                  child: const Text('OK')),
+            )
+          ],
+        );
+      }
     }
   }
 }
