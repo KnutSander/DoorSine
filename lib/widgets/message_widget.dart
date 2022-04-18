@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 // The wrapper class for messages in the app
 class Message extends StatelessWidget {
   // Constructor
-  const Message({Key? key, required this.text, required this.sender,
-    required this.time}) : super(key: key);
+  const Message(
+      {Key? key, required this.text, required this.sender, required this.time})
+      : super(key: key);
 
   // Message info
   final String text;
@@ -28,13 +29,9 @@ class Message extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(sender, style: Theme.of(context).textTheme.headline5),
-          Container(
-            margin: const EdgeInsets.only(top: 2.0),
-              child: Text(text)
-          )
+          Container(margin: const EdgeInsets.only(top: 2.0), child: Text(text))
         ],
       ),
     );
   }
-
 }

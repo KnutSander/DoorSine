@@ -25,7 +25,6 @@ class PhoneCallPage extends StatefulWidget {
 
 // State class all StatefulWidgets use
 class _PhoneCallPageState extends State<PhoneCallPage> {
-
   // Initialise function
   @override
   void initState() {

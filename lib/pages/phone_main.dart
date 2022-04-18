@@ -60,7 +60,6 @@ class _PhoneMainState extends State<PhoneMain> {
         stream: _lecturerData,
         builder:
             (BuildContext builder, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
           if (snapshot.hasError) {
             return const Scaffold(
                 body: Center(child: Text('Something went wrong')));
@@ -78,12 +77,12 @@ class _PhoneMainState extends State<PhoneMain> {
 
           DocumentSnapshot<Object?>? lecturerData = snapshot.data;
           Map<String, dynamic> data =
-          lecturerData!.data() as Map<String, dynamic>;
+              lecturerData!.data() as Map<String, dynamic>;
 
           // Got around the problem of the lecturer being updated to often by
           // limiting updates based on changes
           if ((lecturer.busy != data['busy'] ||
-              lecturer.outOfOffice != data['out of office']) ||
+                  lecturer.outOfOffice != data['out of office']) ||
               lecturer.email == '') {
             lecturer.fromMap(data);
           }
@@ -197,7 +196,8 @@ class _PhoneMainState extends State<PhoneMain> {
             "This is what people trying to book meetings with you will see\n"
             "Simply add events to your calendar as normal and they will appear here");
       default:
-        return const Text("On this page you can change your display information\n"
+        return const Text(
+            "On this page you can change your display information\n"
             "Simply change what you need and press the update button to update the information");
     }
   }

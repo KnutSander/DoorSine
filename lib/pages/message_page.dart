@@ -63,7 +63,6 @@ class _MessagePageState extends State<MessagePage> {
     return StreamBuilder<QuerySnapshot>(
         stream: _messageStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
           if (snapshot.hasError) {
             return const Scaffold(
                 body: Center(child: Text('Something went wrong')));
@@ -105,40 +104,44 @@ class _MessagePageState extends State<MessagePage> {
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   itemBuilder: (_, int index) {
                     return Row(
-                          mainAxisAlignment: (_messages[index].sender == widget.sender
+                      mainAxisAlignment:
+                          (_messages[index].sender == widget.sender
                               ? MainAxisAlignment.end
                               : MainAxisAlignment.start),
-                          children: [
-                            IntrinsicWidth(
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/1.5),
-                                margin: const EdgeInsets.only(left: 2, right: 2, top: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: (_messages[index].sender == widget.sender
-                                      ? Colors.grey[300]
-                                      : Colors.redAccent[200]),
-                                ),
-                                padding: const EdgeInsets.all(8),
-                                alignment: (_messages[index].sender == widget.sender
-                                    ? Alignment.topRight
-                                    : Alignment.topLeft),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        _messages[index].sender,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        _messages[index].text,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                      children: [
+                        IntrinsicWidth(
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width / 1.5),
+                            margin: const EdgeInsets.only(
+                                left: 2, right: 2, top: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: (_messages[index].sender == widget.sender
+                                  ? Colors.grey[300]
+                                  : Colors.redAccent[200]),
                             ),
-                          ],
+                            padding: const EdgeInsets.all(8),
+                            alignment: (_messages[index].sender == widget.sender
+                                ? Alignment.topRight
+                                : Alignment.topLeft),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _messages[index].sender,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  _messages[index].text,
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),

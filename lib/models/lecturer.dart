@@ -13,7 +13,6 @@ class Lecturer {
   bool busy;
   bool outOfOffice;
 
-
   // Constructor
   Lecturer({
     required this.title,
@@ -27,15 +26,15 @@ class Lecturer {
   });
 
   // Empty constructor for
-  Lecturer.empty() :
-    title = '',
-    name = '',
-    email = '',
-    pictureLink = '',
-    officeHours = '',
-    officeNumber = '',
-    busy = false,
-    outOfOffice = false;
+  Lecturer.empty()
+      : title = '',
+        name = '',
+        email = '',
+        pictureLink = '',
+        officeHours = '',
+        officeNumber = '',
+        busy = false,
+        outOfOffice = false;
 
   // Function that converts the info about the lecturer into a Map
   // The keys must match the name of the columns in the database
@@ -64,5 +63,4 @@ class Lecturer {
     busy = map['busy'];
     outOfOffice = map['out of office'];
   }
-
 }

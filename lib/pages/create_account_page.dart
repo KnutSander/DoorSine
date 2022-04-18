@@ -73,7 +73,8 @@ class _CreateAccountState extends State<CreateAccountPage> {
                           child: TextFormField(
                             controller: _password,
                             obscureText: true,
-                            decoration: const InputDecoration(hintText: 'Password'),
+                            decoration:
+                                const InputDecoration(hintText: 'Password'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a password';
@@ -87,8 +88,8 @@ class _CreateAccountState extends State<CreateAccountPage> {
                           child: TextFormField(
                             controller: _passwordConfirm,
                             obscureText: true,
-                            decoration:
-                                const InputDecoration(hintText: 'Confirm Password'),
+                            decoration: const InputDecoration(
+                                hintText: 'Confirm Password'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a password';
@@ -107,7 +108,8 @@ class _CreateAccountState extends State<CreateAccountPage> {
                           flex: 1,
                           child: TextFormField(
                             controller: _title,
-                            decoration: const InputDecoration(hintText: 'Title'),
+                            decoration:
+                                const InputDecoration(hintText: 'Title'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your title';
@@ -138,8 +140,8 @@ class _CreateAccountState extends State<CreateAccountPage> {
                           flex: 1,
                           child: TextFormField(
                             controller: _officeNumber,
-                            decoration:
-                                const InputDecoration(hintText: 'Office Number'),
+                            decoration: const InputDecoration(
+                                hintText: 'Office Number'),
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your office number';
@@ -170,12 +172,13 @@ class _CreateAccountState extends State<CreateAccountPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           await createAccount();
-                          if(creationSuccessful){
+                          if (creationSuccessful) {
                             // Close creation screen and return to
                             Navigator.pop(context);
                             showDialog(
                               context: context,
-                              builder: (BuildContext context) => const SimpleDialog(
+                              builder: (BuildContext context) =>
+                                  const SimpleDialog(
                                 title: Text("Creation Successful"),
                                 children: <Widget>[
                                   Center(child: Text('Please log in')),
@@ -190,12 +193,13 @@ class _CreateAccountState extends State<CreateAccountPage> {
                         child: const Text('Create Account with Microsoft'),
                         onPressed: () async {
                           await createAccountWithMicrosoft();
-                          if(creationSuccessful){
+                          if (creationSuccessful) {
                             // Close creation screen and return to
                             Navigator.pop(context);
                             showDialog(
                               context: context,
-                              builder: (BuildContext context) => const SimpleDialog(
+                              builder: (BuildContext context) =>
+                                  const SimpleDialog(
                                 title: Text("Creation Successful"),
                                 children: <Widget>[
                                   Center(child: Text('Please log in')),
@@ -203,8 +207,7 @@ class _CreateAccountState extends State<CreateAccountPage> {
                               ),
                             );
                           }
-                        }
-                    ),
+                        }),
                   ],
                 ),
               ),
@@ -229,8 +232,7 @@ class _CreateAccountState extends State<CreateAccountPage> {
           officeHours: _officeHours.text,
           officeNumber: _officeNumber.text,
           busy: false,
-          outOfOffice: false
-      );
+          outOfOffice: false);
       FirebaseConnector.uploadData(newLecturer);
       creationSuccessful = true;
     } on FirebaseAuthException catch (e) {
@@ -247,8 +249,9 @@ class _CreateAccountState extends State<CreateAccountPage> {
   // Attempts to create an account using a Microsoft login
   Future<void> createAccountWithMicrosoft() async {
     try {
-      User? user = await FirebaseAuthOAuth().openSignInFlow("microsoft.com", ["email"], {"locale": "en"});
-      if(user != null){
+      User? user = await FirebaseAuthOAuth()
+          .openSignInFlow("microsoft.com", ["email"], {"locale": "en"});
+      if (user != null) {
         Lecturer newLecturer = Lecturer(
             title: '',
             name: user.displayName.toString(),
@@ -257,8 +260,7 @@ class _CreateAccountState extends State<CreateAccountPage> {
             officeHours: '',
             officeNumber: '',
             busy: false,
-            outOfOffice: false
-        );
+            outOfOffice: false);
         FirebaseConnector.uploadData(newLecturer);
         print('Creation successful!');
         creationSuccessful = true;

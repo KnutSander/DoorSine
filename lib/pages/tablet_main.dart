@@ -46,10 +46,12 @@ class _TabletMainState extends State<TabletMain> {
 
     // Used to access screen size
     MediaQueryData queryData = MediaQuery.of(context);
+
     // Misc properties for the labels
     // Initialised inside the build function to access queryData
     MaterialStateProperty<Size> minLabelSize = MaterialStateProperty.all<Size>(
         Size(queryData.size.width / 2.5, queryData.size.height / 7));
+
     TextStyle labelText = TextStyle(
         fontSize: ((queryData.size.width * queryData.size.height) / 15000),
         color: Colors.white);
@@ -57,6 +59,7 @@ class _TabletMainState extends State<TabletMain> {
     // Misc properties of the intractable buttons
     MaterialStateProperty<Size> minButtonSize = MaterialStateProperty.all<Size>(
         Size(queryData.size.width / 3, queryData.size.height / 10));
+
     TextStyle buttonText = TextStyle(
         fontSize: (queryData.size.width * queryData.size.height) / 22000);
 
@@ -250,8 +253,8 @@ class _TabletMainState extends State<TabletMain> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => TabletCallPage(
-                        lecturerEmail: lecturerData!.get('email'),
-                      )));
+                            lecturerEmail: lecturerData!.get('email'),
+                          )));
             },
             child: Text(
               'Call',
@@ -324,7 +327,6 @@ class _TabletMainState extends State<TabletMain> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              // TODO: Add other info?
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(

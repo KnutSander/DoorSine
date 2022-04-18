@@ -30,7 +30,6 @@ class CallPage extends StatefulWidget {
 
 // State class all StatefulWidgets use
 class _CallPageState extends State<CallPage> {
-
   // The ids of the connected users, list is necessary for functionality
   static final _usedIDs = <int>[];
 
@@ -85,7 +84,6 @@ class _CallPageState extends State<CallPage> {
   // Initialise function that initialises everything the app needs
   // to be able to call one another
   Future<void> initialise() async {
-
     // Check that the app id has been set in main
     if (appID.isEmpty) {
       setState(() {
@@ -101,11 +99,7 @@ class _CallPageState extends State<CallPage> {
 
     // Joins the channel with the given name securely using a token
     // No optional parameters and 0 as the user id (assigns num automatically)
-    await _rtcEngine.joinChannel(
-        token,
-        widget.channelName,
-        null,
-        0);
+    await _rtcEngine.joinChannel(token, widget.channelName, null, 0);
   }
 
   // Initialises the RtcEngine

@@ -16,7 +16,7 @@ import 'package:capstone_project/widgets/calendar_data_source.dart';
 // PhoneCalendarPage class
 class PhoneCalendarPage extends StatefulWidget {
   // Constructor
-  PhoneCalendarPage({Key? key, required  this.lecturerEmail}) : super(key: key);
+  PhoneCalendarPage({Key? key, required this.lecturerEmail}) : super(key: key);
 
   // Lecturer email
   String lecturerEmail;
@@ -50,11 +50,9 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
   // Main build function
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: _getEvents(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Event>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
           if (snapshot.hasError) {
             if (snapshot.error.runtimeType.toString() == 'LateError') {
               return const Scaffold(
@@ -132,7 +130,6 @@ class _PhoneCalendarPageState extends State<PhoneCalendarPage> {
           _deviceCalendar = cal;
         }
       }
-
     } on PlatformException catch (e) {
       print(e);
     }

@@ -5,10 +5,8 @@
 // Imports
 import 'package:capstone_project/widgets/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
-import 'package:capstone_project/widgets/notification_service.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // PhoneHomePage is the main page of the phone side of the app
 class PhoneHomePage extends StatefulWidget {
@@ -47,11 +45,6 @@ class _PhoneHomePageState extends State<PhoneHomePage> {
                   widget.lecturer.busy = !widget.lecturer.busy;
                 });
                 FirebaseConnector.uploadData(widget.lecturer);
-                NotificationService.displayNotification(
-                  title: "Message",
-                  body: "This is a message",
-                  payload: "Message payload"
-                );
               },
               style: ButtonStyle(
                   backgroundColor: widget.lecturer.busy

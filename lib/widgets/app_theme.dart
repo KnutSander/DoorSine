@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 
 // The class that holds data related to the theme of the app
 class AppTheme {
-
   // Static final variables that can be accessed from anywhere
   // in the app when needed
-  static final MaterialColor _mainColour = MaterialColor(0xFFcd3d32, _mainColourSwatch);
+  static final MaterialColor _mainColour =
+      MaterialColor(0xFFcd3d32, _mainColourSwatch);
 
   static final Map<int, Color> _mainColourSwatch = {
     50: const Color.fromRGBO(205, 61, 50, .1),
@@ -30,4 +30,3 @@ class AppTheme {
     primarySwatch: _mainColour,
   );
 }
-

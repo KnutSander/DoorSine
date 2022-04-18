@@ -36,7 +36,6 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
   // Main build function
   @override
   Widget build(BuildContext context) {
-
     // Get the info from the lecturer to fill the text fields
     _title.text = widget.lecturer.title;
     _name.text = widget.lecturer.name;

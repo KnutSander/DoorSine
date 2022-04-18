@@ -18,13 +18,16 @@ const appID = "d73f28067efd4f2bb80d756a87326e33";
 
 // Main function
 Future<void> main() async {
+  // Create and initialise the WidgetsBinding
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Run the app using a ChangeNotifierProvider that
+  // looks for changes retrieved from Firebase
   runApp(ChangeNotifierProvider(
     create: (context) => FirebaseConnector(),
     builder: (context, _) => DoorSine(),
   ));
 }
-
 
 // Main App class
 class DoorSine extends StatelessWidget {
@@ -37,11 +40,9 @@ class DoorSine extends StatelessWidget {
   // Main build function
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: _init,
       builder: (context, snapshot) {
-
         // Called in the MaterialApp return
         Widget loadPage() {
           // Display error

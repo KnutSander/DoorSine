@@ -25,7 +25,6 @@ class TabletCallPage extends StatefulWidget {
 
 // State class all StatefulWidgets use
 class _TabletCallPageState extends State<TabletCallPage> {
-
   // Initialise function
   @override
   void initState() {
@@ -45,13 +44,13 @@ class _TabletCallPageState extends State<TabletCallPage> {
                 onPressed: () {
                   showDialog(
                       context: context,
-                      builder: (BuildContext context) =>
-                          _displayPageInfo());
+                      builder: (BuildContext context) => _displayPageInfo());
                 })
           ],
         ),
-        body: CallPage(channelName: widget.lecturerEmail,)
-    );
+        body: CallPage(
+          channelName: widget.lecturerEmail,
+        ));
   }
 
   // Get permissions to use camera and microphone
@@ -72,9 +71,9 @@ class _TabletCallPageState extends State<TabletCallPage> {
       children: <Widget>[
         Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text("On this page you can join a video call with the lecturer"
-                "Simply press the Join Call button to join the video chat")
-        ),
+            child: Text(
+                "On this page you can join a video call with the lecturer"
+                "Simply press the Join Call button to join the video chat")),
       ],
     );
   }

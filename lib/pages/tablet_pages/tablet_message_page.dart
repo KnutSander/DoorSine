@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 
 // TabletMessagesPage uses MessagePage to send messages to the other side
 // of the app
-class TabletMessagePage extends StatefulWidget{
+class TabletMessagePage extends StatefulWidget {
   // Constructor
-  const TabletMessagePage({Key? key, required this.name, required this.lecturerEmail}) : super(key: key);
+  const TabletMessagePage(
+      {Key? key, required this.name, required this.lecturerEmail})
+      : super(key: key);
 
   // Strings for name and lecturer email
   final String name;
@@ -24,26 +26,27 @@ class TabletMessagePage extends StatefulWidget{
 }
 
 // State class all StatefulWidgets use
-class _TabletMessagePageState extends State<TabletMessagePage>{
+class _TabletMessagePageState extends State<TabletMessagePage> {
   // Main build function
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Messages"),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.help_outline),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        _displayPageInfo());
-              })
-        ],
-      ),
-        body: MessagePage(lecturerEmail: widget.lecturerEmail, sender: widget.name,)
-    );
+        appBar: AppBar(
+          title: const Text("Messages"),
+          actions: <Widget>[
+            IconButton(
+                icon: const Icon(Icons.help_outline),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => _displayPageInfo());
+                })
+          ],
+        ),
+        body: MessagePage(
+          lecturerEmail: widget.lecturerEmail,
+          sender: widget.name,
+        ));
   }
 
   // Displays the page info
@@ -54,8 +57,7 @@ class _TabletMessagePageState extends State<TabletMessagePage>{
         Padding(
             padding: EdgeInsets.all(8.0),
             child: Text("On this page you can message the lecturer"
-                "Simply type a message and wait for them to respond")
-        ),
+                "Simply type a message and wait for them to respond")),
       ],
     );
   }

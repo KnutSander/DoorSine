@@ -41,12 +41,12 @@ class _LoginPageState extends State<LoginPage> {
 
   // Initialise function called when the state is created
   @override
-  void initState(){
+  void initState() {
     super.initState();
     // Run this after the build finishes to log in if state is still saved
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // Check if logged in
-      if (FirebaseAuth.instance.currentUser != null){
+      if (FirebaseAuth.instance.currentUser != null) {
         user = FirebaseAuth.instance.currentUser!;
         _logInSuccess(context);
       }
@@ -67,8 +67,7 @@ class _LoginPageState extends State<LoginPage> {
               CircleAvatar(
                   radius: MediaQuery.of(context).size.shortestSide / 5,
                   backgroundImage:
-                      const AssetImage('media/images/DoorSine_V1.png')
-              ),
+                      const AssetImage('media/images/DoorSine_V1.png')),
               const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
               Text(
                 'DoorSine',
@@ -79,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      width: MediaQuery.of(context).size.width/1.5,
+                      width: MediaQuery.of(context).size.width / 1.5,
                       child: TextFormField(
                         controller: _emailController,
                         decoration: const InputDecoration(hintText: 'Email'),
@@ -93,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width/1.5,
+                      width: MediaQuery.of(context).size.width / 1.5,
                       child: TextFormField(
                         controller: _passwordController,
                         decoration: const InputDecoration(hintText: 'Password'),
@@ -195,8 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TabletMain(userdata: user)),
+                            builder: (context) => TabletMain(userdata: user)),
                         (Route<dynamic> route) => false);
                   },
                   child: Text(

@@ -29,7 +29,6 @@ Future<void> main() async {
   ));
 }
 
-
 // Main App class
 class DoorSine extends StatelessWidget {
   // Constructor
@@ -41,11 +40,9 @@ class DoorSine extends StatelessWidget {
   // Main build function
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: _init,
       builder: (context, snapshot) {
-
         // Called in the MaterialApp return
         Widget loadPage() {
           // Display error
