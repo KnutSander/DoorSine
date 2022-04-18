@@ -56,7 +56,7 @@ class _TabletMessagePageState extends State<TabletMessagePage> {
       children: <Widget>[
         Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text("On this page you can message the lecturer"
+            child: Text("On this page you can message the lecturer\n"
                 "Simply type a message and wait for them to respond")),
       ],
     );

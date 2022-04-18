@@ -72,7 +72,7 @@ class _TabletCallPageState extends State<TabletCallPage> {
         Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-                "On this page you can join a video call with the lecturer"
+                "On this page you can join a video call with the lecturer\n"
                 "Simply press the Join Call button to join the video chat")),
       ],
     );

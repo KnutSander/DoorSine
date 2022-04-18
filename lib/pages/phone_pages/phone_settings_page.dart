@@ -171,7 +171,6 @@ class _PhoneSettingsPageState extends State<PhoneSettingsPage> {
 
   // Upload the updated info
   void _updateInfo() {
-    print(_title.text + 'weeeeeeeeeeeeeeeeeeeeeeeeeeee');
     widget.lecturer.title = _title.text;
     widget.lecturer.name = _name.text;
     widget.lecturer.officeNumber = _officeNumber.text;
