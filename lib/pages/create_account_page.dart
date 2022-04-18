@@ -5,6 +5,7 @@
 // Imports
 import 'package:capstone_project/widgets/firebase_connector.dart';
 import 'package:capstone_project/models/lecturer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
@@ -221,9 +222,8 @@ class _CreateAccountState extends State<CreateAccountPage> {
   // Attempts to create an account given the information provided in the form
   Future<void> createAccount() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: _email.text, password: _password.text);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email.text, password: _password.text);
       Lecturer newLecturer = Lecturer(
           title: _title.text,
           name: _name.text,
@@ -237,20 +237,50 @@ class _CreateAccountState extends State<CreateAccountPage> {
       creationSuccessful = true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('Password to weak');
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => const AlertDialog(
+                  title: Center(
+                    child: Text('Error'),
+                  ),
+                  content: Text('Password too weak'),
+                ));
       } else if (e.code == 'email-already-in-use') {
-        print('An account with this email already exists');
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => const AlertDialog(
+                  title: Center(
+                    child: Text('Error'),
+                  ),
+                  content: Text('Email is already in use'),
+                ));
       }
-    } catch (e) {
-      print(e);
     }
   }
 
   // Attempts to create an account using a Microsoft login
   Future<void> createAccountWithMicrosoft() async {
-    try {
-      User? user = await FirebaseAuthOAuth()
-          .openSignInFlow("microsoft.com", ["email"], {"locale": "en"});
+    User? user = await FirebaseAuthOAuth()
+        .openSignInFlow("microsoft.com", ["email"], {"locale": "en"});
+
+    // Try getting the user document
+    DocumentSnapshot<Map<String, dynamic>> data = await FirebaseFirestore
+        .instance
+        .collection('lecturer')
+        .doc(user?.email)
+        .get();
+
+    // If user exists, display error message
+    if (data.exists) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => const AlertDialog(
+                title: Center(
+                  child: Text('Error'),
+                ),
+                content: Text('Microsoft account already in use'),
+              ));
+    } else {
       if (user != null) {
         Lecturer newLecturer = Lecturer(
             title: '',
@@ -262,11 +292,8 @@ class _CreateAccountState extends State<CreateAccountPage> {
             busy: false,
             outOfOffice: false);
         FirebaseConnector.uploadData(newLecturer);
-        print('Creation successful!');
         creationSuccessful = true;
       }
-    } catch (e) {
-      print(e);
     }
   }
 }
