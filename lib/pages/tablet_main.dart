@@ -335,6 +335,9 @@ class _TabletMainState extends State<TabletMain> {
                         child: Text(
                       'Email:',
                       textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
                     )),
                     const SizedBox(width: 10),
                     Expanded(
@@ -342,6 +345,7 @@ class _TabletMainState extends State<TabletMain> {
                         lecturerData.get('email'),
                         style: const TextStyle(
                           color: Colors.blue,
+                          fontSize: 20.0,
                         ),
                       ),
                     ),
@@ -356,9 +360,18 @@ class _TabletMainState extends State<TabletMain> {
                         child: Text(
                       'Office Hours:',
                       textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
                     )),
                     const SizedBox(width: 10),
-                    Expanded(child: Text(lecturerData.get('office hours'))),
+                    Expanded(
+                        child: Text(
+                      lecturerData.get('office hours'),
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    )),
                   ],
                 ),
               ),

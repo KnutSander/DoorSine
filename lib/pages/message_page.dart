@@ -131,11 +131,11 @@ class _MessagePageState extends State<MessagePage> {
                               children: [
                                 Text(
                                   _messages[index].sender,
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 30),
                                 ),
                                 Text(
                                   _messages[index].text,
-                                  style: TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 25),
                                 ),
                               ],
                             ),
@@ -159,6 +159,7 @@ class _MessagePageState extends State<MessagePage> {
         Flexible(
             child: TextField(
           controller: _messageController,
+          style: const TextStyle(fontSize: 25),
           onChanged: (String text) {
             setState(() {
               _isWriting = text.isNotEmpty;
